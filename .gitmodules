@@ -1,0 +1,18 @@
+[submodule "authentication"]
+	path = authentication
+	url = lgitea:trilolol/django-authentication
+[submodule "core"]
+	path = core
+	url = lgitea:trilolol/django-core
+[submodule "skote_static"]
+	path = skote_static
+	url = lgitea:trilolol/django-skote-static
+[submodule "payments"]
+	path = payments
+	url = lgitea:trilolol/django-payments
+[submodule "translations"]
+	path = translations
+	url = lgitea:trilolol/django-translations
+[submodule "tracking"]
+	path = tracking
+	url = lgitea:trilolol/django-tracking

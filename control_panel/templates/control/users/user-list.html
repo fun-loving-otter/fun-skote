@@ -1,0 +1,91 @@
+{% extends 'control/partials/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+{% include 'partials/css_toastr.html' %}
+{% include 'partials/css_datatables.html' %}
+{% endblock %}
+
+{% block modals %}
+{% include 'control/users/user-creation-modal.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">Actions</h5>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-user-modal">
+			Create User
+		</button>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">Users</h5>
+		
+		<table class="table align-middle" data-tabletype="dataTable">
+			<thead>
+				<th>Edit</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Country</th>
+				<th>Language</th>
+				<th style="width: 5%;">Active(verified email)</th>
+				<th style="width: 5%;">Is Staff</th>
+				<th style="width: 5%;">Delete</th>
+			</thead>
+			<tbody>
+				{% for user in object_list %}
+				<tr data-user="{{user.pk}}">
+					<td>
+						<a href="{% url 'control_panel:user-detail' pk=user.pk %}">
+							<i class="bx bx-link-external fs-1"></i>
+						</a>
+					</td>
+					<td>{{user.first_name}}</td>
+					<td>{{user.last_name}}</td>
+					<td>{{user.email}}</td>
+					<td>
+						{% if user.country %}
+						{{user.country}}
+						{% else %}
+						Unknown
+						{% endif %}
+					</td>
+					<td>{{user.language}}</td>
+					<td>
+						<button class="btn p-0 m-0" onclick="togglePermission({{user.pk}}, 'active')">
+							<i class="bx bxs-check-square text-success fs-1{% if not user.is_active %} collapse{% endif %}" data-user="{{user.pk}}" data-active="true"></i>
+							<i class="bx bxs-x-square text-danger fs-1{% if user.is_active %} collapse{% endif %}" data-user="{{user.pk}}" data-active="false"></i>
+						</button>
+					</td>
+					<td>
+						<button class="btn p-0 m-0" onclick="togglePermission({{user.pk}}, 'staff')">
+							<i class="bx bxs-check-square text-success fs-1{% if not user.is_staff %} collapse{% endif %}" data-user="{{user.pk}}" data-staff="true"></i>
+							<i class="bx bxs-x-square text-danger fs-1{% if user.is_staff %} collapse{% endif %}" data-user="{{user.pk}}" data-staff="false"></i>
+						</button>
+					</td>
+					<td>
+						<button class="btn p-0 m-0" onclick="deleteUser({{user.pk}})">
+							<i class="bx bx-trash text-danger fs-1"></i>
+						</button>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+<script type="text/javascript">
+	const USER_DELETE_URL = '{% url 'control_panel:user-delete' %}';
+	const USER_PERMISSIONS_URL = '{% url 'control_panel:user-toggle' %}';
+</script>
+{% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+<script src="{% static 'js/users.init.js' %}"></script>
+{% endblock %}

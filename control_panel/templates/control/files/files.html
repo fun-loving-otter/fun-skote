@@ -1,0 +1,51 @@
+{% extends 'control/partials/base.html' %}
+
+{% block content %}
+<div class="card">
+	<div class="card-body">
+		<div class="mb-4">
+			<h5 class="card-title">Emails:</h5>
+			<a href="{% url 'control_panel:file-edit' %}?file=payments/templates/emails/checkout_reminder.txt" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Complete Payment
+			</a>
+			<a href="{% url 'control_panel:file-edit' %}?file=payments/templates/emails/checkout_reminder.txt" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Checkout Reminder
+			</a>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/templates/authentication/emails/change_email.txt" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Change Email
+			</a>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/templates/authentication/emails/mail_confirm.html" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Confirm Email HTML
+			</a>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/templates/authentication/emails/mail_confirm.txt" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Confirm Email TXT
+			</a>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/templates/authentication/emails/recoverpw_email.txt" class="btn btn-primary waves-effect btn-label waves-light mb-2">
+				<i class="bx bx-pencil label-icon"></i>
+				Recover Password
+			</a>
+		</div>
+
+		<div class="mb-4">
+			<h5 class="card-title">Email subjects:</h5>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/views.py" class="btn btn-primary waves-effect btn-label waves-light">
+				<i class="bx bx-pencil label-icon"></i>
+				Authentication views (email_change, recoverpw)
+			</a>			
+		</div>
+
+		<div class="mb-4">
+			<h5 class="card-title mt-5">Pages:</h5>
+			<a href="{% url 'control_panel:file-edit' %}?file=authentication/templates/authentication/partials/left_content.html" class="btn btn-primary waves-effect btn-label waves-light">
+				<i class="bx bx-pencil label-icon"></i>
+				Authentication Left Content
+			</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

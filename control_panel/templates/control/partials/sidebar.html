@@ -1,0 +1,159 @@
+{% load static %}
+{% load user_utils %}
+
+{% block sidebar %}
+<!-- ========== Left Sidebar Start ========== -->
+<div class="vertical-menu">
+	<div data-simplebar class="h-100">
+		<!--- Sidemenu -->
+		<div id="sidebar-menu">
+			<!-- Left Menu Start -->
+			{% get_available_pages user as available_pages %}
+			<ul class="metismenu list-unstyled" id="side-menu">
+				<li class="menu-title">Menu</li>
+
+				{% check_permission user available_pages 'dashboard' as dashboard_available %}
+				{% if dashboard_available %}
+				<li>
+					<a href="{% url 'control_panel:index' %}">
+						<i class="bx bx-home"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'psettings' 'btc' 'currencies' as payments_available %}
+				{% if payments_available %}
+				<li>
+					<a href="javascript: void(0);" class="has-arrow waves-effect">
+						<i class="bx bx-euro"></i>
+						<span>Payments</span>
+					</a>
+
+					<ul class="sub-menu mm-collapse">
+						{% check_permission user available_pages 'psettings' as psettings_available %}
+						{% if psettings_available %}
+						<li>
+							<a href="{% url 'control_panel:psettings' %}" class="waves-effect">
+								<span>Settings</span>
+							</a>
+						</li>
+						{% endif %}
+
+						{% check_permission user available_pages 'btc' as btc_available %}
+						{% if btc_available %}
+						<li>
+							<a href="{% url 'control_panel:btc' %}" class="waves-effect">
+								<span>BTC</span>
+							</a>
+						</li>
+						{% endif %}
+
+						{% check_permission user available_pages 'currencies' as currencies_available %}
+						{% if currencies_available %}
+						<li>
+							<a href="{% url 'control_panel:currencies' %}" class="waves-effect">
+								<span>Currencies</span>
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'core-settings' as config_available %}
+				{% if config_available %}
+				<li>
+					<a href="{% url 'control_panel:core-settings' %}" class="waves-effect">
+						<i class="bx bx-wrench"></i>
+						<span>Site settings</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'files' as files_available %}
+				{% if files_available %}
+				<li>
+					<a href="{% url 'control_panel:files' %}" class="waves-effect">
+						<i class="bx bx-file"></i>
+						<span>Files</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'translations' as translations_available %}
+				{% if translations_available %}
+				<li>
+					<a href="{% url 'control_panel:translations' %}" class="waves-effect">
+						<i class="mdi mdi-translate"></i>
+						<span>Translations</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'tracking' as tracking_available %}
+				{% if tracking_available %}
+				<li>
+					<a href="{% url 'control_panel:tracking' %}" class="waves-effect">
+						<i class="mdi mdi-eye"></i>
+						<span>Tracking</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'emails' as emails_available %}
+				{% if emails_available %}
+				<li>
+					<a href="{% url 'control_panel:emails' %}" class="waves-effect">
+						<i class="bx bx-envelope"></i>
+						<span>Emails</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'utm' as utm_available %}
+				{% if utm_available %}
+				<li>
+					<a href="{% url 'control_panel:utm' %}" class="waves-effect">
+						<i class="mdi mdi-eye"></i>
+						<span>UTM</span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% check_permission user available_pages 'customer-list' 'staff-list' as users_available %}
+				{% if users_available %}
+				<li>
+					<a href="javascript: void(0);" class="has-arrow waves-effect">
+						<i class="bx bx-user"></i>
+						<span>Users</span>
+					</a>
+
+					<ul class="sub-menu mm-collapse">
+						{% check_permission user available_pages 'customer-list' as customer_list_available %}
+						{% if customer_list_available %}
+						<li>
+							<a href="{% url 'control_panel:customer-list' %}" class="waves-effect">
+								<span>Customers</span>
+							</a>
+						</li>
+						{% endif %}
+
+						{% check_permission user available_pages 'staff-list' as staff_list_available %}
+						{% if staff_list_available %}
+						<li>
+							<a href="{% url 'control_panel:staff-list' %}" class="waves-effect">
+								<span>Administrators</span>
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+		<!-- Sidebar -->
+	</div>
+</div>
+<!-- Left Sidebar End -->
+{% endblock %}

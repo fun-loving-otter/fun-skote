@@ -1,18 +1,18 @@
 [submodule "authentication"]
 	path = authentication
-	url = gitea.20111511.xyz/Sam/django-authentication
+	url = https://gitea.20111511.xyz/Sam/django-authentication
 [submodule "core"]
 	path = core
-	url = gitea.20111511.xyz/Sam/django-core
+	url = https://gitea.20111511.xyz/Sam/django-core
 [submodule "skote_static"]
 	path = skote_static
-	url = gitea.20111511.xyz/Sam/django-skote-static
+	url = https://gitea.20111511.xyz/Sam/django-skote-static
 [submodule "payments"]
 	path = payments
-	url = gitea.20111511.xyz/Sam/django-payments
+	url = https://gitea.20111511.xyz/Sam/django-payments
 [submodule "translations"]
 	path = translations
-	url = gitea.20111511.xyz/Sam/django-translations
+	url = https://gitea.20111511.xyz/Sam/django-translations
 [submodule "tracking"]
 	path = tracking
-	url = gitea.20111511.xyz/Sam/django-tracking
+	url = https://gitea.20111511.xyz/Sam/django-tracking

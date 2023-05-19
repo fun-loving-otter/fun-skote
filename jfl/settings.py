@@ -29,9 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN = 'boostmyscoial.co'
+DOMAIN = 'a1o.co.uk'
 
-CONTROL_PANEL_DOMAIN = 'admin.boostmysocial.co'
+CONTROL_PANEL_DOMAIN = 'admin.a1o.co.uk'
 
 
 # Application definition

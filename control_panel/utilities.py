@@ -3,8 +3,8 @@ from django.conf import settings
 
 class VirtualHostMiddleware:
 	virtual_hosts = {
-		"admin.ecomanalytica.com": "control_panel.urls_standalone",
-		"ecomanalytica.com": "ecomanalytica.urls",
+		settings.CONTROL_PANEL_DOMAIN: "control_panel.urls_standalone",
+		settings.DOMAIN: "ecomanalytica.urls",
 	}
 
 	def __init__(self, get_response):

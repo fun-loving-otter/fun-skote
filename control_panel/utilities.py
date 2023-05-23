@@ -4,7 +4,7 @@ from django.conf import settings
 class VirtualHostMiddleware:
 	virtual_hosts = {
 		settings.CONTROL_PANEL_DOMAIN: "control_panel.urls_standalone",
-		settings.DOMAIN: "ecomanalytica.urls",
+		settings.DOMAIN: settings.ROOT_URLCONF,
 	}
 
 	def __init__(self, get_response):

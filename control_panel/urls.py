@@ -4,7 +4,7 @@ from control_panel.views import user_views, generic_views, app_views, index_view
 from translations import urls_admin as lurls
 from payments import urls_admin as purls
 from core import urls_admin as curls
-# from main import urls_admin as murls
+from main import urls_admin as murls
 
 
 app_name = 'control_panel'
@@ -32,7 +32,7 @@ urlpatterns = [
 urlpatterns += lurls.urlpatterns
 urlpatterns += purls.urlpatterns
 urlpatterns += curls.urlpatterns
-# urlpatterns += murls.urlpatterns
+urlpatterns += murls.urlpatterns
 
 
 # Register pages for admin profile

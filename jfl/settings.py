@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_countries',
-    'django_json_widget',
     'django_email_verification',
     'skote_static',
     'core',
@@ -57,6 +56,7 @@ INSTALLED_APPS = [
     'tracking',
     'payments',
     'control_panel',
+    'main'
 ]
 
 MESSAGE_TAGS = {
@@ -175,3 +175,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery Configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# Celery Task Queue Configuration
+CELERY_TASK_QUEUE_NAME = 'default'  # Set your task queue name

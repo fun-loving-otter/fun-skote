@@ -111,6 +111,16 @@
 				</li>
 				{% endif %}
 
+				{% check_permission user available_pages 'data-uploads' as data_uploads_available %}
+				{% if data_uploads_available %}
+				<li>
+				    <a href="{% url 'control_panel:data-uploads' %}" class="waves-effect">
+				        <i class="bx bx-upload"></i>
+				        <span>Data Uploads</span>
+				    </a>
+				</li>
+				{% endif %}
+
 				{% check_permission user available_pages 'utm' as utm_available %}
 				{% if utm_available %}
 				<li>

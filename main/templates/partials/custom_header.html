@@ -8,27 +8,15 @@
 		<div class="d-flex">
 			<!-- LOGO -->
 			<div class="navbar-brand-box">
-				<a href="{% url 'main:index' %}" class="logo logo-dark">
-					<span class="logo-sm">
-						{% if logo_sm_dark %}
-						<img src="{{logo_sm_dark.url}}" alt="" height="22">
-						{% endif %}
-					</span>
-					<span class="logo-lg">
-						{% if logo_w_dark %}
-						<img src="{{logo_w_dark.url}}" alt="" height="17">
-						{% endif %}
-					</span>
-				</a>
 				<a href="{% url 'main:index' %}" class="logo logo-light">
 					<span class="logo-sm">
-						{% if logo_sm_light %}
-						<img src="{{logo_sm_light.url}}" alt="" height="22">
+						{% if request.logo_sm_light %}
+						<img src="{{request.logo_sm_light.url}}" alt="" height="22">
 						{% endif %}
 					</span>
 					<span class="logo-lg">
-						{% if logo_w_light %}
-						<img src="{{logo_w_light.url}}" alt="" height="19">
+						{% if request.logo_w_light %}
+						<img src="{{request.logo_w_light.url}}" alt="" height="22">
 						{% endif %}
 					</span>
 				</a>
@@ -38,6 +26,12 @@
 			</button>
 		</div>
 		<div class="d-flex">
+			{% block currency_dropdown %}
+			{% if request.currencies %}
+			{% include 'partials/currency_dropdown.html' %}
+			{% endif %}
+			{% endblock %}
+
 			<div class="dropdown d-inline-block">
 				<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<span class="d-inline-block ms-1">

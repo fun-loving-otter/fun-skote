@@ -1,0 +1,48 @@
+{% extends 'partials/base.html' %}
+
+{% block extra_css %}
+{% include 'partials/css_datatables.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">JUST FUNDED</h5>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="data-table" class="table table-striped align-middle" data-tabletype="dataTableServer">
+        <thead>
+          <tr>
+            {% for field in model_fields %}
+              <th>{{ field.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody class="align-top text-nowrap">
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+{% include 'partials/js_datatables.html' %}
+<script>
+$(document).ready(function() {
+  $('#data-table').DataTable({
+    serverSide: true,
+    ajax: "{% url 'main:api-data-list' %}?format=datatables",
+    columns: [
+      {% for field in model_fields %}
+        { data: "{{ field.name }}" },
+      {% endfor %}
+    ],
+    // ordering: false
+  });
+});
+</script>
+{% endblock %}

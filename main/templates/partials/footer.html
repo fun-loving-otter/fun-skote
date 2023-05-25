@@ -1,0 +1,22 @@
+{% load static %}
+{% load i18n %}
+
+{% block footer %}
+<footer class="footer">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-sm d-none d-sm-block">
+					© Copyright {% now "Y" %} {{request.title}} - All Rights Reserved
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-sm-end">
+					<a href="{% url 'privacy' %}" class="link-secondary me-3"><u>{% translate "Privacy" %}</u></a>
+					<a href="{% url 'terms' %}" class="link-secondary"><u>{% translate "Terms" %}</u></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}

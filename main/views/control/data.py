@@ -15,5 +15,5 @@ class DataUploadListView(AccessRequiredMixin, ListView):
 class DataUploadCreateView(AccessRequiredMixin, CreateView):
     model = DataUpload
     form_class = data_forms.DataUploadForm
-    template_name = 'control/data_upload_create.html'
+    template_name = 'control/form.html'
     success_url = reverse_lazy('control_panel:data-uploads')

@@ -1,4 +1,9 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
 
 class Data(models.Model):
     uploaded_data_file = models.ForeignKey('UploadedDataFile', on_delete=models.CASCADE)
@@ -242,3 +247,12 @@ class UploadedDataFile(models.Model):
 
     def __str__(self):
         return str(self.file)
+
+
+
+class DataList(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    data = models.ManyToManyField('Data')
+    last_modified = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=255)
+    source = models.CharField(max_length=255, null=True, blank=True)

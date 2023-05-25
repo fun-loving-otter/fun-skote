@@ -1,0 +1,54 @@
+{% extends 'partials/base.html' %}
+
+{% block extra_css %}
+{% include 'partials/css_datatables.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">LIST</h5>
+  </div>
+
+  <div class="card-body">
+    <div class="mb-5">
+      <a href="{% url 'main:datalist-create' %}" type="button" class="btn btn-primary waves-effect waves-light">
+        <i class="bx bx-plus font-size-16 align-middle me-2"></i> Add List
+      </a>
+    </div>
+
+    <table class="table table-striped" data-tabletype="dataTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Last Modified</th>
+          <th>Source</th>
+          <th>Records</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for datalist in object_list %}
+        <tr>
+          <td>{{ datalist.name }}</td>
+          <td>{{ datalist.last_modified|date:"M d, Y g:i A" }}</td>
+          <td>{{ datalist.source }}</td>
+          <td>{{ datalist.data.count }}</td>
+          <td>
+            <div class="d-flex gap-3">
+              <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+              <a href="javascript:void(0);" class="text-primary"><i class="mdi mdi-download font-size-18"></i></a>
+              <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+{% include 'partials/js_datatables.html' %}
+{% endblock %}

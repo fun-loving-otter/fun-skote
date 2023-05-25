@@ -8,7 +8,7 @@
 		<div class="d-flex">
 			<!-- LOGO -->
 			<div class="navbar-brand-box">
-				<a href="{% url 'main:index' %}" class="logo logo-dark">
+				<a href="{% url 'index' %}" class="logo logo-dark">
 					<span class="logo-sm">
 						{% if logo_sm_dark %}
 						<img src="{{logo_sm_dark.url}}" alt="" height="22">
@@ -20,7 +20,7 @@
 						{% endif %}
 					</span>
 				</a>
-				<a href="{% url 'main:index' %}" class="logo logo-light">
+				<a href="{% url 'index' %}" class="logo logo-light">
 					<span class="logo-sm">
 						{% if logo_sm_light %}
 						<img src="{{logo_sm_light.url}}" alt="" height="22">

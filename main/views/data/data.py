@@ -1,18 +1,23 @@
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.generics import ListAPIView
 
-from main.models import Data
+from main.models import Data, DataList
 from main.serializers import DataSerializer
 
 
-class DataTemplateView(TemplateView):
+class DataTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'main/data/data_table.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        exclude = {'id', 'uploaded_data_file'}
-        context['model_fields'] = [field for field in Data._meta.get_fields() if field.name not in exclude]
+        fields = Data._header_field_mapping.values()
+        context['model_fields'] = [Data._meta.get_field(field) for field in fields]
+
+        # Get DataList objects where creator is the current user
+        user = self.request.user
+        context['data_lists'] = DataList.objects.filter(creator=user)
 
         return context
 

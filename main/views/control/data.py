@@ -8,7 +8,7 @@ from main.forms.control import data as data_forms
 
 class DataUploadListView(AccessRequiredMixin, ListView):
     model = DataUpload
-    template_name = 'control/data_upload_list.html'
+    template_name = 'control/data_upload_table.html'
 
 
 

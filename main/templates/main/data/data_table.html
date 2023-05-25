@@ -1,7 +1,10 @@
 {% extends 'partials/base.html' %}
 
+{% load static %}
+
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.6.2/css/select.bootstrap5.min.css">
 {% endblock %}
 
 {% block content %}
@@ -11,16 +14,30 @@
   </div>
 
   <div class="card-body">
+    <div class="mb-3">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="add-to-list" data-bs-toggle="dropdown" aria-expanded="false">
+          Add to List
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="add-to-list">
+          {% for data_list in data_lists %}
+          <li><a class="dropdown-item" href="#">{{ data_list.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
     <div class="table-responsive">
-      <table id="data-table" class="table table-striped align-middle" data-tabletype="dataTableServer">
+      <table id="data-table" class="table table-striped align-middle display text-nowrap" data-tabletype="dataTableServer">
         <thead>
           <tr>
+            <th></th>
             {% for field in model_fields %}
               <th>{{ field.verbose_name }}</th>
             {% endfor %}
           </tr>
         </thead>
-        <tbody class="align-top text-nowrap">
+        <tbody class="align-top">
           
         </tbody>
       </table>
@@ -31,18 +48,15 @@
 
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+<script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
 <script>
-$(document).ready(function() {
-  $('#data-table').DataTable({
-    serverSide: true,
-    ajax: "{% url 'main:api-data-list' %}?format=datatables",
-    columns: [
-      {% for field in model_fields %}
-        { data: "{{ field.name }}" },
-      {% endfor %}
-    ],
-    // ordering: false
-  });
-});
+const TABLE_API_URL = "{% url 'main:api-data-list' %}?format=datatables";
+const TABLE_COLUMNS = [
+    { data: "" },
+    {% for field in model_fields %}
+    { data: "{{ field.name }}" },
+    {% endfor %}
+];
 </script>
+<script src="{% static 'js/main/data/data_table.js' %}"></script>
 {% endblock %}

@@ -14,5 +14,8 @@ urlpatterns = [
     path('data/', data_views.DataTemplateView.as_view(), name='data-list'),
     path('datalists/', datalist_views.DataListListView.as_view(), name='datalist-list'),
     path('datalists/create/', datalist_views.DataListCreateView.as_view(), name='datalist-create'),
-    path('datalist/<int:pk>/update', datalist_views.DataListUpdateAPIView.as_view(), name='api-datalist-update')
+    path('datalist/<int:pk>/update', datalist_views.DataListUpdateAPIView.as_view(), name='api-datalist-update'),
+    path('datalist/<int:pk>/destroy/', datalist_views.DataListDestroyAPIView.as_view(), name='api-datalist-destroy'),
+    path('datalist/<int:pk>/export/csv', datalist_views.export_datalist_csv, name='datalist-export-csv'),
+    path('datalist/<int:pk>/export/xls', datalist_views.export_datalist_xls, name='datalist-export-xls'),
 ]

@@ -1,8 +1,13 @@
 {% extends 'partials/base.html' %}
 
+{% load static %}
+
+
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
+{% include 'partials/css_toastr.html' %}
 {% endblock %}
+
 
 {% block content %}
 <div class="card">
@@ -29,16 +34,24 @@
       </thead>
       <tbody>
         {% for datalist in object_list %}
-        <tr>
+        <tr data-object="{{ datalist.pk }}">
           <td>{{ datalist.name }}</td>
           <td>{{ datalist.last_modified|date:"M d, Y g:i A" }}</td>
           <td>{{ datalist.source }}</td>
           <td>{{ datalist.data.count }}</td>
           <td>
             <div class="d-flex gap-3">
-              <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
-              <a href="javascript:void(0);" class="text-primary"><i class="mdi mdi-download font-size-18"></i></a>
-              <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+              {# <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> #}
+              <div class="dropdown">
+                <a href="#" class="dropdown-toggle text-primary" role="button" id="downloadDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="mdi mdi-download font-size-18"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="downloadDropdown">
+                  <a href="{% url 'main:datalist-export-csv' pk=datalist.pk %}" class="dropdown-item" type="button">csv</a>
+                  <a href="{% url 'main:datalist-export-xls' pk=datalist.pk %}" class="dropdown-item" type="button">xls</a>
+                </div>
+              </div>
+              <a href="javascript:void(0);" class="text-danger" onclick="destroyObject('{% url 'main:api-datalist-destroy' pk=datalist.pk %}', {{ datalist.pk }})"><i class="mdi mdi-delete font-size-18"></i></a>
             </div>
           </td>
         </tr>
@@ -49,6 +62,9 @@
 </div>
 {% endblock %}
 
+
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+<script src="{% static 'js/delete.init.js' %}"></script>
 {% endblock %}

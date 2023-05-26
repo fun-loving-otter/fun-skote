@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.generics import ListAPIView
 
 from main.models import Data, DataList
-from main.serializers import DataSerializer
+from main.rest.serializers import DataSerializer
 
 
 class DataTemplateView(LoginRequiredMixin, TemplateView):
@@ -17,7 +17,7 @@ class DataTemplateView(LoginRequiredMixin, TemplateView):
 
         # Get DataList objects where creator is the current user
         user = self.request.user
-        context['data_lists'] = DataList.objects.filter(creator=user)
+        context['datalists'] = DataList.objects.filter(creator=user)
 
         return context
 

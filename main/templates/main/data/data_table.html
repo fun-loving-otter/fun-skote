@@ -2,10 +2,14 @@
 
 {% load static %}
 
+
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
+{% include 'partials/css_toastr.html' %}
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.6.2/css/select.bootstrap5.min.css">
 {% endblock %}
+
 
 {% block content %}
 <div class="card">
@@ -20,8 +24,8 @@
           Add to List
         </button>
         <ul class="dropdown-menu" aria-labelledby="add-to-list">
-          {% for data_list in data_lists %}
-          <li><a class="dropdown-item" href="#">{{ data_list.name }}</a></li>
+          {% for datalist in datalists %}
+          <li><button class="dropdown-item" onclick="AddToList('{% url 'main:api-datalist-update' pk=datalist.pk %}')">{{ datalist.name }}</button></li>
           {% endfor %}
         </ul>
       </div>
@@ -46,8 +50,11 @@
 </div>
 {% endblock %}
 
+
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+
 <script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
 <script>
 const TABLE_API_URL = "{% url 'main:api-data-list' %}?format=datatables";

@@ -1,0 +1,56 @@
+{% extends 'control/partials/base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+{% include 'partials/css_datatables.html' %}
+{% include 'partials/css_toastr.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Package</h5>
+    <a href="{% url 'control_panel:package-create' %}" class="btn btn-primary">
+      Create package
+    </a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Data Uploads</h5>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped align-middle" data-tabletype="dataTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Credits</th>
+          <th>Price</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for package in packages %}
+        <tr data-object="{{package.pk}}">
+          <td>{{ package.name }}</td>
+          <td>{{ package.credits }}</td>
+          <td>{{ package.price }}</td>
+          <td>
+            <a href="{% url 'control_panel:package-edit' package.pk %}" class="btn btn-primary">Edit</a>
+            <button onclick="destroyObject('{% url 'control_panel:api-package-delete' package.pk %}', {{ package.pk }})" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+{% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+<script src="{% static 'js/delete.init.js' %}"></script>
+{% endblock %}

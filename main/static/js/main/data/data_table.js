@@ -24,13 +24,10 @@ $(document).ready(function() {
 
 
 
-function AddToList(url) {
-    let selected_rows = table.rows({ selected: true });
-    let ids = selected_rows.ids().toArray();
-
+function AddToList(url, ids) {
     // Construct the request body
     let data = {
-    data: ids,
+        data: ids,
     };
 
     // Send the PATCH request with CSRF token in headers
@@ -58,3 +55,8 @@ function AddToList(url) {
 
 
 
+function AddSelectedToList(url) {
+    let selected_rows = table.rows({ selected: true });
+    let ids = selected_rows.ids().toArray();
+    AddToList(url, ids);
+}

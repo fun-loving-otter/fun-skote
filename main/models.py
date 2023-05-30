@@ -116,6 +116,17 @@ class Data(models.Model):
         'Most Popular Trademark Class': 'most_popular_trademark_class',
     }
 
+    _hidden_fields = {
+        'website',
+        'crunchbase_company_url',
+        'linkedin',
+        'facebook',
+        'twitter',
+        'email',
+        'contact_email',
+    }
+
+
     organization_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Organization Name')
     crunchbase_company_url = models.CharField(max_length=255, null=True, blank=True, verbose_name='Crunchbase Company URL')
     founded_date = models.CharField(max_length=255, null=True, blank=True, verbose_name='Founded Date')

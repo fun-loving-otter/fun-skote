@@ -12,8 +12,11 @@ class DataTemplateView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        # Add Data fields to context
         fields = Data._header_field_mapping.values()
         context['model_fields'] = [Data._meta.get_field(field) for field in fields]
+
+        context['hidden_fields'] = Data._hidden_fields
 
         # Get DataList objects where creator is the current user
         user = self.request.user
@@ -26,3 +29,8 @@ class DataTemplateView(LoginRequiredMixin, TemplateView):
 class DataAPIListView(ListAPIView):
     queryset = Data.objects.all()
     serializer_class = DataSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['hide_fields'] = True
+
+        return self.get_serializer_class()(*args, **kwargs)

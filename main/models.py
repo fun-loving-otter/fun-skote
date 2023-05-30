@@ -136,7 +136,7 @@ class Data(models.Model):
     twitter = models.CharField(max_length=255, null=True, blank=True, verbose_name='Twitter')
     company_type = models.CharField(max_length=255, null=True, blank=True, verbose_name='Company Type')
     contact_email = models.CharField(max_length=255, null=True, blank=True, verbose_name='Contact Email')
-    phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name='Phone Number')
+    phone_number = models.CharField(max_length=255, null=True, blank=True, verbose_name='Phone Number')
     industry_groups = models.CharField(max_length=255, null=True, blank=True, verbose_name='Industry Groups')
     number_of_founders = models.CharField(max_length=255, null=True, blank=True, verbose_name='Number of Founders')
     name_of_founder = models.CharField(max_length=255, null=True, blank=True, verbose_name='Name of Founder')

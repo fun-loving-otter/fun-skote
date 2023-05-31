@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from core.models import Singleton
-
 User = get_user_model()
 
 
@@ -279,6 +277,21 @@ class Package(models.Model):
     name = models.CharField(max_length=255)
     credits = models.IntegerField()
     price = models.FloatField()
+    stripe_price_id = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+
+
+class PackageSubscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    package = models.ForeignKey('Package', on_delete=models.CASCADE)
+    subscription = models.ForeignKey('payments.Subscription', on_delete=models.CASCADE, related_name='product')
+
+    def get_stripe_price_id(self):
+        return self.package.stripe_price_id
+
+
+    def get_paypal_plan_id(self):
+        return self.package.paypal_plan_id

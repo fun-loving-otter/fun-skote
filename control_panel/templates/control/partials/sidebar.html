@@ -114,10 +114,10 @@
 				{% check_permission user available_pages 'data-uploads' as data_uploads_available %}
 				{% if data_uploads_available %}
 				<li>
-				    <a href="{% url 'control_panel:data-uploads' %}" class="waves-effect">
-				        <i class="bx bx-upload"></i>
-				        <span>Data Uploads</span>
-				    </a>
+					<a href="{% url 'control_panel:data-uploads' %}" class="waves-effect">
+						<i class="bx bx-upload"></i>
+						<span>Data Uploads</span>
+					</a>
 				</li>
 				{% endif %}
 
@@ -130,6 +130,17 @@
 					</a>
 				</li>
 				{% endif %}
+
+				{% check_permission user available_pages 'packages' as packages_available %}
+				{% if packages_available %}
+				<li>
+					<a href="{% url 'control_panel:packages' %}" class="waves-effect">
+						<i class="mdi mdi-package"></i>
+						<span>Packages</span>
+					</a>
+				</li>
+				{% endif %}
+
 
 				{% check_permission user available_pages 'customer-list' 'staff-list' as users_available %}
 				{% if users_available %}

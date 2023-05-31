@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'skote_static',
     'core',
     'authentication',
+    'auth_custom',
     'translations',
     'tracking',
     'payments',
@@ -156,7 +157,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'authentication:login'
 
 
 # Internationalization

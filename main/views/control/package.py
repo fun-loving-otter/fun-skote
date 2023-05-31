@@ -18,7 +18,7 @@ class PackageListView(AccessRequiredMixin, ListView):
 class PackageUpdateView(AccessRequiredMixin, UpdateView):
     model = Package
     template_name = 'control/form.html'
-    fields = ['name', 'credits', 'price']
+    fields = ['name', 'credits', 'price', 'stripe_price_id', 'paypal_plan_id']
     success_url = reverse_lazy('control_panel:packages')
 
 
@@ -26,7 +26,7 @@ class PackageUpdateView(AccessRequiredMixin, UpdateView):
 class PackageCreateView(AccessRequiredMixin, CreateView):
     model = Package
     template_name = 'control/form.html'
-    fields = ['name', 'credits', 'price']
+    fields = ['name', 'credits', 'price', 'stripe_price_id', 'paypal_plan_id']
     success_url = reverse_lazy('control_panel:packages')
 
 

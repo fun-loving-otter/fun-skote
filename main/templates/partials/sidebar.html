@@ -10,6 +10,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title">Menu</li>
 
+                {% if user.is_authenticated %}
                 <li>
                     <a href="{% url 'main:data-list' %}">
                         <i class="fas fa-table"></i> Just Funded
@@ -21,6 +22,7 @@
                         <i class="fas fa-list-alt"></i> Data Lists
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
         <!-- Sidebar -->

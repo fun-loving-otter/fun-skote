@@ -1,12 +1,13 @@
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.generics import ListAPIView
 
 from main.models import Data, DataList
 from main.rest.serializers import DataSerializer
+from main.mixins import PackageRequiredMixin
+from main.rest.permissions import HasPackagePermission
 
 
-class DataTemplateView(LoginRequiredMixin, TemplateView):
+class DataTemplateView(PackageRequiredMixin, TemplateView):
     template_name = 'main/data/data_table.html'
 
     def get_context_data(self, **kwargs):
@@ -29,6 +30,7 @@ class DataTemplateView(LoginRequiredMixin, TemplateView):
 class DataAPIListView(ListAPIView):
     queryset = Data.objects.all()
     serializer_class = DataSerializer
+    permission_classes = [HasPackagePermission]
 
     def get_serializer(self, *args, **kwargs):
         kwargs['hide_fields'] = True

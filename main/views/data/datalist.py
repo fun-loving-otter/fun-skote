@@ -10,10 +10,11 @@ from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from main.models import DataList, Data
 from main.rest.serializers import DataListSerializer
 from main.rest.permissions import IsCreatorPermission
+from main.mixins import PackageRequiredMixin
 
 
 
-class DataListListView(ListView):
+class DataListListView(PackageRequiredMixin, ListView):
     model = DataList
     template_name = 'main/datalist/datalists.html'
     context_object_name = 'data_lists'
@@ -21,7 +22,7 @@ class DataListListView(ListView):
 
 
 
-class DataListCreateView(LoginRequiredMixin, CreateView):
+class DataListCreateView(PackageRequiredMixin, LoginRequiredMixin, CreateView):
     model = DataList
     template_name = 'form.html'
     fields = ['name', 'source']

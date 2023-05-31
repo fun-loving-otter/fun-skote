@@ -121,16 +121,6 @@
 				</li>
 				{% endif %}
 
-				{% check_permission user available_pages 'utm' as utm_available %}
-				{% if utm_available %}
-				<li>
-					<a href="{% url 'control_panel:utm' %}" class="waves-effect">
-						<i class="mdi mdi-eye"></i>
-						<span>UTM</span>
-					</a>
-				</li>
-				{% endif %}
-
 				{% check_permission user available_pages 'packages' as packages_available %}
 				{% if packages_available %}
 				<li>
@@ -141,6 +131,15 @@
 				</li>
 				{% endif %}
 
+				{% check_permission user available_pages 'utm' as utm_available %}
+				{% if utm_available %}
+				<li>
+					<a href="{% url 'control_panel:utm' %}" class="waves-effect">
+						<i class="mdi mdi-eye"></i>
+						<span>UTM</span>
+					</a>
+				</li>
+				{% endif %}
 
 				{% check_permission user available_pages 'customer-list' 'staff-list' as users_available %}
 				{% if users_available %}

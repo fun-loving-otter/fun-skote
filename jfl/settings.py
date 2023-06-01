@@ -100,6 +100,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'control_panel.utilities.VirtualHostMiddleware',
+    'tracking.utilities.utm_middleware',
     'translations.utilities.country_middleware',
     'core.utilities.default_context_middleware',
     'payments.utilities.currencies_middleware',

@@ -3,11 +3,11 @@ from rest_framework.generics import ListAPIView
 
 from main.models import Data, DataList
 from main.rest.serializers import DataSerializer
-from main.mixins import PackageRequiredMixin
-from main.rest.permissions import HasPackagePermission
+from main.mixins import DataPackageRequiredMixin
+from main.rest.permissions import HasDataPackagePermission
 
 
-class DataTemplateView(PackageRequiredMixin, TemplateView):
+class DataTemplateView(DataPackageRequiredMixin, TemplateView):
     template_name = 'main/data/data_table.html'
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class DataTemplateView(PackageRequiredMixin, TemplateView):
 class DataAPIListView(ListAPIView):
     queryset = Data.objects.all()
     serializer_class = DataSerializer
-    permission_classes = [HasPackagePermission]
+    permission_classes = [HasDataPackagePermission]
 
     def get_serializer(self, *args, **kwargs):
         kwargs['hide_fields'] = True

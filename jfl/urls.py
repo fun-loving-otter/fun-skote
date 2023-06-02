@@ -27,7 +27,7 @@ urlpatterns = [
     path('', lambda request: redirect('main:data-list'), name='index'),
     path('', include('main.urls')),
     path('', include('core.urls')),
-    path('payments/', include('payments.urls_checkout')),
+    path('payments/', include('payments.urls')),
 ]
 
 

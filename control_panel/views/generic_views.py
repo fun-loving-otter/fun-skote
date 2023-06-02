@@ -47,7 +47,7 @@ class EmailsView(AccessRequiredMixin, TemplateView):
 			'authentication/emails/change_email.txt',
 			'authentication/emails/mail_confirm.html',
 			'authentication/emails/mail_confirm.txt',
-			'authentication/emails/recoverpw_email.txt',
+			'authentication/emails/password_reset_email.txt',
 			'emails/order_created.txt',
 			'emails/order_status_update.txt',
 			'emails/checkout_reminder.txt'

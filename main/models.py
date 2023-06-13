@@ -274,8 +274,8 @@ class DataList(models.Model):
 
 
 class DataPackageBenefits(models.Model):
-    credits = models.IntegerField()
+    credits = models.IntegerField(default=0)
     package = models.OneToOneField('payments.SubscriptionPackage', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.package.name)
+        return str(self.package.name) + f' ({self.credits} Actions)'

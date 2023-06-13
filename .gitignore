@@ -12,3 +12,4 @@ tmp/
 *.session
 *.session-journal
 *.lock
+.coverage

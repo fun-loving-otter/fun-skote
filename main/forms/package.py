@@ -1,7 +1,7 @@
 from django import forms
 
-from main.models import Package
+from main.models import DataPackageBenefits
 
 
 class PackageChoiceForm(forms.Form):
-    package = forms.ModelChoiceField(queryset=Package.objects.all())
+    package_benefits = forms.ModelChoiceField(queryset=DataPackageBenefits.objects.all())

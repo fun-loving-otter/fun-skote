@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
-from payments.rest.permissions.package import HasSubscriptionPermission
-from payments.models import SubscriptionPackage
+from payments.rest.permissions.subscription import HasSubscriptionPermission
+from payments.models import Subscription
 
 
 
@@ -12,4 +12,4 @@ class IsCreatorPermission(BasePermission):
 
 
 class HasDataPackagePermission(HasSubscriptionPermission):
-    package_queryset = SubscriptionPackage.objects.exclude(datapackagebenefits=None)
+    subscription_queryset = Subscription.objects.exclude(package__datapackagebenefits=None)

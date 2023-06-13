@@ -24,6 +24,15 @@
                 {% include 'payments/control/payments_sidebar_links.html' with permissions=permissions %}
 
                 {% if permissions.core_settings %}
+                    <li>
+                        <a href="{% url 'control_panel:package-benefits' %}" class="waves-effect">
+                            <i class="bx bx-package"></i>
+                            <span>Package Benefits</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if permissions.core_settings %}
                 <li>
                     <a href="{% url 'control_panel:core-settings' %}" class="waves-effect">
                         <i class="bx bx-wrench"></i>

@@ -2,19 +2,6 @@ from django import forms
 from main.models import DataUpload, UploadedDataFile
 from main import tasks
 
-def convert_size(size_bytes):
-    """Converts the given file size in bytes to a human-readable format."""
-    # Define the units and their respective labels
-    units = ['B', 'KB', 'MB', 'GB', 'TB']
-    # Iterate over the units and divide the size by 1024 at each step
-    for unit in units:
-        if size_bytes < 1024:
-            return f"{size_bytes:.2f} {unit}"
-        size_bytes /= 1024
-    # If the size is larger than the largest unit (TB), return it in TB
-    return f"{size_bytes:.2f} {units[-1]}"
-
-
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
@@ -45,7 +32,7 @@ class DataUploadForm(forms.ModelForm):
 
     def save(self, commit=True):
         csv_files = self.cleaned_data.get('csv_files', [])
-        self.instance.size_of_files = convert_size(sum(x.size for x in csv_files))
+        self.instance.size_of_files = sum(x.size for x in csv_files)
         self.instance.number_of_files = len(csv_files)
 
         data_upload = super().save(commit=commit)

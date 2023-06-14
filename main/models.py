@@ -241,13 +241,28 @@ class Data(models.Model):
 class DataUpload(models.Model):
     date = models.DateField(auto_now_add=True)
     name = models.CharField(max_length=255)
-    size_of_files = models.CharField(max_length=255, null=True, blank=True)
+    size_of_files = models.PositiveIntegerField(null=True, blank=True)
     number_of_files = models.PositiveIntegerField(null=True, blank=True)
     number_of_rows = models.PositiveIntegerField(null=True, blank=True)
     number_of_columns = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+
+    def str_size_of_files(self):
+        size_bytes = self.size_of_files
+
+        """Converts the given file size in bytes to a human-readable format."""
+        # Define the units and their respective labels
+        units = ['B', 'KB', 'MB', 'GB', 'TB']
+        # Iterate over the units and divide the size by 1024 at each step
+        for unit in units:
+            if size_bytes < 1024:
+                return f"{size_bytes:.2f} {unit}"
+            size_bytes /= 1024
+        # If the size is larger than the largest unit (TB), return it in TB
+        return f"{size_bytes:.2f} {units[-1]}"
 
 
 

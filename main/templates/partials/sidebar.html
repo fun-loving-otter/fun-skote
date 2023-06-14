@@ -13,13 +13,22 @@
                 {% if user.is_authenticated %}
                 <li>
                     <a href="{% url 'main:data-list' %}">
-                        <i class="fas fa-table"></i> Just Funded
+                        <i class="fas fa-table"></i>
+                        <span>Just Funded</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{% url 'main:datalist-list' %}">
-                        <i class="fas fa-list-alt"></i> Data Lists
+                        <i class="fas fa-list-alt"></i>
+                        <span>Data Lists</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'payments:subscriptions' %}">
+                        <i class="fas fa-gem"></i>
+                        <span>Subscriptions</span>
                     </a>
                 </li>
                 {% endif %}

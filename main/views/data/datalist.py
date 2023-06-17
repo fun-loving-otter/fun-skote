@@ -1,16 +1,19 @@
 import csv
 import xlwt
+
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 
 from main.models import DataList, Data
 from main.rest.serializers import DataListSerializer
 from main.rest.permissions import IsCreatorPermission
-from main.mixins import DataPackageRequiredMixin
+from main.mixins import DataPackageRequiredMixin, LimitedActionMixin
+from main.utilities import Limiter
 
 
 
@@ -19,6 +22,9 @@ class DataListListView(DataPackageRequiredMixin, ListView):
     template_name = 'main/datalist/datalists.html'
     context_object_name = 'data_lists'
     ordering = ['-last_modified']
+
+    def get_queryset(self):
+        return self.model.objects.filter(creator=self.request.user)
 
 
 
@@ -36,16 +42,30 @@ class DataListCreateView(DataPackageRequiredMixin, LoginRequiredMixin, CreateVie
 
 
 
-@login_required
-def export_datalist_csv(request, pk):
-    try:
-        data_list = DataList.objects.get(pk=pk, creator=request.user)
-    except DataList.DoesNotExist:
-        # Handle case when DataList doesn't exist or user is not the creator
-        return HttpResponse(status=403)
+def export_view(func):
+    def view(request, pk):
+        try:
+            data_list = DataList.objects.get(pk=pk, creator=request.user)
+        except DataList.DoesNotExist:
+            # Handle case when DataList doesn't exist or user is not the creator
+            return HttpResponse(status=403)
 
+        limiter = Limiter()
+        limiter.action_name = "Export"
+        limiter.action_cost = data_list.data.count()
+
+        if not limiter.allow_request(request):
+            return HttpResponse("Limit reached", status=429)
+        else:
+            return func(request, pk, data_list)
+    return view
+
+
+@login_required
+@export_view
+def export_datalist_csv(request, pk, data_list):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="data_list_{pk}.csv"'
+    response['Content-Disposition'] = f'attachment; filename="{data_list}.csv"'
 
     writer = csv.writer(response)
 
@@ -66,16 +86,10 @@ def export_datalist_csv(request, pk):
 
 
 @login_required
-def export_datalist_xls(request, pk):
-    try:
-        data_list = DataList.objects.get(pk=pk, creator=request.user)
-    except DataList.DoesNotExist:
-        # Handle case when DataList doesn't exist or user is not the creator
-        return HttpResponse(status=403)
-
-
+@export_view
+def export_datalist_xls(request, pk, data_list):
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = f'attachment; filename="datalist_{pk}.xls"'
+    response['Content-Disposition'] = f'attachment; filename="{data_list}.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('DataList')
@@ -109,11 +123,30 @@ def export_datalist_xls(request, pk):
 
 # ============= API VIEWS =============
 
-class DataListUpdateAPIView(UpdateAPIView):
+class DataListUpdateAPIView(LimitedActionMixin, UpdateAPIView):
+    action_name = 'Save'
     permission_classes = [IsCreatorPermission]
     serializer_class = DataListSerializer
     queryset = DataList.objects.all()
     http_method_names = ['patch']
+
+    def initialize_request(self, *args, first_run=False, **kwargs):
+        '''
+        Override to make view read request body only once
+        Dumb, but works
+        '''
+        if not first_run:
+            return self.request
+        else:
+            return super().initialize_request(*args, **kwargs)
+
+
+    def get_action_cost(self):
+        self.request = self.initialize_request(self.request, first_run=True)
+        patch = self.request.data
+
+        return len(patch.get('data', []))
+
 
 
 

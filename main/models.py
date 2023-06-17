@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum, Index
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -307,4 +308,14 @@ class UserThrottledActionEntry(models.Model):
     action = models.CharField(max_length=255)
     amount = models.IntegerField(default=1)
 
-    # def get_mapped_usage(self, user):
+    class Meta:
+        indexes = [
+            Index(fields=['user']),
+            Index(fields=['action']),
+        ]
+
+    @classmethod
+    def get_mapped_usage(cls, user):
+        q = cls.objects.filter(user=user).values('action').annotate(total_amount=Sum('amount')).order_by('action')
+        usage = {item['action']: item['total_amount'] for item in q}
+        return usage

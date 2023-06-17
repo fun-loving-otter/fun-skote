@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView
 
 from main.models import Data, DataList
 from main.rest.serializers import DataSerializer
-from main.mixins import DataPackageRequiredMixin
+from main.mixins import DataPackageRequiredMixin, LimitedActionMixin
 from main.rest.permissions import HasDataPackagePermission
 
 
@@ -27,7 +27,8 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
 
 
-class DataAPIListView(ListAPIView):
+class DataAPIListView(LimitedActionMixin, ListAPIView):
+    action_name = "Action"
     queryset = Data.objects.all()
     serializer_class = DataSerializer
     permission_classes = [HasDataPackagePermission]

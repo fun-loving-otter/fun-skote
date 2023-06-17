@@ -26,6 +26,12 @@
 			</button>
 		</div>
 		<div class="d-flex">
+			{% block limited_action_usage_dropdown %}
+			{% if request.usage %}
+			{% include 'partials/limited_action_usage_dropdown.html' %}
+			{% endif %}
+			{% endblock %}
+
 			{% block currency_dropdown %}
 			{% if request.currencies %}
 			{% include 'partials/currency_dropdown.html' %}

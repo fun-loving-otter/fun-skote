@@ -104,6 +104,7 @@ MIDDLEWARE = [
     'translations.utilities.country_middleware',
     'core.utilities.default_context_middleware',
     'payments.utilities.currencies_middleware',
+    'main.middleware.AttachUsageMiddleware',
 ]
 
 ROOT_URLCONF = 'jfl.urls'

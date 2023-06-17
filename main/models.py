@@ -233,6 +233,10 @@ class Data(models.Model):
     most_popular_patent_class = models.CharField(max_length=255, null=True, blank=True, verbose_name='Most Popular Patent Class')
     most_popular_trademark_class = models.CharField(max_length=255, null=True, blank=True, verbose_name='Most Popular Trademark Class')
 
+    class Meta:
+        ordering = ['-pk']
+
+
     def __str__(self):
         return self.organization_name
 
@@ -294,3 +298,13 @@ class DataPackageBenefits(models.Model):
 
     def __str__(self):
         return str(self.package.name) + f' ({self.credits} Actions)'
+
+
+
+class UserThrottledActionEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    action = models.CharField(max_length=255)
+    amount = models.IntegerField(default=1)
+
+    # def get_mapped_usage(self, user):

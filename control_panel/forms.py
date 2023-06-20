@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Div
 
+User = get_user_model()
+
 
 def validate_file_extension(value):
 	if not value.name.endswith('.xlsx'):
@@ -34,7 +36,7 @@ class ImportExcelForm(forms.Form):
 
 class UserCreationForm(forms.ModelForm):
 	class Meta:
-		model = get_user_model()
+		model = User
 		fields = ['password', 'email', 'first_name', 'last_name', 'is_active']
 
 	def __init__(self, *args, **kwargs):
@@ -57,7 +59,7 @@ class UserCreationForm(forms.ModelForm):
 
 	def clean_email(self):
 		email = self.cleaned_data['email']
-		if get_user_model().objects.filter(email=email).exists():
+		if User.objects.filter(email=email).exists():
 			raise ValidationError("Email already exists")
 		return email
 
@@ -69,7 +71,7 @@ class UserCreationForm(forms.ModelForm):
 
 class AdminProfileForm(forms.ModelForm):
 	class Meta:
-		model = get_user_model()
+		model = User
 		fields = ['available_pages']
 		widgets = {
 			"available_pages": forms.CheckboxSelectMultiple()

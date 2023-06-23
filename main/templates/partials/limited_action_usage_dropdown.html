@@ -1,3 +1,5 @@
+{% load mathfilters %}
+
 {% block limited_action_usage_dropdown %}
 <div class="dropdown d-inline-block">
   <button class="btn header-item waves-effect" type="button" id="usageDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -5,7 +7,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="usageDropdown">
     {% for action, amount in request.usage.items %}
-    <span class="dropdown-item" href="#">{{ action }}: {{ amount }} / {{ request.subscription.package.datapackagebenefits.credits }}</span>
+    <span class="dropdown-item" href="#">{{ action }}: {{ request.subscription.package.datapackagebenefits.credits|sub:amount }} / {{ request.subscription.package.datapackagebenefits.credits }}</span>
     {% endfor %}
   </div>
 </div>

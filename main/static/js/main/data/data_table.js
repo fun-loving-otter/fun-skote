@@ -4,16 +4,26 @@ var table;
 $(document).ready(function() {
     table = $('#data-table').DataTable({
         serverSide: true,
-        ajax: TABLE_API_URL,
+        ajax: {
+            url: TABLE_API_URL,
+            type: "POST",
+            dataType: "json",
+            'beforeSend': function(request) {
+                request.setRequestHeader("X-CSRFToken", CSRF);
+            },
+            data: function(d) {
+                return JSON.stringify(d);
+            }
+        },
         rowId: "id",
         select: {
-            style:    'multi',
+            style: 'multi',
             selector: 'td:first-child'
         },
-        columnDefs: [ {
+        columnDefs: [{
             orderable: false,
             className: 'select-checkbox',
-            targets:   0,
+            targets: 0,
             defaultContent: '',
             data: null
         }],
@@ -32,23 +42,23 @@ function AddToList(url, ids) {
 
     // Send the PATCH request with CSRF token in headers
     fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': CSRF,
-    },
-    body: JSON.stringify(data),
-    })
-    .then(response => {
-      if (response.ok) {
-        toastr.success('Successfully added to list.');
-      } else {
-        toastr.error('Failed to add to list.');
-      }
-    })
-    .catch(error => {
-      toastr.error('An error occurred while making the request.');
-    });
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': CSRF,
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (response.ok) {
+                toastr.success('Successfully added to list.');
+            } else {
+                toastr.error('Failed to add to list.');
+            }
+        })
+        .catch(error => {
+            toastr.error('An error occurred while making the request.');
+        });
 
     selected_rows.deselect();
 }

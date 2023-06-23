@@ -18,8 +18,10 @@ class DataSerializer(serializers.ModelSerializer):
         datatables_always_serialize = ('id',)
 
 
-
     def to_representation(self, instance):
+        '''
+        Fields that should have "Add to list to reveal" button on them instead of actual data
+        '''
         data = super().to_representation(instance)
         if self.hide_fields:
             for field in Data._hidden_fields:

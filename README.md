@@ -1,4 +1,4 @@
-Website comissioned by sam
+Website commissioned by sam
 
 1. JUST FUNDED LEADS  - 
 Again, use our existing template / setup / pricing etc and is simple thing, i will give you figma details - 

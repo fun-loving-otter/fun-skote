@@ -16,3 +16,6 @@
 [submodule "tracking"]
 	path = tracking
 	url = git@gitea.20111511.xyz:Sam/django-tracking.git
+[submodule "affiliates"]
+	path = affiliates
+	url = git@gitea.20111511.xyz:Sam/django-affiliates.git

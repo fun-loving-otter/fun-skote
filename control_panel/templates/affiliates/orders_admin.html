@@ -1,3 +1,0 @@
-{% for order in profile.order_set.all %}
-<p class="m-0"><a href="{% url 'control_panel:order-detail' pk=order.pk %}">{{order}}</a></p>
-{% endfor %}

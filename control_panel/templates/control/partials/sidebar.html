@@ -95,7 +95,7 @@
                 </li>
                 {% endif %}
 
-                {% if permissions.customer_list or permissions.staff_list %}
+                {% if permissions.customer_list or permissions.staff_list or permissions.affiliates %}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-user"></i>
@@ -115,6 +115,14 @@
                         <li>
                             <a href="{% url 'control_panel:staff-list' %}" class="waves-effect">
                                 <span>Administrators</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if permissions.affiliates %}
+                        <li>
+                            <a href="{% url 'control_panel:affiliates' %}" class="waves-effect">
+                                <span>Affiliates</span>
                             </a>
                         </li>
                         {% endif %}

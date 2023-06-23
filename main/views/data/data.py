@@ -33,6 +33,10 @@ class DataAPIListView(LimitedActionMixin, ListAPIView):
     serializer_class = DataSerializer
     permission_classes = [HasDataPackagePermission]
 
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+
     def get_serializer(self, *args, **kwargs):
         kwargs['hide_fields'] = True
 

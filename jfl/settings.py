@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'modeltranslation',
     'crispy_forms',
     'crispy_bootstrap5',
+    'mathfilters',
     'django_countries',
     'django_email_verification',
     'skote_static',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'tracking',
     'payments',
     'control_panel',
+    'affiliates',
     'main'
 ]
 
@@ -104,6 +106,8 @@ MIDDLEWARE = [
     'translations.utilities.country_middleware',
     'core.utilities.default_context_middleware',
     'payments.utilities.currencies_middleware',
+    'affiliates.middleware.affiliate_middleware',
+    'affiliates.middleware.AffiliateAccessMiddleware',
     'main.middleware.AttachUsageMiddleware',
 ]
 

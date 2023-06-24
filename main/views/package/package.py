@@ -41,7 +41,10 @@ class PackageChoiceView(SubscriptionChecker, LoginRequiredMixin, FormView):
                     'Credits': benefits.credits
                 }
             ],
-            package=package
+            package=package,
+            extra_info={
+                'referrer': self.request.session.get('referrer')
+            }
         )
 
         return redirect(reverse('payments:subscription'))

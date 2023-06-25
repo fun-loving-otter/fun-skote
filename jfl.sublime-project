@@ -1,0 +1,24 @@
+{
+    "build_systems":
+    [
+        {
+            "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+            "name": "Anaconda Python Builder",
+            "selector": "source.python",
+            "shell_cmd": "\"/var/www/venvs/skote/bin/python\" -u \"$file\"",
+        }
+    ],
+    "folders":
+    [
+        {
+            "path": ".",
+        }
+    ],
+    "settings": {
+        "translate_tabs_to_spaces": true,
+        "tab_size": 4,
+        "django_settings_module": "jfl.settings",
+        "django_manage": true,
+        "python_interpreter": "/var/www/venvs/skote/bin/python",
+    },
+}

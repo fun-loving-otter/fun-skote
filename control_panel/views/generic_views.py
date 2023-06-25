@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 from django.core.mail import send_mail, BadHeaderError
 
-from authentication.utilities import AccessRequiredMixin
+from authentication.mixins import AccessRequiredMixin
 
 
 

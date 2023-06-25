@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
 
-from authentication.utilities import AccessRequiredMixin
+from authentication.mixins import AccessRequiredMixin
 
 User = get_user_model()
 

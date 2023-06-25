@@ -95,7 +95,7 @@
                 </li>
                 {% endif %}
 
-                {% if permissions.customer_list or permissions.staff_list or permissions.affiliates %}
+                {% if permissions.customers or permissions.staff or permissions.affiliates %}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-user"></i>
@@ -103,9 +103,9 @@
                     </a>
 
                     <ul class="sub-menu mm-collapse">
-                        {% if permissions.customer_list %}
+                        {% if permissions.customers %}
                         <li>
-                            <a href="{% url 'control_panel:customer-list' %}" class="waves-effect">
+                            <a href="{% url 'control_panel:customers' %}" class="waves-effect">
                                 <span>Customers</span>
                             </a>
                         </li>
@@ -113,7 +113,7 @@
 
                         {% if permissions.staff_list %}
                         <li>
-                            <a href="{% url 'control_panel:staff-list' %}" class="waves-effect">
+                            <a href="{% url 'control_panel:staff' %}" class="waves-effect">
                                 <span>Administrators</span>
                             </a>
                         </li>

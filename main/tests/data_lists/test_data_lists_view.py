@@ -41,4 +41,4 @@ def test_data_list_list_view_unathenticated(client):
     # Test unauthenticated user
     response = client.get(url)
     assert response.status_code == 302
-    assert response.url == reverse('authentication:login')
+    assert response.url.startswith(reverse('authentication:login'))

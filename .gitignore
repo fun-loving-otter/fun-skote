@@ -13,3 +13,4 @@ tmp/
 *.session-journal
 *.lock
 .coverage
+*.sublime-workspace

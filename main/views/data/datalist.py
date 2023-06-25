@@ -61,6 +61,7 @@ def export_view(func):
     return view
 
 
+
 @login_required
 @export_view
 def export_datalist_csv(request, pk, data_list):

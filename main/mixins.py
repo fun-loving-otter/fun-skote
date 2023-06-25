@@ -1,4 +1,4 @@
-
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 
@@ -14,9 +14,13 @@ class DataPackageRequiredMixin(SubscriptionRequiredMixin):
 
 
 
-class LimitedActionMixin(Limiter):
-    def dispatch(self, request, *args, **kwargs):
-        if not self.allow_request():
-            return HttpResponse(status=429)
+class LimitedActionMixin(Limiter, UserPassesTestMixin):
+    def test_func(self):
+        return self.allow_request()
 
-        return super().dispatch(request, *args, **kwargs)
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        else:
+            return HttpResponse(status=429)

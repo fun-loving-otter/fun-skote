@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.views.generic import TemplateView
 
 from tracking import models as tm
-from authentication.utilities import AccessRequiredMixin
+from authentication.mixins import AccessRequiredMixin
 
 
 class TrackingView(AccessRequiredMixin, TemplateView):

@@ -1,6 +1,7 @@
 from django.urls import path
 
-from control_panel.views import user_views, generic_views, app_views, index_views
+from control_panel.views import generic_views, app_views, index_views
+from authentication import urls_admin as auth_urls
 from translations import urls_admin as lurls
 from payments import urls_admin as purls
 from core import urls_admin as curls
@@ -21,13 +22,6 @@ urlpatterns = [
     path('emails', generic_views.EmailsView.as_view(), name='emails'),
     path('files', generic_views.FilesView.as_view(), name='files'),
     path('file-edit', generic_views.FileEditView.as_view(), name='file-edit'),
-
-    # Users
-    path('users', user_views.UserListView.as_view(), name='customer-list'),
-    path('admins', user_views.StaffView.as_view(), name='staff-list'),
-    path('user/<pk>', user_views.UserDetailView.as_view(), name='user-detail'),
-    path('user-toggle-permissions', user_views.toggle_user_permissions, name='user-toggle'),
-    path('user-delete', user_views.delete_user, name='user-delete'),
 ]
 
 urlpatterns += lurls.urlpatterns
@@ -35,6 +29,7 @@ urlpatterns += purls.urlpatterns
 urlpatterns += curls.urlpatterns
 urlpatterns += murls.urlpatterns
 urlpatterns += aurls.urlpatterns
+urlpatterns += auth_urls.urlpatterns
 
 
 # Register pages for admin profile

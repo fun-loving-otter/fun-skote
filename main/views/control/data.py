@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 
-from authentication.utilities import AccessRequiredMixin
+from authentication.mixins import AccessRequiredMixin
 from main.models import DataUpload
 from main.forms.control import data as data_forms
 

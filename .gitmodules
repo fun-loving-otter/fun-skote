@@ -19,3 +19,6 @@
 [submodule "affiliates"]
 	path = affiliates
 	url = git@gitea.20111511.xyz:Sam/django-affiliates.git
+[submodule "feature_requests"]
+	path = feature_requests
+	url = git@gitea.20111511.xyz:Sam/django-feature-requests.git

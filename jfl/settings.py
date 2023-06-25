@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'payments',
     'control_panel',
     'affiliates',
+    'feature_requests',
     'main'
 ]
 

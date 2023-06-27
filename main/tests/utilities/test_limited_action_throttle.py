@@ -13,8 +13,8 @@ def rate_limit():
 
 @pytest.mark.django_db
 @pytest.mark.urls('main.tests.urls_pytest')
-def test_limited_action_mixin_user(auto_login_api_user, rate_limit, create_active_subscription):
-    client, user = auto_login_api_user()
+def test_limited_action_throttle_user(auto_login_user, rate_limit, create_active_subscription):
+    client, user = auto_login_user(api=True)
 
     subscription = create_active_subscription(user)
     DataPackageBenefits.objects.create(

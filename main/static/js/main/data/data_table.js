@@ -7,12 +7,8 @@ $(document).ready(function() {
         ajax: {
             url: TABLE_API_URL,
             type: "POST",
-            dataType: "json",
-            'beforeSend': function(request) {
+            beforeSend: function(request) {
                 request.setRequestHeader("X-CSRFToken", CSRF);
-            },
-            data: function(d) {
-                return JSON.stringify(d);
             }
         },
         rowId: "id",
@@ -59,8 +55,6 @@ function AddToList(url, ids) {
         .catch(error => {
             toastr.error('An error occurred while making the request.');
         });
-
-    selected_rows.deselect();
 }
 
 
@@ -69,4 +63,5 @@ function AddSelectedToList(url) {
     let selected_rows = table.rows({ selected: true });
     let ids = selected_rows.ids().toArray();
     AddToList(url, ids);
+    selected_rows.deselect();
 }

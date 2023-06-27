@@ -12,7 +12,8 @@ from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from main.models import DataList, Data
 from main.rest.serializers import DataListSerializer
 from main.rest.permissions import IsCreatorPermission
-from main.mixins import DataPackageRequiredMixin, LimitedActionMixin
+from main.rest.throttles import LimitedActionThrottle
+from main.mixins import DataPackageRequiredMixin
 from main.utilities import Limiter
 
 
@@ -124,26 +125,15 @@ def export_datalist_xls(request, pk, data_list):
 
 # ============= API VIEWS =============
 
-class DataListUpdateAPIView(LimitedActionMixin, UpdateAPIView):
+class DataListUpdateAPIView(UpdateAPIView):
     action_name = 'Save'
     permission_classes = [IsCreatorPermission]
     serializer_class = DataListSerializer
+    throttle_classes = [LimitedActionThrottle]
     queryset = DataList.objects.all()
     http_method_names = ['patch']
 
-    def initialize_request(self, *args, first_run=False, **kwargs):
-        '''
-        Override to make view read request body only once
-        Dumb, but works
-        '''
-        if not first_run:
-            return self.request
-        else:
-            return super().initialize_request(*args, **kwargs)
-
-
     def get_action_cost(self):
-        self.request = self.initialize_request(self.request, first_run=True)
         patch = self.request.data
 
         return len(patch.get('data', []))

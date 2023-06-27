@@ -235,7 +235,7 @@ class Data(models.Model):
     most_popular_trademark_class = models.CharField(max_length=255, null=True, blank=True, verbose_name='Most Popular Trademark Class')
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ['organization_name']
 
 
     def __str__(self):

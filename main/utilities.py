@@ -8,37 +8,44 @@ from main.models import UserThrottledActionEntry
 
 
 class Limiter:
-    action_name = "DefaultAction"
-    action_cost = 1
+    '''
+    This class depends on either using middleware that attaches subscription to request
+    or overriding get_subscription() to get the subscription from different place.
+    '''
 
-    def get_throttled_action_name(self):
-        return self.action_name
-
-
-    def get_action_cost(self):
-        return self.action_cost
-
-
-    def get_user_rate(self, subscription):
-        if subscription is not None:
-            return subscription.package.datapackagebenefits.credits
-        else:
-            return 0
-
-
-    def allow_request(self, request=None):
-        if request is None:
-            request = self.request
-
+    def allow_request(self, request, action, action_cost):
         if not request.user.is_authenticated:
             return False
 
         if request.user.is_superuser or request.user.is_staff:
             return True
 
-        # Assuming subscription was assigned by middleware
-        rate = self.get_user_rate(request.subscription)
+        range_start, range_end = self.get_action_date_range()
+        rate = self.get_user_rate(request)
 
+        # Count the number of requests made by the user in the current month
+        action_count = UserThrottledActionEntry.objects.filter(
+            user=request.user,
+            timestamp__gte=range_start,
+            timestamp__lt=range_end,
+            action=action
+        ).aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+
+        # Check if the request count exceeds the monthly limit
+        if action_count + action_cost <= rate:
+            UserThrottledActionEntry.objects.create(
+                user=request.user,
+                timestamp=timezone.now(),
+                action=action,
+                amount=action_cost
+            )
+            return True
+
+        else:
+            return False
+
+
+    def get_action_date_range(self):
         # Calculate the current month's start date and end date
         now = timezone.now()
         current_month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
@@ -49,27 +56,18 @@ class Limiter:
         # Calculate the start of the next month
         next_month_start = (current_month_start + timezone.timedelta(days=month_days))
 
-        action = self.get_throttled_action_name()
+        return current_month_start, next_month_start
 
-        # Count the number of requests made by the user in the current month
-        action_count = UserThrottledActionEntry.objects.filter(
-            user=request.user,
-            timestamp__gte=current_month_start,
-            timestamp__lt=next_month_start,
-            action=action
-        ).aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
-        action_cost = self.get_action_cost()
+    def get_user_rate(self, request):
+        subscription = self.get_user_subscription(request)
 
-        # Check if the request count exceeds the monthly limit
-        if action_count + action_cost <= rate:
-            UserThrottledActionEntry.objects.create(
-                user=request.user,
-                timestamp=now,
-                action=action,
-                amount=action_cost
-            )
-            return True
-
+        if subscription is not None:
+            return subscription.package.datapackagebenefits.credits
         else:
-            return False
+            return 0
+
+
+    def get_user_subscription(self, request):
+        # Assuming subscription was assigned by middleware
+        return request.subscription

@@ -2,9 +2,10 @@ from django.views.generic import TemplateView
 from rest_framework.generics import ListAPIView
 
 from main.models import Data, DataList
+from main.mixins import DataPackageRequiredMixin
 from main.rest.serializers import DataSerializer
-from main.mixins import DataPackageRequiredMixin, LimitedActionMixin
 from main.rest.permissions import HasDataPackagePermission
+from main.rest.throttles import LimitedActionThrottle
 
 
 class DataTemplateView(DataPackageRequiredMixin, TemplateView):
@@ -27,11 +28,12 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
 
 
-class DataAPIListView(LimitedActionMixin, ListAPIView):
+class DataAPIListView(ListAPIView):
     action_name = "Action"
     queryset = Data.objects.all()
     serializer_class = DataSerializer
     permission_classes = [HasDataPackagePermission]
+    throttle_classes = [LimitedActionThrottle]
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)

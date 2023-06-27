@@ -5,7 +5,6 @@ from django.urls import reverse, reverse_lazy
 from django.test import override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from authentication.tests.conftest import check_template_view_access
 from main.models import DataUpload, UploadedDataFile
 
 
@@ -32,8 +31,8 @@ def csv_file_path():
         reverse_lazy('control_panel:data-upload-create'),
     ]
 )
-def test_template_view_access(url, auto_login_user, admin_client):
-    check_template_view_access(url, auto_login_user, admin_client)
+def test_template_view_access(url, check_template_view_access):
+    check_template_view_access(url)
 
 
 

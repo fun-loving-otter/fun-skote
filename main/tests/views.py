@@ -1,13 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from main.mixins import LimitedActionMixin
+from main.rest.throttles import LimitedActionThrottle
 
 static_rate = 10
 
 
-class LimitedActionView(LimitedActionMixin, APIView):
+class LimitedActionView(APIView):
     action_name = 'Action1'
+    action_cost = 1
+    throttle_classes = [LimitedActionThrottle]
 
     def get(self, request, format=None):
         return Response({'message': 'GET request allowed'})
@@ -15,8 +17,10 @@ class LimitedActionView(LimitedActionMixin, APIView):
 
 
 
-class LimitedActionView2(LimitedActionMixin, APIView):
+class LimitedActionView2(APIView):
     action_name = 'Action2'
+    action_cost = 1
+    throttle_classes = [LimitedActionThrottle]
 
     def get(self, request, format=None):
         return Response({'message': 'GET request allowed'})

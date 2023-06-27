@@ -36,11 +36,9 @@ class DataListSerializer(serializers.ModelSerializer):
     '''
     Used to add Data object to DataList
     '''
-    creator = serializers.ReadOnlyField(source='creator.email')
-
     class Meta:
         model = DataList
-        fields = ['data', 'creator']
+        fields = ['data']
 
 
     def update(self, instance, validated_data):
@@ -52,4 +50,3 @@ class DataListSerializer(serializers.ModelSerializer):
             instance.data.add(*data_ids)
 
         return instance
-        # return super().update(instance, validated_data)

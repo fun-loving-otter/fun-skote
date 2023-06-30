@@ -13,7 +13,7 @@ class PackageWithBenefitsListView(AccessRequiredMixin, ListView):
 
 
 
-class PackageBenefitsUpdateView(UpdateView):
+class PackageBenefitsUpdateView(AccessRequiredMixin, UpdateView):
     model = DataPackageBenefits
     template_name = 'control/form.html'
     fields = ['credits']

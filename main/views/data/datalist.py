@@ -8,10 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from main.models import DataList, Data
 from main.rest.serializers import DataListSerializer
-from main.rest.permissions import IsCreatorPermission
 from main.rest.throttles import LimitedActionThrottle
 from main.mixins import DataPackageRequiredMixin
 from main.utilities import Limiter
@@ -127,11 +127,14 @@ def export_datalist_xls(request, pk, data_list):
 
 class DataListUpdateAPIView(UpdateAPIView):
     action_name = 'Save'
-    permission_classes = [IsCreatorPermission]
+    permission_classes = [IsAuthenticated]
     serializer_class = DataListSerializer
     throttle_classes = [LimitedActionThrottle]
-    queryset = DataList.objects.all()
     http_method_names = ['patch']
+
+    def get_queryset(self):
+        return DataList.objects.filter(creator=self.request.user)
+
 
     def get_action_cost(self):
         patch = self.request.data
@@ -142,6 +145,8 @@ class DataListUpdateAPIView(UpdateAPIView):
 
 
 class DataListDestroyAPIView(DestroyAPIView):
-    permission_classes = [IsCreatorPermission]
+    permission_classes = [IsAuthenticated]
     serializer_class = DataListSerializer
-    queryset = DataList.objects.all()
+
+    def get_queryset(self):
+        return DataList.objects.filter(creator=self.request.user)

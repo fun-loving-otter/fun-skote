@@ -305,15 +305,19 @@ class DataPackageBenefits(models.Model):
         return str(self.package.name)
 
 
-    def get_credits_for_action(self, action):
+    def get_credits_for_action(self, action, raise_error=True):
         if action == action_names.ACTION:
             return self.action_credits
         elif action == action_names.ADD_TO_LIST:
             return self.add_to_list_credits
         elif action == action_names.EXPORT:
             return self.export_credits
-        else:
+
+        # If neither action matched:
+        if raise_error:
             raise AttributeError(f'No credits found for action {action}')
+        else:
+            return 0
 
 
 
@@ -330,7 +334,22 @@ class UserThrottledActionEntry(models.Model):
         ]
 
     @classmethod
-    def get_mapped_usage(cls, user):
+    def get_mapped_usage(cls, user, subscription):
         q = cls.objects.filter(user=user).values('action').annotate(total_amount=Sum('amount')).order_by('action')
-        usage = {item['action']: item['total_amount'] for item in q}
+
+        usage = {}
+
+        for item in q:
+            action_name = item['action']
+            used = item['total_amount']
+            if subscription:
+                credits = subscription.package.datapackagebenefits.get_credits_for_action(action_name, raise_error=False)
+            else:
+                credits = 0
+            usage[action_name] = {
+                'used': used,
+                'remaining': credits - used,
+                'credits': credits
+            }
+
         return usage

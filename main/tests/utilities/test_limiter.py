@@ -2,80 +2,66 @@ import pytest
 
 from django.test import RequestFactory
 
-from main.models import UserThrottledActionEntry
 from main.utilities import Limiter
-
-
-@pytest.fixture
-def limiter():
-    return Limiter()
-
-
-@pytest.fixture
-def request_factory():
-    return RequestFactory()
-
-
-@pytest.fixture
-def user_request(request_factory):
-    def make_request(user):
-        request = request_factory.get('/')
-        request.user = user
-        request.subscription = getattr(user, 'subscription', None)
-        return request
-    return make_request
-
+from main.consts import action_names
+from main.models import UserThrottledActionEntry
 
 
 @pytest.mark.django_db
-def test_limiter_allow_request_authenticated(limiter, create_subscribed_user, user_request):
-    client, user = create_subscribed_user()
-
-    request = user_request(user)
-
-    assert limiter.allow_request(request, 'Action Name', 1)
-
+class TestLimiter:
+    @pytest.fixture(autouse=True)
+    def limiter(self):
+        self.limiter = Limiter()
+        return self.limiter
 
 
-@pytest.mark.django_db
-def test_limiter_allow_request_unauthenticated(limiter, create_user, user_request):
-    user = create_user()
-
-    request = user_request(user)
-
-    assert not limiter.allow_request(request, 'Action Name', 1)
+    @pytest.fixture(autouse=True)
+    def request_factory(self):
+        self.request_factory = RequestFactory()
+        return self.request_factory
 
 
-
-@pytest.mark.django_db
-def test_limiter_allow_request_superuser(limiter, create_user, user_request):
-    user = create_user(is_superuser=True)
-
-    request = user_request(user)
-
-    assert limiter.allow_request(request, 'Action Name', 1)
-
-
-
-@pytest.mark.django_db
-def test_limiter_allow_request_staff(limiter, create_user, user_request):
-    user = create_user(is_staff=True)
-
-    request = user_request(user)
-
-    assert limiter.allow_request(request, 'Action Name', 1)
+    @pytest.fixture
+    def user_request(self, request_factory):
+        def make_request(user):
+            request = self.request_factory.get('/')
+            request.user = user
+            request.subscription = getattr(user, 'subscription', None)
+            return request
+        return make_request
 
 
+    def test_subscribed_user_returns_true(self, create_subscribed_user, user_request):
+        client, user = create_subscribed_user()
+        request = user_request(user)
+        assert self.limiter.allow_request(request, action_names.ACTION, 1) is True
 
-@pytest.mark.django_db
-def test_limiter_allow_request_exceed_limit(limiter, create_subscribed_user, user_request):
-    client, user = create_subscribed_user()
-    request = user_request(user)
-    action_name = 'Action Name'
-    action_cost = limiter.get_user_rate(request)  # Should be equal to users' credits amount
 
-    # Create action entries that exceed the rate limit
-    for _ in range(10):
-        UserThrottledActionEntry.objects.create(user=user, action=action_name, amount=action_cost)
+    def test_anonymous_user_returns_false(self, create_user, user_request):
+        user = create_user()
+        request = user_request(user)
+        assert self.limiter.allow_request(request, action_names.ACTION, 1) is False
 
-    assert not limiter.allow_request(request, action_name, action_cost)
+
+    def test_superuser_returns_true(self, admin_user, user_request):
+        request = user_request(admin_user)
+        assert self.limiter.allow_request(request, action_names.ACTION, 1) is True
+
+
+    def test_staff_returns_true(self, create_user, user_request):
+        user = create_user(is_staff=True)
+        request = user_request(user)
+        assert self.limiter.allow_request(request, action_names.ACTION, 1) is True
+
+
+    def test_limit_exceeded_returns_false(self, create_subscribed_user, user_request):
+        client, user = create_subscribed_user()
+        request = user_request(user)
+        action_name = action_names.ACTION
+        action_cost = self.limiter.get_user_rate(request, action_name)  # Should be equal to users' credits amount
+
+        # Create action entries that exceed the rate limit
+        for _ in range(10):
+            UserThrottledActionEntry.objects.create(user=user, action=action_name, amount=action_cost)
+
+        assert self.limiter.allow_request(request, action_name, action_cost) is False

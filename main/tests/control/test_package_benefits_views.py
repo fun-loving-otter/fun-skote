@@ -49,7 +49,9 @@ class TestPackageWithBenefitsUpdateView(AdminTemplateViewTestBase):
     def test_post_update_succeeds(self, url, admin_client, package):
         # Define the new credits value
         data = {
-            'credits': 927
+            'action_credits': 927,
+            'add_to_list_credits': 928,
+            'export_credits': 929
         }
 
         # Make a POST request to update the data package benefits
@@ -62,4 +64,6 @@ class TestPackageWithBenefitsUpdateView(AdminTemplateViewTestBase):
         package.datapackagebenefits.refresh_from_db()
 
         # Assert the credits value has been updated
-        assert package.datapackagebenefits.credits == data['credits']
+        assert package.datapackagebenefits.action_credits == data['action_credits']
+        assert package.datapackagebenefits.add_to_list_credits == data['add_to_list_credits']
+        assert package.datapackagebenefits.export_credits == data['export_credits']

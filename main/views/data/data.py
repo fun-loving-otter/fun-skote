@@ -6,6 +6,7 @@ from main.mixins import DataPackageRequiredMixin
 from main.rest.serializers import DataSerializer
 from main.rest.permissions import HasDataPackagePermission
 from main.rest.throttles import LimitedActionThrottle
+from main.consts import action_names
 
 
 class DataTemplateView(DataPackageRequiredMixin, TemplateView):
@@ -29,7 +30,7 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
 
 class DataAPIListView(ListAPIView):
-    action_name = "Action"
+    action_name = action_names.ACTION
     queryset = Data.objects.all()
     serializer_class = DataSerializer
     permission_classes = [HasDataPackagePermission]

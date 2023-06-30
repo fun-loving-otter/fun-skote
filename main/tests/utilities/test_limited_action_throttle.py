@@ -18,7 +18,9 @@ def test_limited_action_throttle_user(auto_login_user, rate_limit, create_active
 
     subscription = create_active_subscription(user)
     DataPackageBenefits.objects.create(
-        credits=rate_limit,
+        action_credits=rate_limit,
+        export_credits=rate_limit,
+        add_to_list_credits=rate_limit,
         package=subscription.package
     )
 

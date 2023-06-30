@@ -11,7 +11,9 @@ def create_subscribed_user(auto_login_user, create_active_subscription):
         client, user = auto_login_user(api=api)
         subscription = create_active_subscription(user)
         DataPackageBenefits.objects.create(
-            credits=5000,
+            action_credits=100,
+            add_to_list_credits=200,
+            export_credits=5000,
             package=subscription.package
         )
         # Half-ass the attachment

@@ -38,7 +38,6 @@ class PackageChoiceView(SubscriptionChecker, LoginRequiredMixin, FormView):
             products_info=[
                 {
                     'Package Name': package.name,
-                    'Credits': benefits.credits
                 }
             ],
             package=package,

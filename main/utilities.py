@@ -21,7 +21,7 @@ class Limiter:
             return True
 
         range_start, range_end = self.get_action_date_range()
-        rate = self.get_user_rate(request)
+        rate = self.get_user_rate(request, action)
 
         # Count the number of requests made by the user in the current month
         action_count = UserThrottledActionEntry.objects.filter(
@@ -59,11 +59,11 @@ class Limiter:
         return current_month_start, next_month_start
 
 
-    def get_user_rate(self, request):
+    def get_user_rate(self, request, action):
         subscription = self.get_user_subscription(request)
 
         if subscription is not None:
-            return subscription.package.datapackagebenefits.credits
+            return subscription.package.datapackagebenefits.get_credits_for_action(action)
         else:
             return 0
 

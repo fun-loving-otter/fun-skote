@@ -18,7 +18,9 @@
         <tr>
           <th>Name</th>
           <th>Price</th>
-          <th>Credits</th>
+          <th>Action Credits</th>
+          <th>Add To ListCredits</th>
+          <th>Export Credits</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -28,9 +30,11 @@
         <tr data-object="{{package.pk}}">
           <td>{{ package.name }}</td>
           <td>{{ package.price }}</td>
-          <td>{{ package.datapackagebenefits.credits }}</td>
+          <td>{{ package.datapackagebenefits.action_credits }}</td>
+          <td>{{ package.datapackagebenefits.add_to_list_credits }}</td>
+          <td>{{ package.datapackagebenefits.export_credits }}</td>
           <td>
-            <a href="{% url 'control_panel:package-benefits-edit' package.pk %}" class="btn btn-primary">Edit benefits</a>
+            <a href="{% url 'control_panel:package-benefits-edit' package.pk %}" class="btn btn-primary">Edit credits</a>
           </td>
         </tr>
         {% endfor %}

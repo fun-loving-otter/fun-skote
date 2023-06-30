@@ -2,12 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from main.rest.throttles import LimitedActionThrottle
+from main.consts import action_names
 
 static_rate = 10
 
 
 class LimitedActionView(APIView):
-    action_name = 'Action1'
+    action_name = action_names.ACTION
     action_cost = 1
     throttle_classes = [LimitedActionThrottle]
 
@@ -18,7 +19,7 @@ class LimitedActionView(APIView):
 
 
 class LimitedActionView2(APIView):
-    action_name = 'Action2'
+    action_name = action_names.EXPORT
     action_cost = 1
     throttle_classes = [LimitedActionThrottle]
 

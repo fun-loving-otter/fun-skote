@@ -15,6 +15,7 @@ from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
 from main.mixins import DataPackageRequiredMixin
 from main.utilities import Limiter
+from main.consts import action_names
 
 
 
@@ -52,7 +53,7 @@ def export_view(func):
             return HttpResponse(status=403)
 
         limiter = Limiter()
-        limiter.action_name = "Export"
+        limiter.action_name = action_names.EXPORT
         limiter.action_cost = data_list.data.count()
 
         if not limiter.allow_request(request):
@@ -126,7 +127,7 @@ def export_datalist_xls(request, pk, data_list):
 # ============= API VIEWS =============
 
 class DataListUpdateAPIView(UpdateAPIView):
-    action_name = 'Save'
+    action_name = action_names.ADD_TO_LIST
     permission_classes = [IsAuthenticated]
     serializer_class = DataListSerializer
     throttle_classes = [LimitedActionThrottle]

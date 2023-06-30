@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import Sum, Index
 from django.contrib.auth import get_user_model
 
+from main.consts import action_names
+
 User = get_user_model()
 
 
@@ -294,11 +296,24 @@ class DataList(models.Model):
 
 
 class DataPackageBenefits(models.Model):
-    credits = models.IntegerField(default=0)
+    action_credits = models.IntegerField(default=0)
+    add_to_list_credits = models.IntegerField(default=0)
+    export_credits = models.IntegerField(default=0)
     package = models.OneToOneField('payments.SubscriptionPackage', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.package.name) + f' ({self.credits} Actions)'
+        return str(self.package.name)
+
+
+    def get_credits_for_action(self, action):
+        if action == action_names.ACTION:
+            return self.action_credits
+        elif action == action_names.ADD_TO_LIST:
+            return self.add_to_list_credits
+        elif action == action_names.EXPORT:
+            return self.export_credits
+        else:
+            raise AttributeError(f'No credits found for action {action}')
 
 
 

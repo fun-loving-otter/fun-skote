@@ -16,7 +16,7 @@ class PackageWithBenefitsListView(AccessRequiredMixin, ListView):
 class PackageBenefitsUpdateView(AccessRequiredMixin, UpdateView):
     model = DataPackageBenefits
     template_name = 'control/form.html'
-    fields = ['credits']
+    fields = ['action_credits', 'add_to_list_credits', 'export_credits']
     success_url = reverse_lazy('control_panel:package-benefits')
 
     def get_object(self, queryset=None):

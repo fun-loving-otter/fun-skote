@@ -42,6 +42,9 @@ def created_data():
 
     for i in range(10):
         kwargs = {x[1]: x[0] + str(i) for x in Data._header_field_mapping.items()}
+        kwargs['founded_date'] = timezone.now()
+        kwargs['ipo_date'] = timezone.now()
+        kwargs['last_funding_date'] = timezone.now()
         Data.objects.create(uploaded_data_file=uploaded_data_file, **kwargs)
 
     return data_upload

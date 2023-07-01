@@ -52,15 +52,14 @@ class TestDataListAPIListView(ViewTestBase):
 
 
     def test_patch_other_user_fails(self, url, create_subscribed_user, create_data_list):
-        client = self.client
-
-        _, other_user = create_subscribed_user(api=True)
+        client, other_user = create_subscribed_user(api=True)
         data_list = create_data_list(user=other_user)
 
         # Attempt to update the DataList object belonging to the other user
         patch_data = {
             'data': [1, 5, 8]
         }
+        # Client is logged in as another_user, url is for self.user
         response = client.patch(url, patch_data, format='json')
         data_list.refresh_from_db()
 

@@ -3,7 +3,7 @@ var table;
 
 $(document).ready(function() {
     table = $('#data-table').DataTable({
-        sDom: 'rtip',
+        dom: 'rtip',
         serverSide: true,
         lengthChange: false,
         pageLength: 25,

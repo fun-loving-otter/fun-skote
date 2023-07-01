@@ -51,7 +51,7 @@
                   <a href="{% url 'main:datalist-export-xls' pk=datalist.pk %}" class="dropdown-item" type="button">xls</a>
                 </div>
               </div>
-              <a href="javascript:void(0);" class="text-danger" onclick="destroyObject('{% url 'main:api-datalist-destroy' pk=datalist.pk %}', {{ datalist.pk }})"><i class="mdi mdi-delete font-size-18"></i></a>
+              <a href="javascript:void(0);" class="text-danger" onclick="destroyObject('{% url 'main:api-datalist-delete' pk=datalist.pk %}', {{ datalist.pk }})"><i class="mdi mdi-delete font-size-18"></i></a>
             </div>
           </td>
         </tr>

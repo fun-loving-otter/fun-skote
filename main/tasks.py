@@ -1,7 +1,15 @@
 import csv
+import dateparser
+
+from datetime import datetime
 from celery import shared_task
 
+from django.db.models import DateField
+from django.utils import timezone
+
 from main.models import Data, UploadedDataFile
+
+dateparse_settings = {'RELATIVE_BASE': datetime.fromtimestamp(0)}
 
 
 def count_lines(filename):
@@ -33,11 +41,21 @@ def parse_csv_file(uploaded_data_file_id):
         kwargs = {}
 
         for index, header in enumerate(headers):
-            field = Data._header_field_mapping.get(header.strip())
-            if field is None or row[index] in ['-', '—']:
+            # Get field name
+            field_name = Data._header_field_mapping.get(header.strip())
+            if field_name is None or row[index] in ['-', '—']:
                 continue
 
-            kwargs[field] = row[index]
+            value = row[index]
+
+            # Get field and check if data needs to be processed
+            field = Data._meta.get_field(field_name)
+            if isinstance(field, DateField):
+                value = dateparser.parse(value)
+                if value is not None:
+                    value = timezone.make_aware(value)
+
+            kwargs[field_name] = value
 
         data_objects.append(Data(
             uploaded_data_file=uploaded_data_file,

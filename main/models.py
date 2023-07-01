@@ -129,6 +129,18 @@ class Data(models.Model):
         'contact_email',
     }
 
+    _searchable_fields = {
+        'organization_name',
+        'full_description',
+        'industries',
+        'description',
+        'linkedin',
+        'facebook',
+        'twitter',
+        'website',
+        'industry_groups'
+    }
+
 
     organization_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Organization Name')
     crunchbase_company_url = models.CharField(max_length=255, null=True, blank=True, verbose_name='Crunchbase Company URL')

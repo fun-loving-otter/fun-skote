@@ -41,9 +41,20 @@
             {% endfor %}
           </tr>
         </thead>
+
         <tbody class="align-top">
-          
         </tbody>
+
+        <tfoot>
+          <th></th>
+          {% for field in model_fields %}
+            {% if field.name in searchable_fields %}
+            <th>{{ field.verbose_name }}</th>
+            {% else %}
+            <th></th>
+            {% endif %}
+          {% endfor %}
+        </tfoot>
       </table>
     </div>
   </div>

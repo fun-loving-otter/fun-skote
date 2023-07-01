@@ -3,7 +3,11 @@ var table;
 
 $(document).ready(function() {
     table = $('#data-table').DataTable({
+        sDom: 'rtip',
         serverSide: true,
+        lengthChange: false,
+        pageLength: 25,
+        pagingType: "simple",
         ajax: {
             url: TABLE_API_URL,
             type: "POST",
@@ -24,6 +28,27 @@ $(document).ready(function() {
             data: null
         }],
         columns: TABLE_COLUMNS,
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    var column = this;
+                    var title = column.footer().textContent;
+                    if (title == '')
+                    {
+                        return;
+                    }
+     
+                    // Create input element and add event listener
+                    $('<input class="form-control" type="text" placeholder="Search ' + title + '" />')
+                        .appendTo($(column.footer()).empty())
+                        .on('keyup change clear', function () {
+                            if (column.search() !== this.value) {
+                                column.search(this.value).draw();
+                            }
+                        });
+                });
+        },
     });
 });
 

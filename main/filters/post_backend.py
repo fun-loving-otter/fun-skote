@@ -15,3 +15,11 @@ class PostDataFilterBackend(DjangoFilterBackend):
             kwargs['data'].update(filters)
 
         return kwargs
+
+
+    def filter_queryset(self, request, queryset, view):
+        queryset = super().filter_queryset(request, queryset, view)
+
+        view._datatables_filtered_count = queryset.count()
+
+        return queryset

@@ -1,3 +1,5 @@
+import json
+
 from django.views.generic import TemplateView
 
 from rest_framework.generics import ListAPIView
@@ -28,6 +30,10 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
         # Get DataList objects where creator is the current user
         user = self.request.user
         context['datalists'] = DataList.objects.filter(creator=user)
+
+        context['select_options'] = json.dumps({
+            'headquarters': list(Data.objects.order_by("headquarters").values_list("headquarters", flat=True).distinct())
+        })
 
         return context
 

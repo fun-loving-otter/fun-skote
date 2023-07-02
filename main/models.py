@@ -153,6 +153,9 @@ class Data(models.Model):
             'total_equity',
             'money_raised_at_ipo',
             'valuation_at_ipo',
+        },
+        'select': {
+            'headquarters',
         }
     }
 

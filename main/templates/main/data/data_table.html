@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.6.2/css/select.bootstrap5.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.4.1/css/dataTables.dateTime.min.css">
+<link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.4-beta.45/jquery.dataTables.yadcf.css">
 {% endblock %}
 
 
@@ -49,9 +51,8 @@
         <tfoot>
           <th></th>
           {% for field in model_fields %}
-
             {% if field.name in searchable_fields.char %}
-            <th data-filter-type="char">
+            <th data-filter-type="char" data-field-name="{{ field.name }}">
               <input class="form-control" type="text" placeholder="Search {{ field.verbose_name }}" />
             </th>
 
@@ -66,6 +67,9 @@
               <input class="form-control" type="text" data-range="start" placeholder="Range Start">
               <input class="form-control" type="text" data-range="end" placeholder="Range End">
             </th>
+
+            {% elif field.name in searchable_fields.select %}
+            <th data-filter-type="select" data-field-name="{{ field.name }}" id="select-{{ field.name }}-container"></th>
 
             {% else %}
             <th></th>
@@ -84,8 +88,11 @@
 {% include 'partials/js_datatables.html' %}
 {% include 'partials/js_toastr.html' %}
 <script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.4-beta.45/jquery.dataTables.yadcf.min.js"></script>
 <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+
+<script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
 
 <script>
 const ADD_TO_LIST_BUTTON_TEMPLATE = `
@@ -100,7 +107,9 @@ const ADD_TO_LIST_BUTTON_TEMPLATE = `
   </ul>
 </div>
 `
+
 const TABLE_API_URL = "{% url 'main:api-data-list' %}?format=datatables";
+const SELECT_OPTIONS = JSON.parse(`{{ select_options|escapejs }}`);
 
 function renderFunction(data, type, row) {
   if (data == "*hidden*") {

@@ -13,8 +13,9 @@ class DataFilter(filters.FilterSet):
     ipo_date = filters.DateFromToRangeFilter()
     money_raised_at_ipo = filters.NumberFilter(lookup_expr='range')
     valuation_at_ipo = filters.NumberFilter(lookup_expr='range')
+    headquarters = filters.CharFilter()
 
     class Meta:
         model = Data
         fields = ['founded_date', 'last_funding_date', 'estimate_revenue', 'number_of_employees',
-                  'total_funding_amount', 'total_equity_funding', 'ipo_date', 'money_raised_at_ipo', 'valuation_at_ipo']
+                  'total_funding_amount', 'total_equity_funding', 'ipo_date', 'money_raised_at_ipo', 'valuation_at_ipo', 'headquarters']

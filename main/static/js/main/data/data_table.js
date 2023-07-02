@@ -34,6 +34,7 @@ $(document).ready(function() {
         }],
         columns: TABLE_COLUMNS,
         initComplete: function() {
+            var yadcfColumns = [];
             this.api()
                 .columns()
                 .every(function() {
@@ -41,6 +42,7 @@ $(document).ready(function() {
 
                     var footer = $(column.footer());
                     var filterType = footer.data('filter-type');
+                    var fieldName = footer.data('field-name');
 
                     if (filterType == 'char') {
                         var input = footer.children('input');
@@ -50,8 +52,6 @@ $(document).ready(function() {
                             }
                         });
                     } else if (filterType == 'dateRange') {
-                        var fieldName = footer.data('field-name');
-
                         var startInput = footer.children('input[data-range="start"]');
                         var endInput = footer.children('input[data-range="end"]');
 
@@ -67,18 +67,12 @@ $(document).ready(function() {
                             table.draw();
                         });
                     } else if (filterType == 'intRange') {
-                        var fieldName = footer.data('field-name');
-
                         var startInput = footer.children('input[data-range="start"]');
                         var endInput = footer.children('input[data-range="end"]');
 
                         footer.children('input').on('keyup change clear', function () {
                             column.search(startInput.val() + '|' + endInput.val(), true, false).draw();
                         })
-
-
-
-                        // var fieldName = footer.data('field-name');
 
                         // var startInput = footer.children('input[data-range="start"]');
                         // var endInput = footer.children('input[data-range="end"]');
@@ -91,10 +85,20 @@ $(document).ready(function() {
                         //     filters[`${fieldName}_max`] = endInput.val();
                         //     table.draw();
                         // });
+                    } else if (filterType == 'select') {
+                        yadcfColumns.push({
+                            column_number: column[0][0],
+                            filter_type: 'multi_select',
+                            filter_container_id: `select-${fieldName}-container`,
+                            select_type: 'select2',
+                            data: SELECT_OPTIONS[fieldName]
+                        })
                     }
                 });
+            yadcf.init(table, yadcfColumns);
         },
     });
+    
 });
 
 

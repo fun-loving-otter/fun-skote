@@ -9,6 +9,7 @@ from main.rest.permissions import HasDataPackagePermission
 from main.rest.paginators import CustomDatatablesPaginator
 from main.rest.throttles import LimitedActionThrottle
 from main.consts import action_names
+from main.filters.data import DataFilter
 
 
 class DataTemplateView(DataPackageRequiredMixin, TemplateView):
@@ -39,6 +40,7 @@ class DataAPIListView(ListAPIView):
     throttle_classes = [LimitedActionThrottle]
     pagination_class = CustomDatatablesPaginator
     queryset = Data.objects.all()
+    filterset_class = DataFilter
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)

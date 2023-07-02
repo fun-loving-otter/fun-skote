@@ -130,17 +130,31 @@ class Data(models.Model):
     }
 
     _searchable_fields = {
-        'organization_name',
-        'full_description',
-        'industries',
-        'description',
-        'linkedin',
-        'facebook',
-        'twitter',
-        'website',
-        'industry_groups'
+        'char': {
+            'organization_name',
+            'full_description',
+            'industries',
+            'description',
+            'linkedin',
+            'facebook',
+            'twitter',
+            'website',
+            'industry_groups'
+        },
+        'date_range': {
+            'founded_date',
+            'last_funding_date',
+            'ipo_date'
+        },
+        'int_range': {
+            'estimate_revenue',
+            'number_of_employees',
+            'total_funding',
+            'total_equity',
+            'money_raised_at_ipo',
+            'valuation_at_ipo',
+        }
     }
-
 
     organization_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Organization Name')
     crunchbase_company_url = models.CharField(max_length=255, null=True, blank=True, verbose_name='Crunchbase Company URL')

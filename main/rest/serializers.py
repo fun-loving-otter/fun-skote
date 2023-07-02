@@ -50,3 +50,14 @@ class DataListSerializer(serializers.ModelSerializer):
             instance.data.add(*data_ids)
 
         return instance
+
+
+
+class DataFiltersSerializer(serializers.Serializer):
+    filters = serializers.JSONField()
+
+    def validate_filters(self, value):
+        if not isinstance(value, dict):
+            raise serializers.ValidationError("Filters must be an object")
+
+        return value

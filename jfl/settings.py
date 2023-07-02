@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'rest_framework',
     'rest_framework_datatables',
     'modeltranslation',
@@ -60,7 +61,7 @@ INSTALLED_APPS = [
     'control_panel',
     'affiliates',
     'feature_requests',
-    'main'
+    'main',
 ]
 
 MESSAGE_TAGS = {
@@ -85,6 +86,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework_datatables.filters.DatatablesFilterBackend',
+        'main.filters.post_backend.PostDataFilterBackend',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

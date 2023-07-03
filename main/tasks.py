@@ -43,7 +43,7 @@ def parse_csv_file(uploaded_data_file_id):
         for index, header in enumerate(headers):
             # Get field name
             field_name = Data._header_field_mapping.get(header.strip())
-            if field_name is None or row[index] in ['-', '—']:
+            if field_name is None:
                 continue
 
             value = row[index]

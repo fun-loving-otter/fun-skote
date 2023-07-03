@@ -117,6 +117,18 @@ class Data(models.Model):
         'Total Products Active': 'total_products_active',
         'Most Popular Patent Class': 'most_popular_patent_class',
         'Most Popular Trademark Class': 'most_popular_trademark_class',
+        'CEO Name': 'ceo_name',
+        'CEO Email': 'ceo_email',
+        'CEO Phone': 'ceo_phone',
+        'CEO Linkedin': 'ceo_linkedin',
+        'CFO Name': 'cfo_name',
+        'CFO Email': 'cfo_email',
+        'CFO Phone': 'cfo_phone',
+        'CFO Linkedin': 'cfo_linkedin',
+        'CMO Name': 'cmo_name',
+        'CMO Email': 'cmo_email',
+        'CMO Phone': 'cmo_phone',
+        'CMO Linkedin': 'cmo_linkedin',
     }
 
     _hidden_fields = {
@@ -264,6 +276,19 @@ class Data(models.Model):
     total_products_active = models.CharField(max_length=255, null=True, blank=True, verbose_name='Total Products Active')
     most_popular_patent_class = models.CharField(max_length=255, null=True, blank=True, verbose_name='Most Popular Patent Class')
     most_popular_trademark_class = models.CharField(max_length=255, null=True, blank=True, verbose_name='Most Popular Trademark Class')
+    ceo_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='CEO Name')
+    ceo_email = models.CharField(max_length=255, null=True, blank=True, verbose_name='CEO Email')
+    ceo_phone = models.CharField(max_length=255, null=True, blank=True, verbose_name='CEO Phone')
+    ceo_linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name='CEO Linkedin')
+    cfo_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='CFO Name')
+    cfo_email = models.CharField(max_length=255, null=True, blank=True, verbose_name='CFO Email')
+    cfo_phone = models.CharField(max_length=255, null=True, blank=True, verbose_name='CFO Phone')
+    cfo_linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name='CFO Linkedin')
+    cmo_name = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Name')
+    cmo_email = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Email')
+    cmo_phone = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Phone')
+    cmo_linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Linkedin')
+
 
     class Meta:
         ordering = ['organization_name']

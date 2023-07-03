@@ -2,12 +2,11 @@ import csv
 import dateparser
 
 from datetime import datetime
-from celery import shared_task
 
 from django.db.models import DateField
 from django.utils import timezone
 
-from main.models import Data, UploadedDataFile
+from main.models import Data
 
 dateparse_settings = {'RELATIVE_BASE': datetime.fromtimestamp(0)}
 
@@ -20,10 +19,7 @@ def count_lines(filename):
     return line_count
 
 
-@shared_task
-def parse_csv_file(uploaded_data_file_id):
-    uploaded_data_file = UploadedDataFile.objects.get(id=uploaded_data_file_id)
-
+def parse_csv_file(uploaded_data_file):
     rows_amount = count_lines(uploaded_data_file.file.path)
 
     csv_file = open(uploaded_data_file.file.path, 'r')
@@ -32,7 +28,7 @@ def parse_csv_file(uploaded_data_file_id):
     headers = next(reader)  # Get the header row
     headers = [x for x in headers if x]
 
-    uploaded_data_file.data_upload.number_of_rows = rows_amount
+    uploaded_data_file.data_upload.number_of_rows += rows_amount - 1
     uploaded_data_file.data_upload.number_of_columns = len(headers)
     uploaded_data_file.data_upload.save()
 

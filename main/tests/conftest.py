@@ -1,6 +1,7 @@
 import pytest
 
 from datetime import date
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from authentication.tests.conftest import *
 from payments.tests.conftest import *
@@ -75,3 +76,23 @@ def created_data(create_data_upload):
         Data.objects.create(uploaded_data_file=uploaded_data_file, **kwargs)
 
     return data_upload
+
+
+
+@pytest.fixture
+def data_sample_csv_file():
+    csv_file_path = 'main/tests/control/sample_data/data_test.csv'
+    # Load the test csv file
+    with open(csv_file_path, 'rb') as file:
+        csv_file = SimpleUploadedFile(file.name, file.read())
+    return csv_file
+
+
+
+@pytest.fixture
+def data_sample_zip_file():
+    zip_file_path = 'main/tests/control/sample_data/data_jsons.zip'
+    # Load the test zip file
+    with open(zip_file_path, 'rb') as file:
+        zip_file = SimpleUploadedFile(file.name, file.read())
+    return zip_file

@@ -1,6 +1,7 @@
 from django import forms
+
 from main.models import DataUpload, UploadedDataFile
-from main import tasks
+from main.tasks.task_parse_uploaded_file import parse_uploaded_file
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -24,26 +25,26 @@ class MultipleFileField(forms.FileField):
 
 
 class DataUploadForm(forms.ModelForm):
-    csv_files = MultipleFileField()
+    files = MultipleFileField()
 
     class Meta:
         model = DataUpload
         fields = ['name']
 
     def save(self, commit=True):
-        csv_files = self.cleaned_data.get('csv_files', [])
-        self.instance.size_of_files = sum(x.size for x in csv_files)
-        self.instance.number_of_files = len(csv_files)
+        files = self.cleaned_data.get('files', [])
+        self.instance.size_of_files = sum(x.size for x in files)
+        self.instance.number_of_files = len(files)
 
         data_upload = super().save(commit=commit)
 
-        if csv_files:
-            for csv_file in csv_files:
+        if files:
+            for file in files:
                 uploaded_data_file = UploadedDataFile(
                     data_upload=data_upload,
-                    file=csv_file,
+                    file=file,
                 )
                 uploaded_data_file.save()
-                tasks.parse_csv_file.delay(uploaded_data_file.id)
+                parse_uploaded_file.delay(uploaded_data_file.id)
 
         return data_upload

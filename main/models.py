@@ -289,7 +289,6 @@ class Data(models.Model):
     cmo_phone = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Phone')
     cmo_linkedin = models.CharField(max_length=255, null=True, blank=True, verbose_name='CMO Linkedin')
 
-
     class Meta:
         ordering = ['organization_name']
 
@@ -303,9 +302,9 @@ class DataUpload(models.Model):
     date = models.DateField(auto_now_add=True)
     name = models.CharField(max_length=255)
     size_of_files = models.PositiveIntegerField(null=True, blank=True)
-    number_of_files = models.PositiveIntegerField(null=True, blank=True)
-    number_of_rows = models.PositiveIntegerField(null=True, blank=True)
-    number_of_columns = models.PositiveIntegerField(null=True, blank=True)
+    number_of_files = models.PositiveIntegerField(default=0)
+    number_of_rows = models.PositiveIntegerField(default=0)
+    number_of_columns = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name

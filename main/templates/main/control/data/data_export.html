@@ -1,0 +1,21 @@
+{% extends 'control/partials/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="get" action="{% url 'control_panel:data-export-csv' %}">
+            {{ filter.form.as_p }}
+            <button type="submit" class="btn btn-primary">CSV</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_javascript %}
+<script>
+    $(() => {
+
+    });
+</script>
+{% endblock %}

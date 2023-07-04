@@ -1,6 +1,8 @@
 import json
 
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.db.models import Max
 
 from rest_framework.generics import ListAPIView
 from django_countries import countries
@@ -46,8 +48,17 @@ class DataAPIListView(ListAPIView):
     permission_classes = [HasDataPackagePermission]
     throttle_classes = [LimitedActionThrottle]
     pagination_class = CustomDatatablesPaginator
-    queryset = Data.objects.all()
     filterset_class = DataFilter
+
+    def get_queryset(self):
+        q = Data.objects.all()
+        if not settings.DEBUG:
+            q = q.order_by('-pk').distinct('organization_name')
+        else:
+            pks_q = q.values('organization_name').annotate(max_pk=Max('pk')).values('max_pk')
+            q = q.filter(pk__in=pks_q)
+        return q
+
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)

@@ -3,6 +3,7 @@ import json
 from django.views.generic import TemplateView
 
 from rest_framework.generics import ListAPIView
+from django_countries import countries
 
 from main.models import Data, DataList
 from main.mixins import DataPackageRequiredMixin
@@ -32,7 +33,7 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
         context['datalists'] = DataList.objects.filter(creator=user)
 
         context['select_options'] = json.dumps({
-            'headquarters': list(Data.objects.order_by("headquarters").values_list("headquarters", flat=True).distinct())
+            'headquarters': [country for code, country in list(countries)]
         })
 
         return context

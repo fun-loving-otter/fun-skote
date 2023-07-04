@@ -1,7 +1,7 @@
 import json
 
 from django.views.generic import TemplateView
-from django.conf import settings
+from django.db import connection
 from django.db.models import Max
 
 from rest_framework.generics import ListAPIView
@@ -52,7 +52,7 @@ class DataAPIListView(ListAPIView):
 
     def get_queryset(self):
         q = Data.objects.all()
-        if not settings.DEBUG:
+        if connection.vendor == 'postgresql':
             q = q.order_by('-pk').distinct('organization_name')
         else:
             pks_q = q.values('organization_name').annotate(max_pk=Max('pk')).values('max_pk')

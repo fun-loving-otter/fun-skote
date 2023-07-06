@@ -68,9 +68,9 @@
                 </li>
                 {% endif %}
 
-                {% if permissions.emails %}
+                {% if permissions.email_templates %}
                 <li>
-                    <a href="{% url 'control_panel:emails' %}" class="waves-effect">
+                    <a href="{% url 'control_panel:email-templates' %}" class="waves-effect">
                         <i class="bx bx-envelope"></i>
                         <span>Emails</span>
                     </a>

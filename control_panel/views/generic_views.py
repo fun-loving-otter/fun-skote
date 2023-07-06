@@ -1,7 +1,5 @@
 from django.views.generic import TemplateView
-from django.template.loader import render_to_string
 from django.contrib import messages
-from django.core.mail import send_mail, BadHeaderError
 
 from authentication.mixins import AccessRequiredMixin
 
@@ -34,50 +32,4 @@ class FileEditView(AccessRequiredMixin, TemplateView):
 		with open(fname, 'w') as f:
 			f.write(new_content)
 		messages.success(request, "File updated successfully")
-		return self.get(request)
-
-
-
-class EmailsView(AccessRequiredMixin, TemplateView):
-	template_name = 'control/emails.html'
-
-	def post(self, request):
-		email = request.POST.get('email')
-		email_files = [
-			'authentication/emails/change_email.txt',
-			'authentication/emails/mail_confirm.html',
-			'authentication/emails/mail_confirm.txt',
-			'authentication/emails/password_reset_email.txt',
-			'emails/order_created.txt',
-			'emails/order_status_update.txt',
-			'emails/checkout_reminder.txt'
-		]
-
-		from store.models import Order
-		c = {
-			"email": email,
-			'domain': request.build_absolute_uri("/")[:-1],
-			"uid": 'uid',
-			"user": request.user,
-			'token': 'token',
-			'orders': Order.objects.all()[:5],
-			'order': Order.objects.all()[0]
-		}
-		try:
-			for i in email_files:
-				email_text = render_to_string(i, c)
-				# compat for html messages
-				html_message = email_text if i.endswith('.html') else None
-				send_mail(
-					i.split('/')[-1],
-					email_text,
-					None,
-					[email],
-					fail_silently=False,
-					html_message=html_message
-				)
-			messages.success(request, 'Emails sent')
-		except BadHeaderError as e:
-			print(f'Email testing error. Error: {e}')
-			messages.error(request, "An error occured")
 		return self.get(request)

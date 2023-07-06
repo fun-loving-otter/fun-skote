@@ -22,3 +22,6 @@
 [submodule "feature_requests"]
 	path = feature_requests
 	url = git@gitea.20111511.xyz:Sam/django-feature-requests.git
+[submodule "emails"]
+	path = emails
+	url = git@gitea.20111511.xyz:Sam/emails.git

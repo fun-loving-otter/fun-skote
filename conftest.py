@@ -11,3 +11,8 @@ def load_email_templates():
 @pytest.fixture(autouse=True)
 def load_admin_pages():
     call_command('load_admin_pages')
+
+
+@pytest.fixture(autouse=True)
+def patch_celery(settings):
+    settings.CELERY_TASK_ALWAYS_EAGER = True

@@ -1,5 +1,9 @@
 {% load static %}
 {% load user_utils %}
+{% load control_panel_tags %}
+
+{% get_available_admin_pages user as permissions %}
+{% get_sidebar_layout as sidebar_items %}
 
 {% block sidebar %}
 <!-- ========== Left Sidebar Start ========== -->
@@ -7,137 +11,34 @@
     <div data-simplebar class="h-100">
         <!--- Sidemenu -->
         <div id="sidebar-menu">
-            <!-- Left Menu Start -->
-            {% get_available_admin_pages user as permissions %}
+            <!-- Left Menu Start -->            
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title">Menu</li>
 
-                {% if permissions.dashboard %}
-                <li>
-                    <a href="{% url 'control_panel:index' %}">
-                        <i class="bx bx-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% include 'payments/control/payments_sidebar_links.html' with permissions=permissions %}
-
-                {% if permissions.core_settings %}
-                    <li>
-                        <a href="{% url 'control_panel:package-benefits' %}" class="waves-effect">
-                            <i class="bx bx-package"></i>
-                            <span>Package Credits</span>
-                        </a>
-                    </li>
-                {% endif %}
-
-                {% if permissions.core_settings %}
-                <li>
-                    <a href="{% url 'control_panel:settings' %}" class="waves-effect">
-                        <i class="bx bx-wrench"></i>
-                        <span>Site settings</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.files %}
-                <li>
-                    <a href="{% url 'control_panel:files' %}" class="waves-effect">
-                        <i class="bx bx-file"></i>
-                        <span>Files</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.translations %}
-                <li>
-                    <a href="{% url 'control_panel:translations' %}" class="waves-effect">
-                        <i class="mdi mdi-translate"></i>
-                        <span>Translations</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.tracking %}
-                <li>
-                    <a href="{% url 'control_panel:tracking' %}" class="waves-effect">
-                        <i class="mdi mdi-eye"></i>
-                        <span>Tracking</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.email_templates %}
-                <li>
-                    <a href="{% url 'control_panel:email-templates' %}" class="waves-effect">
-                        <i class="bx bx-envelope"></i>
-                        <span>Emails</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.data_uploads %}
-                <li>
-                    <a href="{% url 'control_panel:data-uploads' %}" class="waves-effect">
-                        <i class="bx bx-upload"></i>
-                        <span>Data Uploads</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.data_uploads %}
-                <li>
-                    <a href="{% url 'control_panel:data-export' %}" class="waves-effect">
-                        <i class="bx bx-download"></i>
-                        <span>Export Database</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.utm %}
-                <li>
-                    <a href="{% url 'control_panel:utm' %}" class="waves-effect">
-                        <i class="mdi mdi-eye"></i>
-                        <span>UTM</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if permissions.customers or permissions.staff or permissions.affiliates %}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-user"></i>
-                        <span>Users</span>
-                    </a>
-
-                    <ul class="sub-menu mm-collapse">
-                        {% if permissions.customers %}
+                {% for item in sidebar_items %}
+                    {% if permissions|has_permission:item.permission %}
                         <li>
-                            <a href="{% url 'control_panel:customers' %}" class="waves-effect">
-                                <span>Customers</span>
+                            <a href="{% if item.url %}{% url item.url %}{% else %}javascript: void(0);{% endif %}" class="{% if item.subitems %}has-arrow waves-effect{% endif %}">
+                                {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+                                <span>{{ item.title }}</span>
                             </a>
-                        </li>
-                        {% endif %}
 
-                        {% if permissions.staff_list %}
-                        <li>
-                            <a href="{% url 'control_panel:staff' %}" class="waves-effect">
-                                <span>Administrators</span>
-                            </a>
+                            {% if item.subitems %}
+                                <ul class="sub-menu mm-collapse">
+                                    {% for subitem in item.subitems %}
+                                        {% if permissions|has_permission:subitem.permission %}
+                                            <li>
+                                                <a href="{% url subitem.url %}" class="waves-effect">
+                                                    <span>{{ subitem.title }}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </li>
-                        {% endif %}
-
-                        {% if permissions.affiliates %}
-                        <li>
-                            <a href="{% url 'control_panel:affiliates' %}" class="waves-effect">
-                                <span>Affiliates</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </li>
-                {% endif %}
+                    {% endif %}
+                {% endfor %}
             </ul>
         </div>
         <!-- Sidebar -->

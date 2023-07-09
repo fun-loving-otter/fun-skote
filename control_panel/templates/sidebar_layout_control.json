@@ -1,0 +1,9 @@
+[
+  {
+    "url": "control_panel:index",
+    "title": "Dashboard",
+    "icon": "bx bx-home",
+    "permission": "index",
+    "subitems": []
+  }
+]

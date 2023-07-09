@@ -26,6 +26,7 @@ class FileEditView(AccessRequiredMixin, TemplateView):
 		context['file_content'] = content
 		return context
 
+
 	def post(self, request):
 		fname = self.request.GET.get('file')
 		new_content = self.request.POST.get('content')

@@ -25,3 +25,6 @@
 [submodule "emails"]
 	path = emails
 	url = git@gitea.20111511.xyz:Sam/django-emails.git
+[submodule "control_panel"]
+	path = control_panel
+	url = git@gitea.20111511.xyz:Sam/django-control-panel.git

@@ -1,0 +1,23 @@
+[
+  {
+    "url": "control_panel:data-uploads",
+    "title": "Data Uploads",
+    "icon": "bx bx-upload",
+    "permission": "data_uploads",
+    "subitems": []
+  },
+  {
+    "url": "control_panel:data-export",
+    "title": "Export Database",
+    "icon": "bx bx-download",
+    "permission": "data_uploads",
+    "subitems": []
+  },
+  {
+    "url": "control_panel:package-benefits",
+    "title": "Package Credits",
+    "icon": "bx bx-package",
+    "permission": "core_settings",
+    "subitems": []
+  }
+]

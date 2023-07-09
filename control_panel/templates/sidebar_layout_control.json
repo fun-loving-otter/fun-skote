@@ -5,5 +5,19 @@
     "icon": "bx bx-home",
     "permission": "index",
     "subitems": []
+  },
+  {
+    "url": "control_panel:files",
+    "title": "Files",
+    "icon": "bx bx-file",
+    "permission": "files",
+    "subitems": []
+  },
+  {
+    "url": "control_panel:settings",
+    "title": "Site settings",
+    "icon": "bx bx-wrench",
+    "permission": "core_settings",
+    "subitems": []
   }
 ]

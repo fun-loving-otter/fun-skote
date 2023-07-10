@@ -140,8 +140,9 @@ class DataListUpdateAPIView(UpdateAPIView):
     def get_action_cost(self):
         patch = self.request.data
 
-        return len(patch.get('data', []))
-
+        data_ids = patch.get('data')
+        if isinstance(data_ids, list):
+            return len(data_ids)
 
 
 

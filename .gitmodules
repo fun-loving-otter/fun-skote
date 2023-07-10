@@ -1,30 +1,30 @@
 [submodule "authentication"]
-	path = authentication
-	url = git@gitea.20111511.xyz:Sam/django-authentication.git
+    path = authentication
+    url = git@gitea.20111511.xyz:Sam/django-authentication.git
 [submodule "core"]
-	path = core
-	url = git@gitea.20111511.xyz:Sam/django-core.git
+    path = core
+    url = git@gitea.20111511.xyz:Sam/django-core.git
 [submodule "skote_static"]
-	path = skote_static
-	url = git@gitea.20111511.xyz:Sam/django-skote-static.git
+    path = skote_static
+    url = git@gitea.20111511.xyz:Sam/django-skote-static.git
 [submodule "payments"]
-	path = payments
-	url = git@gitea.20111511.xyz:Sam/django-payments.git
+    path = payments
+    url = git@gitea.20111511.xyz:Sam/django-payments.git
 [submodule "translations"]
-	path = translations
-	url = git@gitea.20111511.xyz:Sam/django-translations.git
+    path = translations
+    url = git@gitea.20111511.xyz:Sam/django-translations.git
 [submodule "tracking"]
-	path = tracking
-	url = git@gitea.20111511.xyz:Sam/django-tracking.git
+    path = tracking
+    url = git@gitea.20111511.xyz:Sam/django-tracking.git
 [submodule "affiliates"]
-	path = affiliates
-	url = git@gitea.20111511.xyz:Sam/django-affiliates.git
+    path = affiliates
+    url = git@gitea.20111511.xyz:Sam/django-affiliates.git
 [submodule "feature_requests"]
-	path = feature_requests
-	url = git@gitea.20111511.xyz:Sam/django-feature-requests.git
+    path = feature_requests
+    url = git@gitea.20111511.xyz:Sam/django-feature-requests.git
 [submodule "emails"]
-	path = emails
-	url = git@gitea.20111511.xyz:Sam/django-emails.git
+    path = emails
+    url = git@gitea.20111511.xyz:Sam/django-emails.git
 [submodule "control_panel"]
-	path = control_panel
-	url = git@gitea.20111511.xyz:Sam/django-control-panel.git
+    path = control_panel
+    url = git@gitea.20111511.xyz:Sam/django-control-panel.git

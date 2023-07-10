@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.db.models import Sum, Index
 from django.contrib.auth import get_user_model
@@ -313,6 +315,9 @@ class DataUpload(models.Model):
     def str_size_of_files(self):
         size_bytes = self.size_of_files
 
+        if not size_bytes:
+            return str(size_bytes)
+
         """Converts the given file size in bytes to a human-readable format."""
         # Define the units and their respective labels
         units = ['B', 'KB', 'MB', 'GB', 'TB']
@@ -329,10 +334,11 @@ class DataUpload(models.Model):
 class UploadedDataFile(models.Model):
     data_upload = models.ForeignKey(DataUpload, on_delete=models.CASCADE)
     file = models.FileField(upload_to='uploaded_data_files/')
+    celery_task_id = models.CharField(max_length=255, null=True, blank=True)
     processed = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.file)
+        return os.path.basename(str(self.file))
 
 
 

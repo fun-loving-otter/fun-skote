@@ -1,18 +1,18 @@
 import os
 import json
+import logging
 import shutil
 import dateparser
 
 from zipfile import ZipFile
 from datetime import datetime
-from celery import shared_task
 
-from django.db.models import DateField
-from django.utils import timezone
+from main.models import Data
 
-from main.models import Data, UploadedDataFile
+
 
 dateparse_settings = {'RELATIVE_BASE': datetime.fromtimestamp(0)}
+logger = logging.getLogger(__name__)
 
 class MagicGetter:
     def __init__(self, data):
@@ -195,6 +195,8 @@ processors['ipo_date'] = date_processor
 
 
 def parse_zip_with_jsons(uploaded_data_file):
+    logger.info(f"Started processing {uploaded_data_file} in zip/json mode")
+
     # Unzip the file
     unzip_dir = os.path.splitext(uploaded_data_file.file.path)[0]
     with ZipFile(uploaded_data_file.file.path, 'r') as zip_ref:
@@ -247,4 +249,6 @@ def parse_zip_with_jsons(uploaded_data_file):
     uploaded_data_file.processed = True
     uploaded_data_file.save()
 
-    return data_objects
+    logger.info(f"Finished processing {uploaded_data_file} in zip/json mode. {len(data_objects)} objects created.")
+
+    return uploaded_data_file.id

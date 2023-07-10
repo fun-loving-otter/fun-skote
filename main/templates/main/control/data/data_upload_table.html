@@ -26,6 +26,7 @@
           <th>Name</th>
           <th>Size of Files</th>
           <th>Number of Files</th>
+          <th>Processing Results</th>
           <th>Number of Rows</th>
           <th>Number of Columns</th>
         </tr>
@@ -35,8 +36,13 @@
         <tr>
           <td>{{ data_upload.date }}</td>
           <td>{{ data_upload.name }}</td>
-          <td>{{ data_upload.size_of_files }}</td>
+          <td>{{ data_upload.str_size_of_files }}</td>
           <td>{{ data_upload.number_of_files }}</td>
+          <td>
+            {% for file in data_upload.uploadeddatafile_set.all %}
+            <p><strong>{{ file }}:</strong> {{ file.celery_result.state }}</p>
+            {% endfor %}
+          </td>
           <td>{{ data_upload.number_of_rows }}</td>
           <td>{{ data_upload.number_of_columns }}</td>
         </tr>

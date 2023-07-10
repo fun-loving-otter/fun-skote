@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'django_celery_results',
     'rest_framework',
     'rest_framework_datatables',
     'modeltranslation',
@@ -188,8 +189,6 @@ USE_TZ = True
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-CELERY_TASK_ALWAYS_EAGER = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -213,3 +212,7 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 # Celery Task Queue Configuration
 CELERY_TASK_QUEUE_NAME = 'default'  # Set your task queue name
+
+CELERY_TASK_ALWAYS_EAGER = True
+
+CELERY_RESULT_BACKEND = 'django-db'

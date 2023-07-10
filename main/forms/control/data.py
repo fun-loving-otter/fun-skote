@@ -40,11 +40,17 @@ class DataUploadForm(forms.ModelForm):
 
         if files:
             for file in files:
+                # Create UploadedDataFile
                 uploaded_data_file = UploadedDataFile(
                     data_upload=data_upload,
                     file=file,
                 )
                 uploaded_data_file.save()
-                parse_uploaded_file.delay(uploaded_data_file.id)
+
+                # Start processing task (requires id created on save)
+                result = parse_uploaded_file.delay(uploaded_data_file.id)
+
+                # Assign task_id to UploadedDataFile
+                UploadedDataFile.objects.filter(id=uploaded_data_file.id).update(celery_task_id=result.task_id)
 
         return data_upload

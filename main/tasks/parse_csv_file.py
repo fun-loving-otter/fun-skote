@@ -1,4 +1,5 @@
 import csv
+import logging
 import dateparser
 
 from datetime import datetime
@@ -8,7 +9,10 @@ from django.utils import timezone
 
 from main.models import Data
 
+
+
 dateparse_settings = {'RELATIVE_BASE': datetime.fromtimestamp(0)}
+logger = logging.getLogger(__name__)
 
 
 def count_lines(filename):
@@ -20,6 +24,8 @@ def count_lines(filename):
 
 
 def parse_csv_file(uploaded_data_file):
+    logger.info(f"Started processing {uploaded_data_file} in csv mode")
+
     rows_amount = count_lines(uploaded_data_file.file.path)
 
     csv_file = open(uploaded_data_file.file.path, 'r')
@@ -64,3 +70,7 @@ def parse_csv_file(uploaded_data_file):
 
     uploaded_data_file.processed = True
     uploaded_data_file.save()
+
+    logger.info(f"Finished processing {uploaded_data_file} in csv mode. {len(data_objects)} objects created.")
+
+    return uploaded_data_file.id

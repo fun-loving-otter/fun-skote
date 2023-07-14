@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['*']
 
 DOMAIN = 'app.thehunted.io'
 
-CONTROL_PANEL_DOMAIN = 'admin.thehunted.ioz'
+CONTROL_PANEL_DOMAIN = 'admin.thehunted.io'
 
 
 # Application definition

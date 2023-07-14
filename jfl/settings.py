@@ -29,9 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN = 'a1o.co.uk'
+DOMAIN = 'app.thehunted.io'
 
-CONTROL_PANEL_DOMAIN = 'admin.a1o.co.uk'
+CONTROL_PANEL_DOMAIN = 'admin.thehunted.ioz'
 
 
 # Application definition

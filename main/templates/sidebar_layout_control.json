@@ -17,7 +17,7 @@
     "url": "control_panel:package-benefits",
     "title": "Package Credits",
     "icon": "bx bx-package",
-    "permission": "core_settings",
+    "permission": "package-benefits",
     "subitems": []
   }
 ]

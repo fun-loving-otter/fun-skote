@@ -202,24 +202,42 @@ def parse_zip_with_jsons(uploaded_data_file):
     with ZipFile(uploaded_data_file.file.path, 'r') as zip_ref:
         zip_ref.extractall(unzip_dir)
 
-    all_entries = []
-
     # Walk through the unzipped directory
     for root, dirs, files in os.walk(unzip_dir):
         for file in files:
-            if file.endswith('.json'):
-                with open(os.path.join(root, file)) as json_file:
-                    data = json.load(json_file)
-                    if 'entities' in data:
-                        all_entries.extend(data['entities'])
+            filepath = os.path.join(root, file)
+            parse_single_json(filepath, uploaded_data_file)
 
-    # Update uploaded_data_file
-    uploaded_data_file.data_upload.number_of_rows += len(all_entries)
+    # Clean up - remove the unzipped files
+    shutil.rmtree(unzip_dir)
+
+    uploaded_data_file.processed = True
+    uploaded_data_file.save()
+
+    logger.info(f'Finished processing {uploaded_data_file}')
+
+    return uploaded_data_file
+
+
+
+def parse_single_json(filepath, uploaded_data_file):
+    if not filepath.endswith('.json'):
+        return
+
+    try:
+        with open(filepath) as json_file:
+            data = json.load(json_file)
+    except Exception as e:
+        print(f"Got error {e}, skipping file {filepath}")
+
+    entries = data['entities']
+
+    uploaded_data_file.data_upload.number_of_rows += len(entries)
     uploaded_data_file.data_upload.save()
 
     # Create Data objects for entries
     data_objects = []
-    for row in all_entries:
+    for row in entries:
         row_getter = MagicGetter(row)
         kwargs = {}
 
@@ -243,12 +261,4 @@ def parse_zip_with_jsons(uploaded_data_file):
 
     Data.objects.bulk_create(data_objects)
 
-    # Clean up - remove the unzipped files
-    shutil.rmtree(unzip_dir)
-
-    uploaded_data_file.processed = True
-    uploaded_data_file.save()
-
-    logger.info(f"Finished processing {uploaded_data_file} in zip/json mode. {len(data_objects)} objects created.")
-
-    return uploaded_data_file.id
+    logger.info(f"Finished processing {filepath} in zip/json mode. {len(data_objects)} objects created.")

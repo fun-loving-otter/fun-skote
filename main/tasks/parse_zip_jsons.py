@@ -206,7 +206,10 @@ def parse_zip_with_jsons(uploaded_data_file):
     for root, dirs, files in os.walk(unzip_dir):
         for file in files:
             filepath = os.path.join(root, file)
-            parse_single_json(filepath, uploaded_data_file)
+            try:
+                parse_single_json(filepath, uploaded_data_file)
+            except Exception:
+                continue
 
     # Clean up - remove the unzipped files
     shutil.rmtree(unzip_dir)
@@ -228,7 +231,10 @@ def parse_single_json(filepath, uploaded_data_file):
         with open(filepath) as json_file:
             data = json.load(json_file)
     except Exception as e:
-        print(f"Got error {e}, skipping file {filepath}")
+        print(f"Got error {e} while loading {filepath}, skipping")
+
+    if not isinstance(data, dict):
+        return
 
     logger.info(f"Started processing {filepath} as part of the {uploaded_data_file} upload")
 

@@ -1,4 +1,6 @@
 import os
+import tempfile
+from pathlib import Path
 
 from django.db import models
 from django.db.models import Sum, Index
@@ -7,6 +9,9 @@ from django.contrib.auth import get_user_model
 from main.consts import action_names
 
 User = get_user_model()
+
+TEMP_DIR = Path(tempfile.gettempdir()).resolve()
+
 
 
 
@@ -339,6 +344,24 @@ class UploadedDataFile(models.Model):
 
     def __str__(self):
         return os.path.basename(str(self.file))
+
+
+    @classmethod
+    def get_upload_temp_dir(cls, user):
+        target_directory = TEMP_DIR / "jfl" / "DataUploads" / str(user.id)
+        os.makedirs(target_directory, exist_ok=True)
+        return target_directory
+
+
+    @classmethod
+    def get_file_name(cls, file, upload_id):
+        return f"{upload_id}_{file.name}"
+
+
+    @classmethod
+    def get_chunk_name(cls, file, upload_id, chunk_index):
+        chunk_name = f"{cls.get_file_name(file, upload_id)}_chunk_{chunk_index}"
+        return chunk_name
 
 
 

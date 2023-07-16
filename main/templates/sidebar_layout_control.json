@@ -3,14 +3,14 @@
     "url": "control_panel:data-uploads",
     "title": "Data Uploads",
     "icon": "bx bx-upload",
-    "permission": "data_uploads",
+    "permission": "data-uploads",
     "subitems": []
   },
   {
     "url": "control_panel:data-export",
     "title": "Export Database",
     "icon": "bx bx-download",
-    "permission": "data_uploads",
+    "permission": "data-export",
     "subitems": []
   },
   {

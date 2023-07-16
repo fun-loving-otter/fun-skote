@@ -1,0 +1,50 @@
+{% extends 'control/partials/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_css %}
+{% include 'partials/css_toastr.html' %}
+<link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/dropzone/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div>
+            <form action="{% url 'control_panel:data-upload-new-file' %}" class="dropzone" id="data-upload-files">
+                <div class="fallback">
+                    <input name="file" type="file" multiple="multiple">
+                </div>
+                <div class="dz-message needsclick">
+                    <div class="mb-3">
+                        <i class="display-4 text-muted bx bxs-cloud-upload"></i>
+                    </div>
+                    
+                    <h4>Drop files here or click to upload.</h4>
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center mt-4">
+            <button id="upload-button" type="button" class="btn btn-primary waves-effect waves-light">Create Upload</button>
+        </div>
+
+        <div>
+            <form method="post" enctype="multipart/form-data" id="create-upload-form">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+{% include 'partials/js_toastr.html' %}
+<script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
+<script src="{% static 'js/form.init.js' %}"></script>
+<script src="{% static 'js/main/control/data_upload.js' %}"></script>
+{% endblock %}

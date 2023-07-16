@@ -1,40 +1,12 @@
 import csv
 
-from django.views.generic import ListView, CreateView, TemplateView
+from django.views.generic import TemplateView
 from django.views import View
 from django.http import HttpResponse
-from django.urls import reverse_lazy
-
-from celery.result import AsyncResult
 
 from authentication.mixins import AccessRequiredMixin
-from main.models import DataUpload, Data
-from main.forms.control import data as data_forms
+from main.models import Data
 from main.filters.data import ExportDataFilter
-
-
-class DataUploadListView(AccessRequiredMixin, ListView):
-    model = DataUpload
-    template_name = 'main/control/data/data_upload_table.html'
-
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related('uploadeddatafile_set')
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        for data_upload in context['object_list']:
-            for uploaded_file in data_upload.uploadeddatafile_set.all():
-                uploaded_file.celery_result = AsyncResult(uploaded_file.celery_task_id)
-        return context
-
-
-
-class DataUploadCreateView(AccessRequiredMixin, CreateView):
-    model = DataUpload
-    form_class = data_forms.DataUploadForm
-    template_name = 'control/form.html'
-    success_url = reverse_lazy('control_panel:data-uploads')
 
 
 

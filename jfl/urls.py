@@ -32,6 +32,9 @@ urlpatterns = [
 
 
 if settings.DEBUG:
+    from django.contrib import admin
+    urlpatterns.append(path('admin/', admin.site.urls))
+
     # Handle static/media
     urlpatterns += static(settings.STATIC_URL)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

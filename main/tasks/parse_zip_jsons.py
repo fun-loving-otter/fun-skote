@@ -30,7 +30,7 @@ class MagicGetter:
 
 
 def convert_to_string_processor(value):
-    return str(value)
+    return str(value)[:1023]
 
 
 
@@ -230,7 +230,11 @@ def parse_single_json(filepath, uploaded_data_file):
     except Exception as e:
         print(f"Got error {e}, skipping file {filepath}")
 
+    logger.info(f"Started processing {filepath} as part of the {uploaded_data_file} upload")
+
     entries = data['entities']
+
+    logger.info(f"Got {len(entries)} entries in {filepath}. Processing")
 
     uploaded_data_file.data_upload.number_of_rows += len(entries)
     uploaded_data_file.data_upload.save()

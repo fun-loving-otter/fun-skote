@@ -219,7 +219,7 @@ def parse_zip_with_jsons(uploaded_data_file):
 
     logger.info(f'Finished processing {uploaded_data_file}')
 
-    return uploaded_data_file
+    return uploaded_data_file.id
 
 
 

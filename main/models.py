@@ -184,7 +184,7 @@ class Data(models.Model):
     full_description = models.TextField(null=True, blank=True, verbose_name='Full Description')
     industries = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Industries')
     headquarters = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Headquarters', db_index=True)
-    description = models.TextField(null=True, blank=True, verbose_name='Description')
+    description = models.TextField(null=True, blank=True, verbose_name='Description', db_index=True)
     cb_rank = models.CharField(max_length=1023, null=True, blank=True, verbose_name='CB Rank')
     linkedin = models.CharField(max_length=1023, null=True, blank=True, verbose_name='LinkedIn')
     facebook = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Facebook')

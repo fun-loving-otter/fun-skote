@@ -43,14 +43,14 @@ def list_value_concatenation_processor(value):
         #     return
         result += part + ' '
 
-    return result.strip()
+    return result.strip()[:1023]
 
 
 
 def list_join_processor(value):
     if not isinstance(value, list) or not all(isinstance(el, str) for el in value):
         return None
-    return ' '.join(value)
+    return ' '.join(value)[:1023]
 
 
 
@@ -208,7 +208,8 @@ def parse_zip_with_jsons(uploaded_data_file):
             filepath = os.path.join(root, file)
             try:
                 parse_single_json(filepath, uploaded_data_file)
-            except Exception:
+            except Exception as e:
+                logger.error(e)
                 continue
 
     # Clean up - remove the unzipped files
@@ -231,7 +232,7 @@ def parse_single_json(filepath, uploaded_data_file):
         with open(filepath) as json_file:
             data = json.load(json_file)
     except Exception as e:
-        print(f"Got error {e} while loading {filepath}, skipping")
+        logger.error(f"Got error {e} while loading {filepath}, skipping")
 
     if not isinstance(data, dict):
         return

@@ -51,7 +51,6 @@ class DataUploadForm(forms.ModelForm):
                 raise ValidationError(f"No file found at {filepath}")
             filepaths.append(filepath)
 
-        print(filepaths)
         return filepaths
 
 

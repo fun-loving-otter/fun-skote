@@ -17,7 +17,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
-
+from django_email_verification import urls as email_urls
 
 
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path('affiliates/', include('affiliates.urls')),
     path('payments/', include('payments.urls')),
     path('features/', include('feature_requests.urls')),
+    path('email/', include(email_urls)),
 ]
 
 

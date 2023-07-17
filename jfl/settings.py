@@ -194,9 +194,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -207,6 +204,7 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -223,3 +221,29 @@ CELERY_TASK_QUEUE_NAME = 'default'  # Set your task queue name
 CELERY_TASK_ALWAYS_EAGER = True
 
 CELERY_RESULT_BACKEND = 'django-db'
+
+
+
+def verified_callback(user):
+    user.confirm_email()
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+DEFAULT_FROM_EMAIL = 'support@thehunted.io'
+
+EMAIL_VERIFIED_CALLBACK = verified_callback
+
+EMAIL_MAIL_SUBJECT = 'Confirm your email'
+
+EMAIL_MAIL_HTML = 'authentication/emails/mail_confirm.html'
+
+EMAIL_MAIL_PLAIN = 'authentication/emails/mail_confirm.txt'
+
+EMAIL_MAIL_TOKEN_LIFE = 60 * 60
+
+EMAIL_MAIL_PAGE_TEMPLATE = 'authentication/pages/email/email_verified.html'
+
+EMAIL_PAGE_DOMAIN = f'https://{DOMAIN}/'
+
+EMAIL_FROM_ADDRESS = DEFAULT_FROM_EMAIL

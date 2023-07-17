@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic.edit import FormMixin
 
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -15,25 +16,26 @@ from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
 from main.mixins import DataPackageRequiredMixin
 from main.utilities import Limiter
+from main.forms.datalist import DataListForm
 from main.consts import action_names
 
 
 
-class DataListListView(DataPackageRequiredMixin, ListView):
+class DataListListView(DataPackageRequiredMixin, FormMixin, ListView):
     model = DataList
     template_name = 'main/datalist/datalists.html'
     context_object_name = 'data_lists'
     ordering = ['-last_modified']
+    form_class = DataListForm
 
     def get_queryset(self):
         return self.model.objects.filter(creator=self.request.user)
 
 
 
-class DataListCreateView(DataPackageRequiredMixin, LoginRequiredMixin, CreateView):
-    model = DataList
+class DataListCreateView(DataPackageRequiredMixin, CreateView):
+    form_class = DataListForm
     template_name = 'form.html'
-    fields = ['name']
     success_url = reverse_lazy('main:datalist-list')
 
     def form_valid(self, form):

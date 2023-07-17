@@ -4,82 +4,96 @@
 
 {% block header %}
 <header id="page-topbar">
-	<div class="navbar-header">
-		<div class="d-flex">
-			<!-- LOGO -->
-			<div class="navbar-brand-box">
-				<a href="{% url 'index' %}" class="logo logo-light">
-					<span class="logo-sm">
-						{% if request.logo_sm_light %}
-						<img src="{{request.logo_sm_light.url}}" alt="" height="22">
-						{% endif %}
-					</span>
-					<span class="logo-lg">
-						{% if request.logo_w_light %}
-						<img src="{{request.logo_w_light.url}}" alt="" height="22">
-						{% endif %}
-					</span>
-				</a>
-			</div>
-			<button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
-				<i class="fa fa-fw fa-bars"></i>
-			</button>
-		</div>
-		<div class="d-flex">
-			{% block limited_action_usage_dropdown %}
-			{% if request.usage %}
-			{% include 'partials/limited_action_usage_dropdown.html' %}
-			{% endif %}
-			{% endblock %}
+    <div class="navbar-header">
+        <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <a href="{% url 'index' %}" class="logo logo-light">
+                    <span class="logo-sm">
+                        {% if request.logo_sm_light %}
+                        <img src="{{request.logo_sm_light.url}}" alt="" height="22">
+                        {% endif %}
+                    </span>
+                    <span class="logo-lg">
+                        {% if request.logo_w_light %}
+                        <img src="{{request.logo_w_light.url}}" alt="" height="22">
+                        {% endif %}
+                    </span>
+                </a>
+            </div>
+            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+        </div>
+        <div class="d-flex">
+            {% block limited_action_usage_dropdown %}
+            {% if request.usage %}
+            {% include 'partials/limited_action_usage_dropdown.html' %}
+            {% endif %}
+            {% endblock %}
 
-			{% block currency_dropdown %}
-			{% if request.currencies %}
-			{% include 'partials/currency_dropdown.html' %}
-			{% endif %}
-			{% endblock %}
+            {% block currency_dropdown %}
+            {% if request.currencies %}
+            {% include 'partials/currency_dropdown.html' %}
+            {% endif %}
+            {% endblock %}
 
-			<div class="dropdown d-inline-block">
-				<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="d-inline-block ms-1">
-						{% if user.is_authenticated %}
-						{{user.first_name}}
-						{% else %}
-						{% translate "Login" %}
-						{% endif %}
-					</span>
-					<i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-				</button>
-				<div class="dropdown-menu dropdown-menu-end">
-					{% if user.is_authenticated %}
-					<a class="dropdown-item" href="{% url 'authentication:profile-edit' %}">
-						<i class="bx bx-user font-size-16 align-middle me-1"></i>
-						{% translate "Edit Profile" %}
-					</a>
-					<a class="dropdown-item" href="{% url 'authentication:email-change' %}">
-						<i class="bx bx-envelope font-size-16 align-middle me-1"></i>
-						{% translate "Change Email" %}
-					</a>
-					<a class="dropdown-item" href="{% url 'authentication:password-change' %}">
-						<i class="bx bx-key font-size-16 align-middle me-1"></i>
-						{% translate "Change Password" %}
-					</a>
-					<a class="dropdown-item text-danger" href="{% url 'authentication:logout' %}">
-						<i class="bx bx-log-out font-size-16 align-middle me-1 text-danger"></i>
-						{% translate "Log Out" %}
-					</a>
-					{% else %}
-					<a class="dropdown-item" href="{% url 'authentication:login' %}">
-						<i class="bx bx-key font-size-16 align-middle me-1"></i>
-						{% translate "Existing Account" %}
-					</a>
-					<a class="dropdown-item" href="{% url 'authentication:register' %}">
-						<i class="bx dripicons-user-id font-size-16 align-middle me-1"></i>
-						{% translate "Registration" %}
-					</a>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="d-inline-block ms-1">
+                        {% if user.is_authenticated %}
+                        {{user.first_name}}
+                        {% else %}
+                        {% translate "Login" %}
+                        {% endif %}
+                    </span>
+                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'authentication:profile-edit' %}">
+                        <i class="bx bx-user font-size-16 align-middle me-1"></i>
+                        {% translate "Edit Profile" %}
+                    </a>
+
+                    <a class="dropdown-item" href="{% url 'authentication:email-change' %}">
+                        <i class="bx bx-envelope font-size-16 align-middle me-1"></i>
+                        {% translate "Change Email" %}
+                    </a>
+
+                    <a class="dropdown-item" href="{% url 'authentication:password-change' %}">
+                        <i class="bx bx-key font-size-16 align-middle me-1"></i>
+                        {% translate "Change Password" %}
+                    </a>
+
+                    <a class="dropdown-item" href="{% url 'payments:subscriptions' %}">
+                        <i class="fas fa-gem font-size-16 align-middle me-1"></i>
+                        {% translate "Subscriptions" %}
+                    </a>
+
+                    <a class="dropdown-item" href="{% url 'feature_requests:new-feature' %}">
+                        <i class="fas fa-plus font-size-16 align-middle me-1"></i>
+                        {% translate "New Feature" %}
+                    </a>
+
+                    <a class="dropdown-item text-danger" href="{% url 'authentication:logout' %}">
+                        <i class="bx bx-log-out font-size-16 align-middle me-1 text-danger"></i>
+                        {% translate "Log Out" %}
+                    </a>
+
+                    {% else %}
+                    <a class="dropdown-item" href="{% url 'authentication:login' %}">
+                        <i class="bx bx-key font-size-16 align-middle me-1"></i>
+                        {% translate "Existing Account" %}
+                    </a>
+                    <a class="dropdown-item" href="{% url 'authentication:register' %}">
+                        <i class="bx dripicons-user-id font-size-16 align-middle me-1"></i>
+                        {% translate "Registration" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 {% endblock %}

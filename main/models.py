@@ -370,7 +370,6 @@ class DataList(models.Model):
     data = models.ManyToManyField('Data')
     last_modified = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255)
-    source = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return (str(self.name))

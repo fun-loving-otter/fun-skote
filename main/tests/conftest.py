@@ -32,7 +32,6 @@ def create_data_list():
         return DataList.objects.create(
             creator=user,
             name='Test Data List',
-            source='Test Source'
         )
     return make_data_list
 

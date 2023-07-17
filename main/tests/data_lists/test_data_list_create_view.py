@@ -18,7 +18,6 @@ class TestDataListCreateView(TemplateViewTestBase):
         # Create the form data for the new data list
         form_data = {
             'name': 'Test Data List',
-            'source': 'Test Source',
         }
 
         # Make a POST request to the data list create view using the client
@@ -28,7 +27,7 @@ class TestDataListCreateView(TemplateViewTestBase):
         assert response.status_code == 302
 
         # Get the created data list from the database
-        data_list = DataList.objects.filter(name=form_data['name'], source=form_data['source']).first()
+        data_list = DataList.objects.filter(name=form_data['name']).first()
 
         assert data_list is not None
         assert data_list.creator == user

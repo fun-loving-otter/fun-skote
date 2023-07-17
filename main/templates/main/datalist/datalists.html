@@ -27,7 +27,6 @@
         <tr>
           <th>Name</th>
           <th>Last Modified</th>
-          <th>Source</th>
           <th>Records</th>
           <th>Action</th>
         </tr>
@@ -37,7 +36,6 @@
         <tr data-object="{{ datalist.pk }}">
           <td>{{ datalist.name }}</td>
           <td>{{ datalist.last_modified|date:"M d, Y g:i A" }}</td>
-          <td>{{ datalist.source }}</td>
           <td>{{ datalist.data.count }}</td>
           <td>
             <div class="d-flex gap-3">

@@ -33,7 +33,7 @@ class DataListListView(DataPackageRequiredMixin, ListView):
 class DataListCreateView(DataPackageRequiredMixin, LoginRequiredMixin, CreateView):
     model = DataList
     template_name = 'form.html'
-    fields = ['name', 'source']
+    fields = ['name']
     success_url = reverse_lazy('main:datalist-list')
 
     def form_valid(self, form):

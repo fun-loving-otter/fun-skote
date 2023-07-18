@@ -28,6 +28,7 @@ urlpatterns = [
     path('affiliates/', include('affiliates.urls')),
     path('payments/', include('payments.urls')),
     path('features/', include('feature_requests.urls')),
+    path('translations/', include('translations.urls')),
     path('email/', include(email_urls)),
 ]
 

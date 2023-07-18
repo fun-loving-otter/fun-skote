@@ -184,9 +184,9 @@ LOGIN_URL = 'authentication:login'
 
 LANGUAGE_CODE = 'en-us'
 
-LANGUAGES = [
-    ('en', 'English'),
-]
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+
+MODELTRANSLATION_LANGUAGES = ['en']
 
 TIME_ZONE = 'UTC'
 

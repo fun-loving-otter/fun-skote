@@ -1,6 +1,5 @@
 {% load static %}
 {% load i18n %}
-{% load translations %}
 
 {% block header %}
 <header id="page-topbar">
@@ -35,6 +34,12 @@
             {% block currency_dropdown %}
             {% if request.currencies %}
             {% include 'partials/currency_dropdown.html' %}
+            {% endif %}
+            {% endblock %}
+
+            {% block language_dropdown %}
+            {% if request.languages %}
+            {% include 'translations/partials/language_dropdown.html' %}
             {% endif %}
             {% endblock %}
 

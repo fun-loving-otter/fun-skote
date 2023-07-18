@@ -6,6 +6,6 @@ class MainConfig(AppConfig):
     name = 'main'
 
     def ready(self):
-        from main.receivers import subscription_made_callback
+        from main.signals import subscription_made_callback
         from payments.models import subscription_paid
         subscription_paid.connect(subscription_made_callback)

@@ -1,0 +1,9 @@
+[
+  {
+    "url": "control_panel:notification-create",
+    "title": "Create Notification",
+    "icon": "bx bx-bell",
+    "permission": "notification-create",
+    "subitems": []
+  }
+]

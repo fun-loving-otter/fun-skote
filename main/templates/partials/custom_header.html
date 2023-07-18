@@ -43,6 +43,10 @@
             {% endif %}
             {% endblock %}
 
+            {% block notificaitons_dropdown %}
+            {% include 'notifications/partials/notifications_dropdown.html' %}
+            {% endblock %}
+
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="d-inline-block ms-1">
@@ -79,6 +83,11 @@
                     <a class="dropdown-item" href="{% url 'feature_requests:new-feature' %}">
                         <i class="fas fa-plus font-size-16 align-middle me-1"></i>
                         {% translate "New Feature" %}
+                    </a>
+
+                    <a class="dropdown-item" href="{% url 'support' %}">
+                        <i class="bx bx-support font-size-16 align-middle me-1"></i>
+                        {% translate "Support" %}
                     </a>
 
                     <a class="dropdown-item text-danger" href="{% url 'authentication:logout' %}">

@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'translations',
     'tracking',
     'payments',
+    'notifications',
     'control_panel',
     'affiliates',
     'feature_requests',

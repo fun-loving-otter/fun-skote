@@ -1,0 +1,44 @@
+{% block notifications_dropdown %}
+<div class="dropdown d-inline-block">
+    <button type="button" class="btn header-item noti-icon waves-effect"
+        id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="bx bx-bell"></i>
+        <span class="badge bg-danger rounded-pill">{{ request.user.notifications.count }}</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+        aria-labelledby="page-header-notifications-dropdown">
+        <div class="p-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h6 class="m-0"> Notifications </h6>
+                </div>
+            </div>
+        </div>
+        <div data-simplebar style="max-height: 230px;">
+            {% for notification in request.user.notifications.all %}
+            <a href="" class="text-reset notification-item">
+                <div class="media">
+                    {% if notification.image %}
+                    <img src="{{ notification.image.url }}" class="me-3 rounded-circle avatar-xs" alt="notification-image">
+                    {% else %}
+                    <div class="avatar-xs me-3">
+                        <span class="avatar-title bg-primary rounded-circle font-size-16">
+                            <i class="bx bx-cart"></i>
+                        </span>
+                    </div>
+                    {% endif %}
+                    <div class="media-body">
+                        <h6 class="mt-0 mb-1">{{ notification.title }}</h6>
+                        <div class="font-size-12 text-muted">
+                            <p class="mb-1">{{ notification.text }}</p>
+                            <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>{{ notification.created|date:"d-m-Y H:i" }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

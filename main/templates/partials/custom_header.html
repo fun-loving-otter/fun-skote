@@ -10,13 +10,13 @@
             <div class="navbar-brand-box">
                 <a href="{% url 'index' %}" class="logo logo-light">
                     <span class="logo-sm">
-                        {% if request.logo_sm_light %}
-                        <img src="{{request.logo_sm_light.url}}" alt="" height="22">
+                        {% if request.site_settings.logo_small_light %}
+                        <img src="{{request.site_settings.logo_small_light.url}}" alt="" height="22">
                         {% endif %}
                     </span>
                     <span class="logo-lg">
-                        {% if request.logo_w_light %}
-                        <img src="{{request.logo_w_light.url}}" alt="" height="22">
+                        {% if request.site_settings.logo_wide_light %}
+                        <img src="{{request.site_settings.logo_wide_light.url}}" alt="" height="22">
                         {% endif %}
                     </span>
                 </a>

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'django_celery_results',
+    'celery_progress',
     'rest_framework',
     'rest_framework_datatables',
     'modeltranslation',
@@ -115,7 +116,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'control_panel.middleware.VirtualHostMiddleware',
     'tracking.utilities.utm_middleware',
-    'translations.utilities.country_middleware',
+    'translations.middleware.country_middleware',
     'core.middleware.default_context_middleware',
     'payments.middleware.currencies_middleware',
     'affiliates.middleware.affiliate_middleware',
@@ -218,7 +219,7 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # Celery Task Queue Configuration
 CELERY_TASK_QUEUE_NAME = 'default'  # Set your task queue name
 
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = False
 
 CELERY_RESULT_BACKEND = 'django-db'
 

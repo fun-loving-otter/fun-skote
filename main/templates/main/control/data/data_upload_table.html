@@ -1,5 +1,7 @@
 {% extends 'control/partials/base.html' %}
 
+{% load static %}
+
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
 {% endblock %}
@@ -22,25 +24,27 @@
     <table class="table table-striped align-middle" data-tabletype="dataTable">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Date</th>
           <th>Name</th>
           <th>Size of Files</th>
           <th>Number of Files</th>
-          <th>Processing Results</th>
+          <th>Processing State</th>
           <th>Number of Rows</th>
           <th>Number of Columns</th>
         </tr>
       </thead>
       <tbody>
         {% for data_upload in object_list %}
-        <tr>
+        <tr id="data-upload-{{ data_upload.id }}">
+          <td>{{ data_upload.id }}</td>
           <td>{{ data_upload.date }}</td>
           <td>{{ data_upload.name }}</td>
           <td>{{ data_upload.str_size_of_files }}</td>
           <td>{{ data_upload.number_of_files }}</td>
           <td>
             {% for file in data_upload.uploadeddatafile_set.all %}
-            <p><strong>{{ file }}:</strong> {{ file.celery_result.state }}</p>
+            <p><a href="#data-file-{{ file.id }}">{{ file }}:</a> {{ file.celery_result.state }}</p>
             {% endfor %}
           </td>
           <td>{{ data_upload.number_of_rows }}</td>
@@ -51,8 +55,79 @@
     </table>
   </div>
 </div>
+
+<div class="card mt-4">
+  <div class="card-header">
+    <h5 class="card-title">History</h5>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped align-middle" data-tabletype="dataTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>File Name</th>
+          <th>Data Upload</th>
+          <th>State</th>
+          <th>Result</th>
+          <th>Progress</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data_upload in object_list %}
+          {% for file in data_upload.uploadeddatafile_set.all %}
+            <tr id="data-file-{{ file.id }}">
+              <td>{{ file.id }}</td>
+
+              <td>{{ file }}</td>
+
+              <td><a href="#data-upload-{{ data_upload.id }}">{{ data_upload }}</a></td>
+
+              <td>{{ file.celery_result.state|default:"N/A" }}</td>
+
+              <td id="file-{{ file.id }}-task-result">{{ file.celery_result.result|default:"N/A" }}</td>
+
+              {% if file.celery_result %}
+              <td class="task-progress" data-progress-url="{% url 'control_panel:celery_progress:task_status' task_id=file.celery_result.task_id %}" data-progress-bar-id="file-{{ file.id }}-task-progress-bar" data-progress-bar-message-id="file-{{ file.id }}-task-progress-bar-message" data-result-element-id="file-{{ file.id }}-task-result">
+                <div class='progress-wrapper'>
+                  <div id='file-{{ file.id }}-task-progress-bar' class="progress-bar" style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+                </div>
+                <div id="file-{{ file.id }}-task-progress-bar-message">Waiting for progress to start...</div>
+              </td>
+              {% else %}
+              <td>N/A</td>
+              {% endif %}
+
+              <td><a href="{{ file.file.url }}">Download</a></td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+<script>
+  $(function () {
+    $('td.task-progress').each(function() {
+      var progressUrl = $(this).data('progress-url');
+      var progressBarId = $(this).data('progress-bar-id');
+      var progressBarMessageId = $(this).data('progress-bar-message-id');
+      var resultElementId = $(this).data('result-element-id');
+      console.log(progressUrl);
+      console.log(progressBarId);
+      console.log(progressBarMessageId);
+      console.log(resultElementId);
+      CeleryProgressBar.initProgressBar(progressUrl, {
+        progressBarId: progressBarId,
+        progressBarMessageId: progressBarMessageId,
+        resultElementId : resultElementId
+      })
+    })
+  });
+</script>
 {% endblock %}

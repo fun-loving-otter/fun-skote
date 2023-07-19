@@ -23,6 +23,8 @@ class DataUploadListView(AccessRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         for data_upload in context['object_list']:
             for uploaded_file in data_upload.uploadeddatafile_set.all():
+                if not uploaded_file.celery_task_id:
+                    continue
                 uploaded_file.celery_result = AsyncResult(uploaded_file.celery_task_id)
         return context
 

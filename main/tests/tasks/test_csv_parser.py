@@ -1,8 +1,11 @@
 import os
 import pytest
 
+from celery import shared_task
+
 from main.models import DataUpload, UploadedDataFile
-from main.tasks.parse_csv_file import parse_csv_file
+from main.tasks.parser_csv import CSVParser
+
 
 @pytest.mark.django_db
 def test_csv_parser_creates_data_objects(data_sample_csv_file):
@@ -13,7 +16,13 @@ def test_csv_parser_creates_data_objects(data_sample_csv_file):
         file=data_sample_csv_file
     )
 
-    parse_csv_file(uploaded_data_file)
+    # Fake task
+    @shared_task(bind=True)
+    def fake_task(self):
+        parser = CSVParser(uploaded_data_file)
+        parser.run(self)
+
+    fake_task.delay()
 
     data_upload.refresh_from_db()
     assert data_upload.number_of_rows > 0

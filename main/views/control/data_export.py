@@ -1,17 +1,21 @@
 import csv
 
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from django.views.generic.detail import SingleObjectMixin
 from django.views import View
 from django.http import HttpResponse
+from django.core.files.base import ContentFile
+from django.utils import timezone
 
 from authentication.mixins import AccessRequiredMixin
-from main.models import Data
+from main.models import Data, DataExport
 from main.filters.data import ExportDataFilter
 
 
 
-class DataExportTemplateView(AccessRequiredMixin, TemplateView):
+class DataExportTemplateView(AccessRequiredMixin, ListView):
     template_name = 'main/control/data/data_export.html'
+    model = DataExport
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -52,5 +56,29 @@ class DataExportCSVView(AccessRequiredMixin, View):
         for data_object in filtered_data:
             data_row = [getattr(data_object, field_name) for field_name in header_mapping.values()]
             writer.writerow(data_row)
+
+        # Save export to history
+        DataExport.objects.create(
+            file=ContentFile(response.content, name=f'data_export{timezone.now()}.csv'),
+            info=str(dict(request.GET))
+        )
+        return response
+
+
+
+class DataExportRedownloadview(AccessRequiredMixin, SingleObjectMixin, View):
+    model = DataExport
+
+    def get(self, request, *args, **kwargs):
+        # Retrieve the DataExport object
+        data_export = self.get_object()
+
+        # Open the file and read its content
+        with data_export.file.open(mode='rb') as file:
+            file_content = file.read()
+
+        # Create an HttpResponse with the file content as the response body
+        response = HttpResponse(file_content, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(data_export.file.name)
 
         return response

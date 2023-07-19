@@ -1,5 +1,9 @@
 {% extends 'control/partials/base.html' %}
 
+{% block extra_css %}
+{% include 'partials/css_datatables.html' %}
+{% endblock %}
+
 {% block content %}
 <div class="card">
     <div class="card-body">
@@ -9,13 +13,34 @@
         </form>
     </div>
 </div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Data Export List</h5>
+        <table class="table table-striped" data-tabletype="dataTable">
+            <thead>
+                <tr>
+                    <th>Created</th>
+                    <th>Filters</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data_export in object_list %}
+                <tr>
+                    <td>{{ data_export.created }}</td>
+                    <td>{{ data_export.info }}</td>
+                    <td>
+                        <a href="{{ data_export.file.url }}" class="btn btn-primary">Download</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
 
-
 {% block extra_javascript %}
-<script>
-    $(() => {
-
-    });
-</script>
+{% include 'partials/js_datatables.html' %}
 {% endblock %}

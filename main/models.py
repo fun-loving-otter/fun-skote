@@ -297,7 +297,7 @@ class Data(models.Model):
     cmo_linkedin = models.CharField(max_length=1023, null=True, blank=True, verbose_name='CMO Linkedin')
 
     class Meta:
-        ordering = ['organization_name']
+        ordering = ['organization_name', '-pk']
 
 
     def __str__(self):
@@ -362,6 +362,13 @@ class UploadedDataFile(models.Model):
     def get_chunk_name(cls, file, upload_id, chunk_index):
         chunk_name = f"{cls.get_file_name(file, upload_id)}_chunk_{chunk_index}"
         return chunk_name
+
+
+
+class DataExport(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    file = models.FileField()
+    info = models.CharField(max_length=1023)
 
 
 

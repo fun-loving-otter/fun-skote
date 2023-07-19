@@ -183,7 +183,7 @@ LOGIN_URL = 'authentication:login'
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 

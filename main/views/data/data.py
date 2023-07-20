@@ -28,15 +28,17 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
         context['model_fields'] = [Data._meta.get_field(field) for field in fields]
         context['hidden_fields'] = Data._hidden_fields
-        context['searchable_fields'] = Data._searchable_fields
+        context['searchable_fields'] = {}
+        for filter_type, field_names in Data._searchable_fields.items():
+            context['searchable_fields'][filter_type] = [Data._meta.get_field(field) for field in field_names]
 
         # Get DataList objects where creator is the current user
         user = self.request.user
         context['datalists'] = DataList.objects.filter(creator=user)
 
-        context['select_options'] = json.dumps({
+        context['select_options'] = {
             'headquarters': [country for code, country in list(countries)]
-        })
+        }
 
         return context
 

@@ -1,0 +1,97 @@
+{% block filters %}
+<div class="accordion mt-2" id="textSearchAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="textSearchHeader">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#textSearchCollapse" aria-expanded="true" aria-controls="textSearchCollapse">
+                Text Search
+            </button>
+        </h2>
+        <!-- Text Search -->
+        <div id="textSearchCollapse" class="accordion-collapse collapse show" aria-labelledby="textSearchHeader" data-bs-parent="#textSearchAccordion">
+            <div class="accordion-body">
+                {% for field in searchable_fields.char %}
+                    <div class="mb-2">
+                        <input type="text" class="form-control" placeholder="{{ field.verbose_name }}" data-filter="text-filter" data-column="{{ field.name }}_column">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Date Range Filters -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="dateFiltersHeader">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dateFiltersCollapse" aria-expanded="true" aria-controls="dateFiltersCollapse">
+                    Date Range Filters
+                </button>
+            </h2>
+            <div id="dateFiltersCollapse" class="accordion-collapse collapse show" aria-labelledby="dateFiltersHeader" data-bs-parent="#textSearchAccordion">
+                <div class="accordion-body">
+                    {% for field in searchable_fields.date_range %}
+                        <div class="mb-2">
+                            <div>
+                                <input type="text" class="form-control" placeholder="{{ field.verbose_name }} Start" data-filter="date-filter" data-field="{{ field.name }}" data-range="after">
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" placeholder="{{ field.verbose_name }} End" data-filter="date-filter" data-field="{{ field.name }}" data-range="before">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Int Range Filters -->
+        {% for field in searchable_fields.int_range %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="{{ field.name }}Header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ field.name }}Collapse" aria-expanded="true" aria-controls="{{ field.name }}Collapse">
+                    {{ field.verbose_name }}
+                </button>
+            </h2>
+            <div id="{{ field.name }}Collapse" class="accordion-collapse collapse show" aria-labelledby="{{ field.name }}Header" data-bs-parent="#textSearchAccordion">
+                <div class="accordion-body">
+                    <div class="btn-group" role="group" aria-label="Range Buttons" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                        <input id="{{ field.name }}RangeAll" type="radio" class="btn-check" name="{{ field.name }}_radio" data-column="{{ field.name }}_column" autocomplete="off" data-filter="range-filter" data-range="">
+                        <label class="btn btn-outline-primary" for="{{ field.name }}RangeAll">All</label>
+
+                        <input id="{{ field.name }}Range1" type="radio" class="btn-check" name="{{ field.name }}_radio" data-column="{{ field.name }}_column" autocomplete="off" data-filter="range-filter" data-range="0-100">
+                        <label class="btn btn-outline-primary" for="{{ field.name }}Range1">0-100</label>
+
+                        <input id="{{ field.name }}Range2" type="radio" class="btn-check" name="{{ field.name }}_radio" data-column="{{ field.name }}_column" autocomplete="off" data-filter="range-filter" data-range="100-200">
+                        <label class="btn btn-outline-primary" for="{{ field.name }}Range2">100-200</label>
+
+                        <input id="{{ field.name }}Range3" type="radio" class="btn-check" name="{{ field.name }}_radio" data-column="{{ field.name }}_column" autocomplete="off" data-filter="range-filter" data-range="200-300">
+                        <label class="btn btn-outline-primary" for="{{ field.name }}Range3">200-300</label>
+
+                        <input id="{{ field.name }}Range4" type="radio" class="btn-check" name="{{ field.name }}_radio" data-column="{{ field.name }}_column" autocomplete="off" data-filter="range-filter" data-range="350-400">
+                        <label class="btn btn-outline-primary" for="{{ field.name }}Range4">350-400</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Select Filters -->
+        {% for field in searchable_fields.select %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="{{ field.name }}Header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ field.name }}Collapse" aria-expanded="true" aria-controls="{{ field.name }}Collapse">
+                    {{ field.verbose_name }}
+                </button>
+            </h2>
+            <div id="{{ field.name }}Collapse" class="accordion-collapse collapse show" aria-labelledby="{{ field.name }}Header" data-bs-parent="#textSearchAccordion">
+                <div class="accordion-body">
+                    <div class="mb-2">
+                        <select class="form-select form-control" data-filter="select-filter" data-column="{{ field.name }}_column" data-field="{{ field.name }}">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="mt-2 text-end px-4">
+    <button class="btn btn-primary" id="applyFilter">Apply Filters</button>
+</div>
+{% endblock %}

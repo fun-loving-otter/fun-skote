@@ -15,9 +15,13 @@ $(document).ready(function() {
             type: "POST",
             beforeSend: function(request) {
                 request.setRequestHeader("X-CSRFToken", CSRF);
+                showLoadingAlert();
             },
             data: function(d) {
                 d.filters = JSON.stringify(filters);
+            },
+            complete: function() {
+                hideLoadingAlert();
             }
         },
         rowId: "id",
@@ -32,76 +36,76 @@ $(document).ready(function() {
             defaultContent: '',
             data: null
         }],
-        columns: TABLE_COLUMNS,
-        initComplete: function() {
-            var yadcfColumns = [];
-            this.api()
-                .columns()
-                .every(function() {
-                    var column = this;
-
-                    var footer = $(column.footer());
-                    var filterType = footer.data('filter-type');
-                    var fieldName = footer.data('field-name');
-
-                    if (filterType == 'char') {
-                        var input = footer.children('input');
-                        input.on('keyup change clear', function() {
-                            if (column.search() !== this.value) {
-                                column.search(this.value).draw();
-                            }
-                        });
-                    } else if (filterType == 'dateRange') {
-                        var startInput = footer.children('input[data-range="start"]');
-                        var endInput = footer.children('input[data-range="end"]');
-
-                        var startDate = startInput.dtDateTime();
-                        var endDate = endInput.dtDateTime();
-
-                        startInput.on('change', function () {
-                            filters[`${fieldName}_after`] = startDate.val();
-                            table.draw();
-                        });
-                        endInput.on('change', function () {
-                            filters[`${fieldName}_before`] = endDate.val();
-                            table.draw();
-                        });
-                    } else if (filterType == 'intRange') {
-                        var startInput = footer.children('input[data-range="start"]');
-                        var endInput = footer.children('input[data-range="end"]');
-
-                        footer.children('input').on('keyup change clear', function () {
-                            column.search(startInput.val() + '|' + endInput.val(), true, false).draw();
-                        })
-
-                        // var startInput = footer.children('input[data-range="start"]');
-                        // var endInput = footer.children('input[data-range="end"]');
-
-                        // startInput.on('change', function () {
-                        //     filters[`${fieldName}_min`] = startInput.val();
-                        //     table.draw();
-                        // });
-                        // endInput.on('change', function () {
-                        //     filters[`${fieldName}_max`] = endInput.val();
-                        //     table.draw();
-                        // });
-                    } else if (filterType == 'select') {
-                        yadcfColumns.push({
-                            column_number: column[0][0],
-                            filter_type: 'multi_select',
-                            filter_container_id: `select-${fieldName}-container`,
-                            select_type: 'select2',
-                            data: SELECT_OPTIONS[fieldName]
-                        })
-                    }
-                });
-            yadcf.init(table, yadcfColumns);
-        },
+        columns: TABLE_COLUMNS
     });
-    
+
+    $('#applyFilter').on('click', function() {
+        $('input[data-filter="text-filter"]').each(function() {
+            var columnSelector = '#' + $(this).data('column');
+            var searchValue = $(this).val();
+            table.column(columnSelector).search(searchValue);
+        });
+
+        $('input[data-filter="date-filter"]').each(function() {
+            var rangeValue = $(this).data('range');
+            var filterName = $(this).data('field') + '_' + rangeValue;
+            filters[filterName] = $(this).val();
+        })
+
+        $('input[data-filter="range-filter"]:checked').each(function() {
+            var columnSelector = '#' + $(this).data('column');
+            var searchValue = $(this).data('range');
+            table.column(columnSelector).search(searchValue);
+        })
+
+        $('[data-filter="select-filter"]').each(function() {
+            var $select = $(this);
+            var columnSelector = '#' + $select.data('column');
+            var selectedOptions = $select.val();
+
+            if (selectedOptions) {
+                var searchValue = selectedOptions.join('|');
+                table.column(columnSelector).search(searchValue, true, false);
+            } else {
+                table.column(columnSelector).search('');
+            }
+        });
+
+        table.draw();
+    });
+
+    $('input[data-filter="date-filter"]').dtDateTime();
+
+    $('[data-filter="select-filter"]').each(function() {
+        var fieldName = $(this).data('field');
+        $(this).select2({
+            multiple: true,
+            data: SELECT_OPTIONS[fieldName],
+            dropdownAutoWidth: true,
+            theme: 'bootstrap-5'
+        })
+    });
 });
 
 
+function showLoadingAlert() {
+    Swal.fire({
+        title: 'Loading',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        showCancelButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+
+function hideLoadingAlert() {
+    Swal.close();
+}
 
 
 function AddToList(url, ids) {
@@ -130,7 +134,6 @@ function AddToList(url, ids) {
             toastr.error('An error occurred while making the request.');
         });
 }
-
 
 
 function AddSelectedToList(url) {

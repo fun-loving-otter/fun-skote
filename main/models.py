@@ -168,8 +168,8 @@ class Data(models.Model):
         'int_range': {
             'estimate_revenue',
             'number_of_employees',
-            'total_funding',
-            'total_equity',
+            'total_funding_amount',
+            'total_equity_funding',
             'money_raised_at_ipo',
             'valuation_at_ipo',
         },

@@ -2,15 +2,67 @@
 
 {% load static %}
 
+{% block sidebar %}
+<!-- ========== Left Sidebar Start ========== -->
+<div class="vertical-menu">
+  <div data-simplebar class="h-100">
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+      <!--- Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active bg-secondary" id="menu-tab" data-bs-toggle="tab" href="#menu">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link bg-secondary" id="filter-tab" data-bs-toggle="tab" href="#filter">Filter</a>
+        </li>
+      </ul>
+      <!--- Tab content -->
+      <div class="tab-content">
+        <!--- Original menu -->
+        <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
+          <!-- Left Menu Start -->
+          <ul class="metismenu list-unstyled" id="side-menu">
+            {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'main:data-list' %}">
+                <i class="fas fa-table"></i>
+                <span>Just Funded</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'main:datalist-list' %}">
+                <i class="fas fa-list-alt"></i>
+                <span>Lists</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        <!--- Filters -->
+        <div class="tab-pane fade bg-light" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+          <div class="pb-4">
+            {% block filters %}
+            {% include 'main/data/filters.html' %}
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+  </div>
+</div>
+{% endblock %}
 
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
 {% include 'partials/css_toastr.html' %}
+{% include 'partials/css_sweet_alert.html' %}
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.6.2/css/select.bootstrap5.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.4.1/css/dataTables.dateTime.min.css">
 <link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.4-beta.45/jquery.dataTables.yadcf.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <style>
   button.yadcf-filter-reset-button {
     display: none;
@@ -45,43 +97,13 @@
           <tr>
             <th></th>
             {% for field in model_fields %}
-              <th>{{ field.verbose_name }}</th>
+              <th id="{{field.name}}_column">{{ field.verbose_name }}</th>
             {% endfor %}
           </tr>
         </thead>
 
         <tbody class="align-top">
         </tbody>
-
-        <tfoot>
-          <th></th>
-          {% for field in model_fields %}
-            {% if field.name in searchable_fields.char %}
-            <th data-filter-type="char" data-field-name="{{ field.name }}">
-              <input class="form-control" type="text" placeholder="Search {{ field.verbose_name }}" />
-            </th>
-
-            {% elif field.name in searchable_fields.date_range %}
-            <th data-filter-type="dateRange" data-field-name="{{ field.name }}">
-              <input class="form-control" type="text" data-range="start" placeholder="Range Start">
-              <input class="form-control" type="text" data-range="end" placeholder="Range End">
-            </th>
-
-            {% elif field.name in searchable_fields.int_range %}
-            <th data-filter-type="intRange" data-field-name="{{ field.name }}">
-              <input class="form-control" type="text" data-range="start" placeholder="Range Start">
-              <input class="form-control" type="text" data-range="end" placeholder="Range End">
-            </th>
-
-            {% elif field.name in searchable_fields.select %}
-            <th data-filter-type="select" data-field-name="{{ field.name }}" id="select-{{ field.name }}-container"></th>
-
-            {% else %}
-            <th></th>
-            {% endif %}
-
-          {% endfor %}
-        </tfoot>
       </table>
     </div>
   </div>
@@ -92,12 +114,14 @@
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
 {% include 'partials/js_toastr.html' %}
+{% include 'partials/js_sweet_alert.html' %}
 <script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.4-beta.45/jquery.dataTables.yadcf.min.js"></script>
 <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
 
 <script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+
+{{ select_options|json_script:"select_options" }}
 
 <script>
 const ADD_TO_LIST_BUTTON_TEMPLATE = `
@@ -114,7 +138,7 @@ const ADD_TO_LIST_BUTTON_TEMPLATE = `
 `
 
 const TABLE_API_URL = "{% url 'main:api-data-list' %}?format=datatables";
-const SELECT_OPTIONS = JSON.parse(`{{ select_options|escapejs }}`);
+const SELECT_OPTIONS = JSON.parse($('#select_options').html());
 
 function renderFunction(data, type, row) {
   if (data == "*hidden*") {

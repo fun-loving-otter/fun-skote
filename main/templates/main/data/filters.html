@@ -1,5 +1,5 @@
 {% block filters %}
-<div class="accordion mt-2" id="textSearchAccordion">
+<div class="accordion mt-2" id="textSearchAccordion" style="max-height: 60vh; overflow-y: auto;">
     <div class="accordion-item">
         <h2 class="accordion-header" id="textSearchHeader">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#textSearchCollapse" aria-expanded="true" aria-controls="textSearchCollapse">
@@ -92,6 +92,7 @@
     </div>
 </div>
 <div class="mt-2 text-end px-4">
+    <button class="btn mb-2 btn-danger" onclick="window.location.reload();">Reset Filters</button>
     <button class="btn btn-primary" id="applyFilter">Apply Filters</button>
 </div>
 {% endblock %}

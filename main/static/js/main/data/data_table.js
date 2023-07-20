@@ -82,8 +82,23 @@ $(document).ready(function() {
             multiple: true,
             data: SELECT_OPTIONS[fieldName],
             dropdownAutoWidth: true,
-            theme: 'bootstrap-5'
+            theme: 'bootstrap-5',
+            selectionCssClass: "select2--small",
+            dropdownCssClass: "select2--small",
         })
+    });
+
+    // Set event listeners for date filter buttons
+    $('#fundingPeriod7').click(function() {
+        setFundingPeriod(7);
+    });
+
+    $('#fundingPeriod14').click(function() {
+        setFundingPeriod(14);
+    });
+
+    $('#fundingPeriod30').click(function() {
+        setFundingPeriod(30);
     });
 });
 
@@ -141,4 +156,26 @@ function AddSelectedToList(url) {
     let ids = selected_rows.ids().toArray();
     AddToList(url, ids);
     selected_rows.deselect();
+}
+
+
+// Function to set the funding period filters and redraw the table
+function setFundingPeriod(days) {
+    // Get the current date
+    var currentDate = new Date();
+
+    // Calculate the start date
+    var startDate = new Date();
+    startDate.setDate(currentDate.getDate() - days);
+
+    // Format the start and end dates as strings
+    var startDateString = moment(startDate).format('YYYY-MM-DD');
+    var endDateString = moment(currentDate).format('YYYY-MM-DD');
+
+    // Set the filter values
+    filters['last_funding_date_after'] = startDateString;
+    filters['last_funding_date_before'] = endDateString;
+
+    // Redraw the table
+    table.draw();
 }

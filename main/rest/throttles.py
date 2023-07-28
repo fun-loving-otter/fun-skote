@@ -2,8 +2,14 @@ from rest_framework.throttling import BaseThrottle
 
 from main.utilities import Limiter
 
+
 class LimitedActionThrottle(Limiter, BaseThrottle):
+    '''
+    Usage of this throttle requires usage of DataPackageCheckerMixin on view
+    '''
     def allow_request(self, request, view):
+        self.view = view
+
         action = self.get_view_attr(view, 'get_action_name', 'action_name')
         cost = self.get_view_attr(view, 'get_action_cost', 'action_cost', default=1)
         return super().allow_request(request, action, cost)
@@ -22,3 +28,7 @@ class LimitedActionThrottle(Limiter, BaseThrottle):
             return default
 
         raise AttributeError(f"View has no {attr_name} defined")
+
+
+    def get_user_subscription(self, request):
+        return self.view.get_subscription()

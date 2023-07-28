@@ -9,8 +9,7 @@ from main.models import UserThrottledActionEntry
 
 class Limiter:
     '''
-    This class depends on either using middleware that attaches subscription to request
-    or overriding get_subscription() to get the subscription from different place.
+    Usage of this class requires implementation of get_user_subscription
     '''
 
     def allow_request(self, request, action, action_cost):
@@ -69,5 +68,4 @@ class Limiter:
 
 
     def get_user_subscription(self, request):
-        # Assuming subscription was assigned by middleware
-        return request.subscription
+        raise NotImplementedError('get_user_subscription is not implemented')

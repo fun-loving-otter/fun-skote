@@ -1,20 +1,28 @@
 from main.models import UserThrottledActionEntry
-from payments.utilities import SubscriptionChecker
-from payments.models import Subscription
+from main.mixins import DataPackageCheckerMixin
 
 
 # TODO: write tests for this
 def credits_usage(request):
     user = request.user
 
-    usage = None
-    if user.is_authenticated:
-        subscription_checker = SubscriptionChecker()
-        subscription_checker.subscription_queryset = Subscription.objects.exclude(package__datapackagebenefits=None)
-        subscription = subscription_checker.get_subscription(user)
+    if not user.is_authenticated:
+        return {}
 
-        usage = UserThrottledActionEntry.get_mapped_usage(user, subscription)
+    if getattr(user, 'data_package_subscription', None) is not None:
+        # View has DataPackageChecker mixin and get_subscription was called
+        # Which resulted in assignment of data_package_subscription property
+        subscription = user.data_package_subscription
 
+    elif not hasattr(user, 'data_package_subscription'):
+        # View does not have DataPackageChecker mixin
+        checker = DataPackageCheckerMixin()
+        subscription = checker.get_subscription(user=user)
+
+    else:
+        return {}
+
+    usage = UserThrottledActionEntry.get_mapped_usage(user, subscription)
     return {
         'CREDITS_USAGE': usage
     }

@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from main.models import DataList, Data
 from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
-from main.mixins import DataPackageRequiredMixin
+from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
 from main.utilities import Limiter
 from main.forms.datalist import DataListForm
 from main.consts import action_names
@@ -127,7 +127,7 @@ def export_datalist_xls(request, pk, data_list):
 
 # ============= API VIEWS =============
 
-class DataListUpdateAPIView(UpdateAPIView):
+class DataListUpdateAPIView(DataPackageCheckerMixin, UpdateAPIView):
     action_name = action_names.ADD_TO_LIST
     permission_classes = [IsAuthenticated]
     serializer_class = DataListSerializer

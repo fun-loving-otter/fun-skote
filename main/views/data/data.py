@@ -6,13 +6,13 @@ from rest_framework.generics import ListAPIView
 from django_countries import countries
 
 from main.models import Data, DataList
-from main.mixins import DataPackageRequiredMixin
+from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
 from main.rest.serializers import DataSerializer
-from main.rest.permissions import HasDataPackagePermission
 from main.rest.paginators import CustomDatatablesPaginator
 from main.rest.throttles import LimitedActionThrottle
 from main.consts import action_names
 from main.filters.data import DataFilter
+from payments.rest.permissions.subscription import HasSubscriptionPermission
 
 
 class DataTemplateView(DataPackageRequiredMixin, TemplateView):
@@ -42,10 +42,10 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
 
 
-class DataAPIListView(ListAPIView):
+class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
     action_name = action_names.ACTION
     serializer_class = DataSerializer
-    permission_classes = [HasDataPackagePermission]
+    permission_classes = [HasSubscriptionPermission]
     throttle_classes = [LimitedActionThrottle]
     pagination_class = CustomDatatablesPaginator
     filterset_class = DataFilter

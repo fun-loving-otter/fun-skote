@@ -5,6 +5,13 @@ from django.test import RequestFactory
 from main.utilities import Limiter
 from main.consts import action_names
 from main.models import UserThrottledActionEntry
+from main.mixins import DataPackageCheckerMixin
+
+
+def get_subscription_from_request(request):
+    user = request.user
+    subscription_checker = DataPackageCheckerMixin()
+    return subscription_checker.get_subscription(user=user)
 
 
 @pytest.mark.django_db
@@ -12,6 +19,7 @@ class TestLimiter:
     @pytest.fixture(autouse=True)
     def limiter(self):
         self.limiter = Limiter()
+        self.limiter.get_user_subscription = get_subscription_from_request
         return self.limiter
 
 
@@ -26,7 +34,6 @@ class TestLimiter:
         def make_request(user):
             request = self.request_factory.get('/')
             request.user = user
-            request.subscription = getattr(user, 'subscription', None)
             return request
         return make_request
 

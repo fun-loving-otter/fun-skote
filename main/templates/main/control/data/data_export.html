@@ -1,13 +1,17 @@
 {% extends 'control/partials/base.html' %}
 
+{% load static %}
+
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
+{% include 'partials/css_toastr.html' %}
+{% include 'partials/css_sweet_alert.html' %}
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-body">
-        <form method="get" action="{% url 'control_panel:data-export-csv' %}">
+        <form method="post" action="{% url 'control_panel:api-data-export-csv' %}" id="export-form">
             {{ filter.form.as_p }}
             <button type="submit" class="btn btn-primary">CSV</button>
         </form>
@@ -43,4 +47,8 @@
 
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+{% include 'partials/js_sweet_alert.html' %}
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+<script src="{% static 'js/main/control/data_export.js' %}"></script>
 {% endblock %}

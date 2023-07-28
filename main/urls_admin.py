@@ -8,7 +8,7 @@ from main.views.control import package_benefits
 urlpatterns = [
     # Data Export
     path('data/export', data_export.DataExportTemplateView.as_view(), name='data-export'),
-    path('data/export-csv', data_export.DataExportCSVView.as_view(), name='data-export-csv'),
+    path('api/data/start-export-csv', data_export.StartDataExportCSVAPIView.as_view(), name='api-data-export-csv'),
     # Data Upload
     path('data_uploads/', data_upload.DataUploadListView.as_view(), name='data-uploads'),
     path('data_uploads/create', data_upload.DataUploadCreateView.as_view(), name='data-upload-create'),

@@ -118,11 +118,9 @@ MIDDLEWARE = [
     'control_panel.middleware.VirtualHostMiddleware',
     'tracking.utilities.utm_middleware',
     'translations.middleware.country_middleware',
-    'core.middleware.default_context_middleware',
     'payments.middleware.currencies_middleware',
     'affiliates.middleware.affiliate_middleware',
     'affiliates.middleware.AffiliateAccessMiddleware',
-    'main.middleware.AttachUsageMiddleware',
 ]
 
 ROOT_URLCONF = 'jfl.urls'
@@ -138,10 +136,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.default_context',
+                'main.context_processors.credits_usage'
             ],
         },
     },
 ]
+
+SKOTE_SIDEBAR_THEME = 'light'
 
 WSGI_APPLICATION = 'jfl.wsgi.application'
 

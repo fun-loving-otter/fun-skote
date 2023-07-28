@@ -11,10 +11,10 @@
       <!--- Tabs -->
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active bg-secondary" id="menu-tab" data-bs-toggle="tab" href="#menu">Menu</a>
+          <a class="nav-link active" id="menu-tab" data-bs-toggle="tab" href="#menu">Menu</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link bg-secondary" id="filter-tab" data-bs-toggle="tab" href="#filter">Filter</a>
+          <a class="nav-link" id="filter-tab" data-bs-toggle="tab" href="#filter">Filter</a>
         </li>
       </ul>
       <!--- Tab content -->
@@ -40,7 +40,7 @@
           </ul>
         </div>
         <!--- Filters -->
-        <div class="tab-pane fade bg-light" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+        <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">
           <div class="pb-4">
             {% block filters %}
             {% include 'main/data/filters.html' %}

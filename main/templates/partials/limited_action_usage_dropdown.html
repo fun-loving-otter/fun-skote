@@ -4,7 +4,7 @@
     Credits
   </button>
   <div class="dropdown-menu" aria-labelledby="usageDropdown">
-    {% for action, info in request.usage.items %}
+    {% for action, info in CREDITS_USAGE.items %}
     <span class="dropdown-item" href="#">{{ action }}: {{ info.remaining }} / {{ info.credits }}</span>
     {% endfor %}
   </div>

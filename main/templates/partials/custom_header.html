@@ -32,7 +32,7 @@
             {% endblock %}
 
             {% block currency_dropdown %}
-            {% if request.currencies %}
+            {% if CURRENCIES %}
             {% include 'partials/currency_dropdown.html' %}
             {% endif %}
             {% endblock %}

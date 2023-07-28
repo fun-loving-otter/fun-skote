@@ -118,7 +118,6 @@ MIDDLEWARE = [
     'control_panel.middleware.VirtualHostMiddleware',
     'tracking.utilities.utm_middleware',
     'translations.middleware.country_middleware',
-    'payments.middleware.currencies_middleware',
     'affiliates.middleware.affiliate_middleware',
     'affiliates.middleware.AffiliateAccessMiddleware',
 ]
@@ -137,7 +136,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.default_context',
-                'main.context_processors.credits_usage'
+                'main.context_processors.credits_usage',
+                'payments.context_processors.currency'
             ],
         },
     },

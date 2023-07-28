@@ -104,22 +104,22 @@ $(document).ready(function() {
 
 
 function showLoadingAlert() {
-    Swal.fire({
-        title: 'Loading',
-        text: 'Please wait...',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        showCancelButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+    // Swal.fire({
+    //     title: 'Loading',
+    //     text: 'Please wait...',
+    //     allowOutsideClick: false,
+    //     allowEscapeKey: false,
+    //     showConfirmButton: false,
+    //     showCancelButton: false,
+    //     didOpen: () => {
+    //         Swal.showLoading();
+    //     }
+    // });
 }
 
 
 function hideLoadingAlert() {
-    Swal.close();
+    // Swal.close();
 }
 
 

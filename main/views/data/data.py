@@ -1,5 +1,3 @@
-import json
-
 from django.views.generic import TemplateView
 from django.db import connection
 from django.db.models import Max

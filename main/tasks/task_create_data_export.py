@@ -1,7 +1,5 @@
 import csv
 
-from itertools import islice
-
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
 from django.utils import timezone
@@ -48,7 +46,7 @@ def export_data_to_csv(self, filter_params):
     # Write the data rows
     # Split the filtered_data into chunks of 1000 and process each chunk
     chunk_size = 1000
-    for chunk in (islice(filtered_data, i, i + chunk_size) for i in range(0, filtered_data.count(), chunk_size)):
+    for chunk in chunked_queryset(filtered_data, chunk_size):
         for data_object in chunk:
             data_row = [getattr(data_object, field_name) for field_name in header_mapping.values()]
             writer.writerow(data_row)
@@ -65,3 +63,29 @@ def export_data_to_csv(self, filter_params):
 
     # Return the filename of the exported CSV file
     return data_export.file.url
+
+
+
+def chunked_queryset(queryset, chunk_size):
+    """ Slice a queryset into chunks. """
+
+    start_pk = 0
+    queryset = queryset.order_by('pk')
+
+    while True:
+        # No entry left
+        if not queryset.filter(pk__gt=start_pk).exists():
+            break
+
+        try:
+            # Fetch chunk_size entries if possible
+            end_pk = queryset.filter(pk__gt=start_pk).values_list(
+                'pk', flat=True)[chunk_size - 1]
+
+            # Fetch rest entries if less than chunk_size left
+        except IndexError:
+            end_pk = queryset.values_list('pk', flat=True).last()
+
+        yield queryset.filter(pk__gt=start_pk).filter(pk__lte=end_pk)
+
+        start_pk = end_pk

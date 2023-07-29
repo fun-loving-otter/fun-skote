@@ -1,5 +1,7 @@
 import csv
 
+from itertools import islice
+
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
 from django.utils import timezone
@@ -16,12 +18,6 @@ from main.models import Data, DataExport
 def export_data_to_csv(self, filter_params):
     progress_recorder = ProgressRecorder(self)
 
-    # Create the data filter instance
-    data_filter = ExportDataFilter(filter_params, queryset=Data.objects.all())
-
-    # Apply the filters to the queryset
-    filtered_data = data_filter.qs
-
     # Prepare the CSV response
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="data_export.csv"'
@@ -35,6 +31,12 @@ def export_data_to_csv(self, filter_params):
         if any(x in key for x in ['CEO ', 'CFO ', 'CMO ']):
             del header_mapping[key]
 
+    # Create the data filter instance
+    data_filter = ExportDataFilter(filter_params, queryset=Data.objects.all())
+
+    # Apply the filters to the queryset
+    filtered_data = data_filter.qs
+
     # Write the header row
     header_row = list(header_mapping.keys())
     writer.writerow(header_row)
@@ -44,12 +46,15 @@ def export_data_to_csv(self, filter_params):
     processed_rows = 0
 
     # Write the data rows
-    for data_object in filtered_data:
-        data_row = [getattr(data_object, field_name) for field_name in header_mapping.values()]
-        writer.writerow(data_row)
+    # Split the filtered_data into chunks of 1000 and process each chunk
+    chunk_size = 1000
+    for chunk in (islice(filtered_data, i, i + chunk_size) for i in range(0, filtered_data.count(), chunk_size)):
+        for data_object in chunk:
+            data_row = [getattr(data_object, field_name) for field_name in header_mapping.values()]
+            writer.writerow(data_row)
 
-        # Update progress
-        processed_rows += 1
+            # Update progress
+            processed_rows += 1
         progress_recorder.set_progress(processed_rows, total_rows)
 
     # Save export to history

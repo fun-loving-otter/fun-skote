@@ -1,6 +1,4 @@
 from django.views.generic import TemplateView
-from django.db import connection
-from django.db.models import Max
 
 from rest_framework.generics import ListAPIView
 from django_countries import countries
@@ -13,6 +11,7 @@ from main.rest.throttles import LimitedActionThrottle
 from main.consts import action_names
 from main.filters.data import DataFilter
 from payments.rest.permissions.subscription import HasSubscriptionPermission
+from main.filters.post_backend import PostDataFilterBackend
 
 
 class DataTemplateView(DataPackageRequiredMixin, TemplateView):
@@ -49,6 +48,7 @@ class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
     throttle_classes = [LimitedActionThrottle]
     pagination_class = CustomDatatablesPaginator
     filterset_class = DataFilter
+    filter_backends = [PostDataFilterBackend]
 
     def get_queryset(self):
         q = Data.objects.all()

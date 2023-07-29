@@ -52,11 +52,6 @@ class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
 
     def get_queryset(self):
         q = Data.objects.all()
-        if connection.vendor == 'postgresql':
-            q = q.order_by('organization_name', '-pk').distinct('organization_name')
-        else:
-            pks_q = q.values('organization_name').annotate(max_pk=Max('pk')).values('max_pk')
-            q = q.filter(pk__in=pks_q)
         return q
 
 

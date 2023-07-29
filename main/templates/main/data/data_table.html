@@ -67,6 +67,9 @@
   button.yadcf-filter-reset-button {
     display: none;
   }
+  .select-checkbox:after {
+    margin-top: -25px!important;
+  }
 </style>
 {% endblock %}
 
@@ -101,12 +104,12 @@
     </div>
 
     <div class="table-responsive">
-      <table id="data-table" class="table table-striped align-middle display text-nowrap" data-tabletype="dataTableServer">
+      <table id="data-table" class="table table-striped align-middle" data-tabletype="dataTableServer">
         <thead>
           <tr>
             <th></th>
             {% for field in model_fields %}
-              <th id="{{field.name}}_column">{{ field.verbose_name }}</th>
+              <th id="{{field.name}}_column" style="max-width: 210px;">{{ field.verbose_name }}</th>
             {% endfor %}
           </tr>
         </thead>
@@ -126,6 +129,7 @@
 {% include 'partials/js_sweet_alert.html' %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
 
 <script src="{% static 'libs/select2/js/select2.min.js' %}"></script>

@@ -1,7 +1,11 @@
 from django.views.generic import TemplateView
 
-from rest_framework.generics import ListAPIView
 from django_countries import countries
+from django.db import connection
+from django.db.models import Max, OuterRef, Subquery, F
+
+from rest_framework.generics import ListAPIView
+from rest_framework_datatables.filters import DatatablesFilterBackend
 
 from main.models import Data, DataList
 from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
@@ -48,11 +52,20 @@ class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
     throttle_classes = [LimitedActionThrottle]
     pagination_class = CustomDatatablesPaginator
     filterset_class = DataFilter
-    filter_backends = [PostDataFilterBackend]
+    filter_backends = [DatatablesFilterBackend, PostDataFilterBackend]
 
     def get_queryset(self):
-        q = Data.objects.all()
-        return q
+        queryset = Data.objects.all()
+
+        latest_record_subquery = queryset.filter(
+            organization_name=OuterRef('organization_name')
+        ).order_by('-pk')
+
+        queryset = queryset.annotate(
+            is_latest_record=Subquery(latest_record_subquery.values('pk')[:1])
+        ).filter(is_latest_record=F('pk'))
+
+        return queryset
 
 
     def post(self, request, *args, **kwargs):

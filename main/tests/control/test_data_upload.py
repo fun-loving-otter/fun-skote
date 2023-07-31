@@ -4,6 +4,7 @@ import os
 from uuid import uuid4
 
 from django.core.files.base import ContentFile
+from django.conf import settings as django_settings
 
 from main.models import DataUpload, UploadedDataFile
 from authentication.tests.conftest import AdminTemplateViewTestBase
@@ -65,7 +66,7 @@ class TestDataUploadCreateView(AdminTemplateViewTestBase):
 
 
 
-@pytest.mark.urls('control_panel.urls_standalone')
+@pytest.mark.urls(django_settings.CONTROL_PANEL_ROOT_URLCONF)
 class TestDataUploadDropzoneView(ViewTestBase):
     url_name = 'control_panel:data-upload-new-file'
     method = 'POST'

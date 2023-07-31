@@ -123,6 +123,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'jfl.urls'
 
+CONTROL_PANEL_ROOT_URLCONF = 'control_panel.urls_root'
+
+AFFILIATES_ROOT_URLCONF = 'affiliates.urls_root'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

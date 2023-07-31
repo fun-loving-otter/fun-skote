@@ -7,7 +7,7 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="{% url 'index' %}" class="logo logo-light">
+                <a href="{{ SITE_SETTINGS.index_page_url }}" class="logo logo-light">
                     <span class="logo-sm">
                         {% if SITE_SETTINGS.logo_small_light %}
                         <img src="{{SITE_SETTINGS.logo_small_light.url}}" alt="" height="22">

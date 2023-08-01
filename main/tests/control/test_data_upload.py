@@ -7,7 +7,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings as django_settings
 
 from main.models import DataUpload, UploadedDataFile
-from authentication.tests.conftest import AdminTemplateViewTestBase
+from control_panel.tests.conftest import AdminTemplateViewTestBase
 from core.tests.conftest import ViewTestBase
 
 

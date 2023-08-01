@@ -2,7 +2,7 @@ import csv
 
 from io import StringIO
 
-from authentication.tests.conftest import AdminTemplateViewTestBase
+from control_panel.tests.conftest import AdminTemplateViewTestBase
 from main.models import Data
 
 

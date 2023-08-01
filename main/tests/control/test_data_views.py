@@ -1,6 +1,6 @@
 import pytest
 
-from authentication.tests.conftest import AdminTemplateViewTestBase
+from control_panel.tests.conftest import AdminTemplateViewTestBase
 from main.models import DataUpload
 
 

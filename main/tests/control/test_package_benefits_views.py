@@ -2,7 +2,7 @@ import pytest
 
 from django.urls import reverse
 
-from authentication.tests.conftest import AdminTemplateViewTestBase
+from control_panel.tests.conftest import AdminTemplateViewTestBase
 from payments.models import SubscriptionPackage
 
 

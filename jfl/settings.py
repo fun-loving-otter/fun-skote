@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'control_panel.middleware.VirtualHostMiddleware',
-    'tracking.utilities.utm_middleware',
+    'tracking.middleware.utm_middleware',
     'translations.middleware.country_middleware',
     'affiliates.middleware.affiliate_middleware',
     'affiliates.middleware.AffiliateAccessMiddleware',

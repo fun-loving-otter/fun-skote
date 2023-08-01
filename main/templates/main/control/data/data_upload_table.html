@@ -1,19 +1,49 @@
 {% extends 'control/partials/base.html' %}
 
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block extra_css %}
 {% include 'partials/css_datatables.html' %}
+<link href="{% static 'libs/dropzone/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
 <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">File</h5>
-        <a href="{% url 'control_panel:data-upload-create' %}" class="btn btn-primary">
-            Upload File
-        </a>
+  <div class="card-body">
+    <h5 class="card-title">File</h5>
+
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="createUploadDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="false">
+        <i class="bx bx-plus font-size-16 align-middle me-2"></i> Upload File
+      </button>
+
+      <div class="dropdown-menu p-3" aria-labelledby="createUploadDropdown">
+        <div class="dropdown-item">
+          <form action="{% url 'control_panel:data-upload-new-file' %}" class="dropzone" id="data-upload-files">
+            <div class="fallback">
+              <input name="file" type="file" multiple="multiple">
+            </div>
+            <div class="dz-message needsclick">
+              <div class="mb-3">
+                <i class="display-4 text-muted bx bxs-cloud-upload"></i>
+              </div>
+              
+              <h4>Drop files here or click to upload.</h4>
+            </div>
+          </form>
+        </div>
+
+        <div class="dropdown-item">
+          <form method="post" action="{% url 'control_panel:data-upload-create' %}" id="create-upload-form">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="card">
@@ -25,13 +55,14 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Date</th>
+          <th>Upload Date</th>
           <th>Name</th>
           <th>Size of Files</th>
           <th>Number of Files</th>
-          <th>Processing State</th>
+          <th>Status</th>
           <th>Number of Rows</th>
           <th>Number of Columns</th>
+          <th>Download Original Files</th>
         </tr>
       </thead>
       <tbody>
@@ -44,63 +75,21 @@
           <td>{{ data_upload.number_of_files }}</td>
           <td>
             {% for file in data_upload.uploadeddatafile_set.all %}
-            <p><a href="#data-file-{{ file.id }}">{{ file }}:</a> {{ file.celery_result.state }}</p>
+              {% if file.get_celery_result %}
+                <p>{{ file }}: {{ file.get_celery_result.state }}</p>
+              {% else %}
+                <p>{{ file }}: Status Unavailable</p>
+              {% endif %}
             {% endfor %}
           </td>
           <td>{{ data_upload.number_of_rows }}</td>
           <td>{{ data_upload.number_of_columns }}</td>
+          <td>
+            {% for file in data_upload.uploadeddatafile_set.all %}
+              <a href="{{ file.file.url }}" class="btn btn-primary mb-2">{{ file }}</a>
+            {% endfor %}
+          </td>
         </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="card mt-4">
-  <div class="card-header">
-    <h5 class="card-title">History</h5>
-  </div>
-  <div class="card-body">
-    <table class="table table-striped align-middle" data-tabletype="dataTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>File Name</th>
-          <th>Data Upload</th>
-          <th>State</th>
-          <th>Result</th>
-          <th>Progress</th>
-          <th>Download</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for data_upload in object_list %}
-          {% for file in data_upload.uploadeddatafile_set.all %}
-            <tr id="data-file-{{ file.id }}">
-              <td>{{ file.id }}</td>
-
-              <td>{{ file }}</td>
-
-              <td><a href="#data-upload-{{ data_upload.id }}">{{ data_upload }}</a></td>
-
-              <td>{{ file.celery_result.state|default:"N/A" }}</td>
-
-              <td id="file-{{ file.id }}-task-result">{{ file.celery_result.result|default:"N/A" }}</td>
-
-              {% if file.celery_result %}
-              <td class="task-progress" data-progress-url="{% url 'control_panel:celery_progress:task_status' task_id=file.celery_result.task_id %}" data-progress-bar-id="file-{{ file.id }}-task-progress-bar" data-progress-bar-message-id="file-{{ file.id }}-task-progress-bar-message" data-result-element-id="file-{{ file.id }}-task-result">
-                <div class='progress-wrapper'>
-                  <div id='file-{{ file.id }}-task-progress-bar' class="progress-bar" style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
-                </div>
-                <div id="file-{{ file.id }}-task-progress-bar-message">Waiting for progress to start...</div>
-              </td>
-              {% else %}
-              <td>N/A</td>
-              {% endif %}
-
-              <td><a href="{{ file.file.url }}">Download</a></td>
-            </tr>
-          {% endfor %}
         {% endfor %}
       </tbody>
     </table>
@@ -110,7 +99,10 @@
 
 {% block extra_javascript %}
 {% include 'partials/js_datatables.html' %}
+<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
+<script src="{% static 'js/main/control/data_upload.js' %}"></script>
 <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+
 <script>
   $(function () {
     $('td.task-progress').each(function() {
@@ -118,10 +110,6 @@
       var progressBarId = $(this).data('progress-bar-id');
       var progressBarMessageId = $(this).data('progress-bar-message-id');
       var resultElementId = $(this).data('result-element-id');
-      console.log(progressUrl);
-      console.log(progressBarId);
-      console.log(progressBarMessageId);
-      console.log(resultElementId);
       CeleryProgressBar.initProgressBar(progressUrl, {
         progressBarId: progressBarId,
         progressBarMessageId: progressBarMessageId,

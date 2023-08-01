@@ -3,16 +3,14 @@ from django.views.generic.edit import ProcessFormView, FormMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 
-from celery.result import AsyncResult
-
 from authentication.mixins import AccessRequiredMixin
 from main.models import DataUpload, UploadedDataFile
 from main.forms.control import data as data_forms
 
 
-
-class DataUploadListView(AccessRequiredMixin, ListView):
+class DataUploadListView(AccessRequiredMixin, FormMixin, ListView):
     model = DataUpload
+    form_class = data_forms.DataUploadForm
     template_name = 'main/control/data/data_upload_table.html'
 
     def get_queryset(self):
@@ -20,13 +18,14 @@ class DataUploadListView(AccessRequiredMixin, ListView):
 
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        for data_upload in context['object_list']:
-            for uploaded_file in data_upload.uploadeddatafile_set.all():
-                if not uploaded_file.celery_task_id:
-                    continue
-                uploaded_file.celery_result = AsyncResult(uploaded_file.celery_task_id)
-        return context
+        kwargs['form'] = self.get_form()
+        return super().get_context_data(**kwargs)
+
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 
@@ -39,7 +38,6 @@ class DataUploadCreateView(AccessRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-
 
 
 

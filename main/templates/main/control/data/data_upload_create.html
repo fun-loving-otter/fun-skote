@@ -4,7 +4,6 @@
 
 {% block extra_css %}
 {% include 'partials/css_toastr.html' %}
-<link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'libs/dropzone/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
@@ -26,15 +25,11 @@
             </form>
         </div>
 
-        <div class="text-center mt-4">
-            <button id="upload-button" type="button" class="btn btn-primary waves-effect waves-light">Create Upload</button>
-        </div>
-
         <div>
             <form method="post" enctype="multipart/form-data" id="create-upload-form">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                <button type="submit" class="btn btn-primary waves-effect waves-light" id="create-upload-form-submit">Submit</button>
             </form>
         </div>
     </div>
@@ -43,8 +38,6 @@
 
 {% block extra_javascript %}
 {% include 'partials/js_toastr.html' %}
-<script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
 <script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
-<script src="{% static 'js/form.init.js' %}"></script>
 <script src="{% static 'js/main/control/data_upload.js' %}"></script>
 {% endblock %}

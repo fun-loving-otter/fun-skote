@@ -6,13 +6,13 @@ from django.db import models
 from django.db.models import Sum, Index
 from django.contrib.auth import get_user_model
 
+from celery.result import AsyncResult
+
 from main.consts import action_names
 
 User = get_user_model()
 
 TEMP_DIR = Path(tempfile.gettempdir()).resolve()
-
-
 
 
 class Data(models.Model):
@@ -362,6 +362,17 @@ class UploadedDataFile(models.Model):
     def get_chunk_name(cls, file, upload_id, chunk_index):
         chunk_name = f"{cls.get_file_name(file, upload_id)}_chunk_{chunk_index}"
         return chunk_name
+
+
+    def get_celery_result(self):
+        if getattr(self, 'celery_result', None):
+            return self.celery_result
+
+        if not self.celery_task_id:
+            return
+
+        self.celery_result = AsyncResult(self.celery_task_id)
+        return self.celery_result
 
 
 

@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 
 from payments.models import SubscriptionPackage
 from main.models import DataPackageBenefits
-from authentication.mixins import AccessRequiredMixin
+from control_panel.mixins import AccessRequiredMixin
 
 
 class PackageWithBenefitsListView(AccessRequiredMixin, ListView):

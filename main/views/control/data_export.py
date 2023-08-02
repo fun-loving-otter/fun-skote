@@ -1,17 +1,13 @@
 from django.views.generic import ListView
-from django.views.generic.detail import SingleObjectMixin
-from django.views import View
 from django.urls import reverse
-from django.http import HttpResponse
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from authentication.mixins import AccessRequiredMixin
+from control_panel.mixins import AccessRequiredMixin
 from main.models import DataExport
 from main.filters.data import ExportDataFilter
 from main.tasks import export_data_to_csv
-
 
 
 class DataExportTemplateView(AccessRequiredMixin, ListView):

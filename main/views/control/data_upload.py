@@ -3,7 +3,7 @@ from django.views.generic.edit import ProcessFormView, FormMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 
-from authentication.mixins import AccessRequiredMixin
+from control_panel.mixins import AccessRequiredMixin
 from main.models import DataUpload, UploadedDataFile
 from main.forms.control import data as data_forms
 

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from authentication.mixins import AccessRequiredMixin
+from control_panel.mixins import AccessRequiredMixin
 from notifications.models import Notification
 
 User = get_user_model()

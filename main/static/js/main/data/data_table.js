@@ -176,6 +176,10 @@ function setFundingPeriod(days) {
     filters['last_funding_date_after'] = startDateString;
     filters['last_funding_date_before'] = endDateString;
 
+    // Set ordering
+    var columnIndex = table.column('#last_funding_date_column').index();
+    table.order([columnIndex, 'desc']).draw();
+
     // Redraw the table
     table.draw();
 }

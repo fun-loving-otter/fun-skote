@@ -10,12 +10,12 @@
                 <a href="{{ SITE_SETTINGS.index_page_url }}" class="logo logo-light">
                     <span class="logo-sm">
                         {% if SITE_SETTINGS.logo_small_light %}
-                        <img src="{{SITE_SETTINGS.logo_small_light.url}}" alt="" height="22">
+                        <img src="{{ SITE_SETTINGS.logo_small_light.url }}" alt="" height="22">
                         {% endif %}
                     </span>
                     <span class="logo-lg">
                         {% if SITE_SETTINGS.logo_wide_light %}
-                        <img src="{{SITE_SETTINGS.logo_wide_light.url}}" alt="" height="22">
+                        <img src="{{ SITE_SETTINGS.logo_wide_light.url }}" alt="" height="22">
                         {% endif %}
                     </span>
                 </a>
@@ -43,15 +43,17 @@
             {% endif %}
             {% endblock %}
 
-            {% block notificaitons_dropdown %}
+            {% block notifications_dropdown %}
+            {% if SHOW_NOTIFICATIONS %}
             {% include 'notifications/partials/notifications_dropdown.html' %}
+            {% endif %}
             {% endblock %}
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="d-inline-block ms-1">
                         {% if user.is_authenticated %}
-                        {{user.first_name}}
+                        {{ user.first_name }}
                         {% else %}
                         {% translate "Login" %}
                         {% endif %}

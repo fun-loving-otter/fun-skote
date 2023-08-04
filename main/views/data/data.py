@@ -1,8 +1,7 @@
 from django.views.generic import TemplateView
 
 from django_countries import countries
-from django.db import connection
-from django.db.models import Max, OuterRef, Subquery, F
+from django.db.models import OuterRef, Subquery, F
 
 from rest_framework.generics import ListAPIView
 from rest_framework_datatables.filters import DatatablesFilterBackend

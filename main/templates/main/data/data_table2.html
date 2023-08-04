@@ -1,0 +1,1930 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block header%}
+<header id="page-topbar">
+    <div class="navbar-header">
+        <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="{% static 'images/logo.svg'%}" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{% static 'images/logo-dark.png'%}" alt="" height="17">
+                    </span>
+                </a>
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="{% static 'images/logo-light.svg'%}" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{% static 'images/logo-light.png'%}" alt="" height="19">
+                    </span>
+                </a>
+            </div>
+            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+        </div>
+        <div class="me-5">
+            <span class="d-none d-xl-inline-block ms-1">{{user.username}}</span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+
+{% block sidebar %}
+  <div class="vertical-menu" 
+    style="background-color: #FFF;
+      width: 350px;
+      overflow-y: scroll;
+      padding-bottom: 30px;">
+    <!-- filter block start -->
+    <div style="
+        display: flex;
+        padding: 6px 11px;
+        align-items: center;
+        gap: 16px;
+        align-self: stretch;
+        background: var(--text-color-white, #FFF);">
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex: 1 0 0;
+        font-size: 20;
+        font-weight: 400;">
+        <i class="fas fa-filter"></i>
+        Filter
+      </div>
+      <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2px;
+        color: #F46A6A">
+        <i class="fas fa-times"></i>
+        Reset Filter          
+      </div>
+      <div style="
+        display: flex;
+        padding: 6px;
+        align-items: flex-start;
+        border-radius: 4px;
+        background: var(--text-color-40, #EFF2F7);
+        color: #495057">
+        <i class="fas fa-archway"></i>
+      </div>
+    </div>
+    <!-- filter block end -->
+
+    <!-- search block start -->
+    <div style="
+      display: flex;
+      margin: 5px;
+      padding: 10px;
+      align-items: center;
+      gap: 6px;
+      align-self: stretch;
+      border-radius: 4px;
+      border: 1px solid #CED4DA;
+      background: #FFF;">      
+      <i class="fas fa-search"></i>
+      <input type="text" 
+        style="display: flex;
+          outline: 0px;
+          border: 0px;
+          width: 100%;"
+          placeholder="Search..."/>
+    </div>
+    <!-- search block end -->
+    
+    <div style="display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+      flex: 1 0 0;
+      align-self: stretch;">
+      <!-- list block start -->
+      <div style="    display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            gap: 137px;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="fas fa-clipboard-list"></i>
+            List
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="
+          display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 8px;
+          align-self: stretch;
+          border-radius: 0px 0px 4px 4px;
+          border: 1px solid var(--text-color-40, #EFF2F7);
+          color: #556EE6;">
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-self: stretch;">
+            <div>
+              <i class="bx bx-cog bx-spin"></i>
+              Include List
+            </div>
+            <div>
+              <i class="fas fa-sort-amount-down"></i>
+              Include List
+            </div>
+          </div>
+          <div class="row" 
+            style="display: flex;
+              align-items: center;
+              gap: 10px;
+              margin: 1px;
+              align-self: stretch;
+              border-radius: 4px;
+              border: 1px solid var(--text-color-50, #CED4DA);
+              background: #FFF;
+              font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Select List</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+          </div>
+          <div style="display: flex;
+            align-items: center;
+            gap: 3px;
+            align-self: stretch;
+            color: #556EE6">
+            Advanced Settings
+            <i class="fas fa-angle-down"></i>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Include All
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Include all List...</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Exclude
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                margin: 1px;
+                gap: 10px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Exclude...</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- list block end -->
+
+      <!-- company block end -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            gap: 137px;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="fas fa-building"></i>
+            Company
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 14px;
+          align-self: stretch;
+          border-radius: 0px 0px 4px 4px;
+          border: 1px solid var(--text-color-40, #EFF2F7);">
+          <div style="display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-self: stretch;
+            color: #5D5D5E">
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Is any of
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Is known
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Is unknown
+            </div>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Is any of
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Enter companies</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <div>
+              <input type="checkbox" />
+              <label style="color: var(--text-color-90, #495057);
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;">
+                is not any of
+              </label>
+            </div>            
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Enter companies</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div style="display: flex;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+            color: #556EE6;
+            font-size: 13px;">
+            Include / exclude list of companies
+            <i class="fas fa-angle-down"></i>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 11px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Include list of companies
+            </label>
+            <textarea style="display: flex;
+              height: 128px;
+              padding: 9px 10px;
+              align-items: flex-start;
+              gap: 10px;
+              align-self: stretch;
+              border-radius: 4px;
+              border: 1px solid var(--text-color-50, #CED4DA);
+              background: #FFF;
+              color: #495057;"
+              placeholder="e.g Cloud AWS">
+            </textarea>
+          </div>
+          <button type="button" class="btn btn-primary"
+            style="width: -webkit-fill-available;"
+          >
+            Save and Search
+          </button>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 11px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Exclude list of companies
+            </label>
+            <textarea style="display: flex;
+              height: 128px;
+              padding: 9px 10px;
+              align-items: flex-start;
+              gap: 10px;
+              align-self: stretch;
+              border-radius: 4px;
+              border: 1px solid var(--text-color-50, #CED4DA);
+              background: #FFF;
+              color: #495057;"
+              placeholder="e.g Cloud AWS">
+            </textarea>
+          </div>
+          <button type="button" class="btn btn-primary"
+            style="width: -webkit-fill-available;"
+          >
+            Save and Search
+          </button>
+        </div>
+      </div>
+      <!-- company block end -->
+
+      <!-- account block start -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="far fa-user-circle"></i>
+            Account HQ Location
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 14px;
+          align-self: stretch;">
+          <div style="display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-self: stretch;
+            color: #5D5D5E;">
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Select Region
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              ZIP Code
+            </div>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              City / State / Country / ZIP
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Enter Location</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+            <div style="display: flex;
+              justify-content: space-between;
+              align-items: center;
+              align-self: stretch;
+              color: #556EE6;
+              font-size: 13px;">
+              Exclude location
+              <i class="fas fa-angle-down"></i>
+            </div>
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              City / State / Country / ZIP
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>Enter Location to exclude</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+        </div>        
+      </div>
+      <!-- account block end -->
+
+      <!-- employees block start -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="fas fa-user-friends"></i>
+            Employees
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 14px;
+          align-self: stretch;
+          border-radius: 0px 0px 4px 4px;
+          border: 1px solid var(--text-color-40, #EFF2F7);">
+          <div style="display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          align-self: stretch;
+          color: #5D5D5E">
+          <div style="display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;">
+            <input type="radio" />
+            By Range
+          </div>
+          <div style="display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;">
+            <input type="radio" />
+            Employees is Unknown
+          </div>
+        </div>
+        <div style="display: flex;
+          flex-direction: row;
+          font-size: 12px;">
+          <div style="display: flex;
+            padding: 7px 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 4px;
+            background: #556EE6;">
+            All
+          </div>
+          <div style="display: flex;
+            padding: 7px 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 4px;">
+            0 - 100
+          </div>
+          <div style="display: flex;
+            padding: 7px 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 4px;">
+            100 - 200
+          </div>
+          <div style="display: flex;
+            padding: 7px 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 4px;">
+            200 - 300
+          </div>
+          <div style="display: flex;
+            padding: 7px 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 4px;">
+            350 - 400
+          </div>
+        </div>
+        <div style="display: flex;
+          justify-content: center;
+          align-items: center;
+          color: var(--primary-color-main, #556EE6);">
+          <label>Customize</label>
+        </div>
+        </div>
+      </div>
+      <!-- employees block end -->
+
+      <!-- industry block start -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="fas fa-hashtag"></i>
+            Industry & Keywords
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 14px;
+          align-self: stretch;
+          border-radius: 0px 0px 4px 4px;
+          border: 1px solid var(--text-color-40, #EFF2F7);">
+          <div class="row" 
+            style="display: flex;
+              align-items: center;
+              gap: 10px;
+              margin: 1px;
+              align-self: stretch;
+              border-radius: 4px;
+              border: 1px solid var(--text-color-50, #CED4DA);
+              background: #FFF;
+              font-size: 13px;">   
+            <select class="form-select" style="outline: 0px;
+              border: 0px;">
+                <option>Search Industry</option>
+                <option>Large select</option>
+                <option>Small select</option>
+            </select>
+          </div>
+          <div style="display: flex;
+            align-items: center;
+            align-self: stretch;
+            color: #556EE6;">
+            Advance Setting
+            <i class="fas fa-angle-down" 
+              style="margin-left: 5px;"></i>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div style="display: flex;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+            color: #556EE6;">
+            Company Keyword
+            <i class="fas fa-angle-down"></i>
+          </div>
+          <div style="display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-self: stretch;
+            color: #5D5D5E">
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Keyword
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              All
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 13px;">
+              <input type="radio" />
+              Exclude Keywords
+            </div>
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 5px;
+            align-self: stretch;
+            color: #495057">
+            <label style="color: var(--text-color-90, #495057);
+              font-family: Poppins;
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;">
+              Include Keyword
+            </label>
+            <div class="row" 
+              style="display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 1px;
+                align-self: stretch;
+                border-radius: 4px;
+                border: 1px solid var(--text-color-50, #CED4DA);
+                background: #FFF;
+                font-size: 13px;">   
+              <select class="form-select" style="outline: 0px;
+                border: 0px;">
+                  <option>e.g Cloude AWS</option>
+                  <option>Large select</option>
+                  <option>Small select</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex;
+            align-items: center;
+            align-self: stretch;
+            color: #556EE6;">
+            Type of keyword
+            <i class="fas fa-angle-down" 
+              style="margin-left: 5px;"></i>
+          </div>
+          <div>
+            What kind of keywords would you like to search for?
+          </div>
+          <div style="display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;">
+            <div style="display: flex;
+              align-items: center;
+              gap: 8px;
+              align-self: stretch;">
+              <input type="checkbox" />
+              <label>Company name</label>
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 8px;
+              align-self: stretch;">
+              <input type="checkbox" />
+              <label>Social media tags</label>
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 8px;
+              align-self: stretch;">
+              <input type="checkbox" />
+              <label>Social media description</label>
+            </div>
+            <div style="display: flex;
+              align-items: center;
+              gap: 8px;
+              align-self: stretch;">
+              <input type="checkbox" />
+              <label>SEO description</label>
+            </div>
+          </div>
+          <div style="align-self: stretch;
+            color: var(--text-80, #555B6D);
+            font-family: Poppins;
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;">
+            Keywords filters may slow down your search.
+          </div>
+        </div>        
+      </div>
+      <!-- industry block end -->
+
+      <!-- buying block start -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="bx bx-bar-chart-alt"></i>
+            Buying Intent
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+        <div style="display: flex;
+          padding: 14px 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 14px;
+          align-self: stretch;
+          border-radius: 0px 0px 4px 4px;
+          border: 1px solid var(--text-color-40, #EFF2F7);">
+          <div style="
+            align-self: stretch;
+            color: var(--text-90, #495057);
+            text-align: center;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 21px;">
+            Find companies with buying intent and active interest in solutions like yours.
+          </div>
+          <button type="button" class="btn btn-light waves-effect waves-light">
+            <i class="bx bx-smile font-size-16 align-middle me-2"></i> Get Started
+          </button>
+          <div style="color: var(--primary, #556EE6);
+            font-family: Poppins;
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 21px;">
+            Learn More
+          </div>
+        </div>
+      </div>
+      <!-- buying block end -->
+
+      <!-- rest main block start -->
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="bx bx-terminal"></i>
+            Technology
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+      </div>
+
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="bx bx-dollar-circle"></i>
+            Revenue
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+      </div>
+
+      <div style="display: flex;
+        flex-direction: column;
+        width: 100%;">
+        <div style="
+            display: flex;
+            padding: 12px 8px;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 4px 4px 0px 0px;
+            background: #F3F3F3;">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            color: #495057">
+            <i class="far fa-credit-card"></i>
+            Funding
+          </div>
+          <div>
+            <i class="fas fa-chevron-up"></i>
+          </div>          
+        </div>
+      </div>
+      <!-- rest main block end -->
+
+      <div style="display: flex;
+        padding: 0px 14px;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 11px;
+        align-self: stretch;">
+        <button type="button" class="btn btn-primary">
+          Apply Filter
+        </button>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
+
+
+{% block content %}
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6" 
+                                            style="
+                                                display: flex;
+                                                width: 927px;
+                                                padding: 8px 10px;
+                                                align-items: center;
+                                                align-self: stretch;
+                                                border-top: 1px solid var(--text-color-50, #EFF2F7);
+                                                border-right: 1px solid var(--text-color-50, #EFF2F7);
+                                                border-bottom: 1px solid var(--text-color-50, #EFF2F7);
+                                                background: var(--text-color-white, #FFF);">
+                                            <div class="btn-group me-2 mb-2 mb-sm-0">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-clipboard-list"></i> 
+                                                        Add to list
+                                                        <i class="mdi mdi-chevron-down"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" style="width: 222px;
+                                                        padding: 8px;
+                                                        flex-direction: column;
+                                                        align-items: flex-start;
+                                                        gap: 10px;">
+                                                        <h5 style="color: var(--text-color-90, #495057);
+                                                            font-family: Poppins;
+                                                            font-size: 13px;
+                                                            font-style: normal;
+                                                            font-weight: 600;
+                                                            line-height: 20px;"
+                                                        >
+                                                            Add to list
+                                                        </h5>
+                                                        <div style="display: flex;
+                                                            flex-direction: column;
+                                                            align-items: flex-start;
+                                                            gap: 6px;">
+                                                            <label style="color: var(--text-color-70, #74788D);
+                                                                text-align: center;
+                                                                font-family: Poppins;
+                                                                font-size: 11px;
+                                                                font-style: normal;
+                                                                font-weight: 400;
+                                                                line-height: 20px;
+                                                                text-transform: capitalize;">23 Companies Selected</label>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Binford Ltd.
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Acme Co.
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Biffco Enterprises Ltd.
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Big Kahuna Burger Ltd.
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Abstergo Ltd.
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex;
+                                                                padding: 10px;
+                                                                align-items: center;
+                                                                gap: 6px;
+                                                                align-self: stretch;">
+                                                                <input type="checkbox" class="form-check-input">
+                                                                <label class="form-check-label" 
+                                                                    style="color: var(--text-color-90, #495057);
+                                                                        font-family: Poppins;
+                                                                        font-size: 13px;
+                                                                        font-style: normal;
+                                                                        font-weight: 400;
+                                                                        line-height: 20px;">
+                                                                    Barone LLC.
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: flex;
+                                                            padding: 0px 10px;
+                                                            flex-direction: column;
+                                                            justify-content: flex-end;
+                                                            align-items: flex-end;
+                                                            gap: 10px;
+                                                            align-self: stretch;">
+                                                            <button type="button" class="btn btn-primary">
+                                                                Add to List
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="btn-group me-2 mb-2 mb-sm-0">
+                                                <button type="button" class="btn btn-primary waves-light waves-effect" aria-expanded="false"
+                                                    style="
+                                                        display: flex;
+                                                        padding: 7px 10px;
+                                                        justify-content: center;
+                                                        align-items: center;
+                                                        gap: 4px;
+                                                        border-radius: 4px;
+                                                        background: var(--primary-color-main, #556EE6);"
+                                                >
+                                                    <i class="fas fa-table"></i> 
+                                                    <small style="
+                                                        color: var(--text-color-white, #FFF);
+                                                        font-family: Poppins;
+                                                        font-size: 13px;
+                                                        font-style: normal;
+                                                        font-weight: 400;
+                                                        line-height: 20px;">
+                                                        Table Layout
+                                                    </small>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-6"
+                                            style="
+                                                display: flex;
+                                                padding: 8px 10px;
+                                                align-items: center;
+                                                flex: 1 0 0;
+                                                border-top: 1px solid var(--text-color-50, #EFF2F7);
+                                                border-bottom: 1px solid var(--text-color-50, #EFF2F7);
+                                                border-left: 1px solid var(--text-color-50, #EFF2F7);
+                                                background: var(--text-color-white, #FFF);">
+                                            <div class="col">
+                                                <div class="search-box me-2 d-inline-block" 
+                                                    style="
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: 411px;
+                                                        flex: 1 0 0;">
+                                                    <div class="position-relative">
+                                                        <input type="text" class="form-control"  
+                                                            style="border: 0px;
+                                                            width: max-content;" 
+                                                            autocomplete="off" id="searchTableList" placeholder="Search...">
+                                                        <i class="bx bx-search-alt search-icon"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-primary waves-effect waves-light col-auto">Search</button>
+                                        </div>
+                                    </div>
+                                    <div style="
+                                            display: flex;
+                                            padding: 8px 10px;
+                                            align-items: center;
+                                            background: var(--text-color-white, #FFF);"
+                                    >
+                                        <div style="
+                                            color: #000;
+                                            text-align: center;
+                                            font-family: Poppins;
+                                            font-size: 13px;
+                                            font-style: normal;
+                                            font-weight: 400;
+                                            line-height: 20px;
+                                            text-transform: capitalize;">
+                                            Show Funded in Last:
+                                        </div>
+                                        <div class="btn-group"
+                                            style="
+                                                display: flex;
+                                                height: 32px;
+                                                padding: 8px 10px;
+                                                justify-content: center;
+                                                align-items: center;
+                                                gap: 4px;">
+                                            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    7 days
+                                                <i class="mdi mdi-chevron-down"></i>
+                                            </button>
+                                            <div class="dropdown-menu" style="
+                                                width: 222px;
+                                                padding: 8px;
+                                                flex-direction: column;
+                                                align-items: flex-start;
+                                                gap: 10px;">
+                                                <div style="display: flex;
+                                                    flex-direction: column;
+                                                    align-items: flex-start;
+                                                    gap: 6px;">
+                                                    <label style="color: var(--text-color-70, #74788D);
+                                                        text-align: center;
+                                                        font-family: Poppins;
+                                                        font-size: 11px;
+                                                        font-style: normal;
+                                                        font-weight: 400;
+                                                        line-height: 20px;
+                                                        text-transform: capitalize;">
+                                                        23 Companies Selected
+                                                    </label>
+                                                    <div style="height: 120px;
+                                                        overflow-y: scroll;
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        width: 100%;">
+                                                        <div style="display: flex;
+                                                            padding: 10px;
+                                                            align-items: center;
+                                                            gap: 6px;
+                                                            align-self: stretch;">
+                                                            <input type="checkbox" class="form-check-input">
+                                                            <label class="form-check-label" 
+                                                                style="color: var(--text-color-90, #495057);
+                                                                    font-family: Poppins;
+                                                                    font-size: 13px;
+                                                                    font-style: normal;
+                                                                    font-weight: 400;
+                                                                    line-height: 20px;">
+                                                                List 1
+                                                            </label>
+                                                        </div>
+                                                        <div style="display: flex;
+                                                            padding: 10px;
+                                                            align-items: center;
+                                                            gap: 6px;
+                                                            align-self: stretch;">
+                                                            <input type="checkbox" class="form-check-input">
+                                                            <label class="form-check-label" 
+                                                                style="color: var(--text-color-90, #495057);
+                                                                    font-family: Poppins;
+                                                                    font-size: 13px;
+                                                                    font-style: normal;
+                                                                    font-weight: 400;
+                                                                    line-height: 20px;">
+                                                                Add to List
+                                                            </label>
+                                                        </div>
+                                                        <div style="display: flex;
+                                                            padding: 10px;
+                                                            align-items: center;
+                                                            gap: 6px;
+                                                            align-self: stretch;">
+                                                            <input type="checkbox" class="form-check-input">
+                                                            <label class="form-check-label" 
+                                                                style="color: var(--text-color-90, #495057);
+                                                                    font-family: Poppins;
+                                                                    font-size: 13px;
+                                                                    font-style: normal;
+                                                                    font-weight: 400;
+                                                                    line-height: 20px;">
+                                                                List 6
+                                                            </label>
+                                                        </div>
+                                                        <div style="display: flex;
+                                                            padding: 10px;
+                                                            align-items: center;
+                                                            gap: 6px;
+                                                            align-self: stretch;">
+                                                            <input type="checkbox" class="form-check-input">
+                                                            <label class="form-check-label" 
+                                                                style="color: var(--text-color-90, #495057);
+                                                                    font-family: Poppins;
+                                                                    font-size: 13px;
+                                                                    font-style: normal;
+                                                                    font-weight: 400;
+                                                                    line-height: 20px;">
+                                                                List 6
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex;
+                                                    padding: 0px 10px;
+                                                    flex-direction: column;
+                                                    justify-content: flex-end;
+                                                    align-items: flex-end;
+                                                    gap: 10px;
+                                                    align-self: stretch;">
+                                                    <button type="button" class="btn btn-primary">
+                                                        Add to List
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div 
+                                            style="
+                                                display: flex;
+                                                height: 32px;
+                                                padding: 8px 10px;
+                                                justify-content: center;
+                                                align-items: center;
+                                                gap: 4px;">
+                                            <button type="button" class="btn btn-light waves-effect">14 days</button>
+                                        </div>
+                                        <div 
+                                            style="
+                                                display: flex;
+                                                height: 32px;
+                                                padding: 8px 10px;
+                                                justify-content: center;
+                                                align-items: center;
+                                                gap: 4px;">
+                                            <button type="button" class="btn btn-light waves-effect">30 days</button>
+                                        </div>
+                                    </div>
+                                    <div style="
+                                        overflow: scroll;
+                                        ">
+                                        <table id="datatable-buttons" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="white-space: nowrap;">#</th>
+                                                    <th style="white-space: nowrap;">Logo</th>
+                                                    <th style="white-space: nowrap;">Company Name</th>
+                                                    <th style="white-space: nowrap;">Created Date</th>
+                                                    <th style="white-space: nowrap;">CEO / Owner Name</th>
+                                                    <th style="white-space: nowrap;">CEO / Owner Email</th>
+                                                    <th style="white-space: nowrap;">CEO / Marketing Name</th>
+                                                    <th style="white-space: nowrap;">CEO / Marketing Email</th>
+                                                    <th style="white-space: nowrap;">Full Description</th>
+                                                    <th style="white-space: nowrap;">Industries</th>
+                                                    <th style="white-space: nowrap;">Headquarters</th>
+                                                    <th style="white-space: nowrap;">Description</th>
+                                                    <th style="white-space: nowrap;">CB Rank</th>
+                                                    <th style="white-space: nowrap;">LinkedIn</th>
+                                                    <th style="white-space: nowrap;">Facebook</th>
+                                                    <th style="white-space: nowrap;">Email</th>
+                                                    <th style="white-space: nowrap;">Phone</th>
+                                                    <th style="white-space: nowrap;">Last Funding Date</th>
+                                                    <th style="white-space: nowrap;">Number of Funding</th>
+                                                    <th style="white-space: nowrap;">Funding Status</th>
+                                                    <th style="white-space: nowrap;">Last Equity Funding</th>
+                                                    <th style="white-space: nowrap;">Estimate Revenue</th>
+                                                    <th style="white-space: nowrap;">Operating Status</th>
+                                                    <th style="white-space: nowrap;">Website</th>
+                                                    <th style="white-space: nowrap;">Twitter</th>
+                                                    <th style="white-space: nowrap;">Company Type</th>
+                                                    <th style="white-space: nowrap;">Contact Email</th>
+                                                    <th style="white-space: nowrap;">Phone Number</th>
+                                                    <th style="white-space: nowrap;">Industry Groups</th>
+                                                    <th style="white-space: nowrap;">Number of Founder</th>
+                                                    <th style="white-space: nowrap;">Name of Founder</th>
+                                                    <th style="white-space: nowrap;">Number of Employees</th>
+                                                    <th style="white-space: nowrap;">Total Funding Amount</th>
+                                                    <th style="white-space: nowrap;">Total Equity Funding</th>
+                                                    <th style="white-space: nowrap;">Top 5 Investors</th>
+                                                    <th style="white-space: nowrap;">Acquisition Status</th>
+                                                    <th style="white-space: nowrap;">Number Acquisition</th>
+                                                    <th style="white-space: nowrap;">IPO Status</th>
+                                                    <th style="white-space: nowrap;">IPO Date</th>
+                                                    <th style="white-space: nowrap;">Money Raised at IPO</th>
+                                                    <th style="white-space: nowrap;">Valuation at IPO</th>
+                                                    <th style="white-space: nowrap;">Monthly Visits</th>
+                                                    <th style="white-space: nowrap;">Global Traffic Rank</th>
+                                                    <th style="white-space: nowrap;">Exit Date</th>
+                                                    <th style="white-space: nowrap;">Closed Date</th>
+                                                    <th style="white-space: nowrap;">Actively Hiring</th>
+                                                    <th style="white-space: nowrap;">Number of Investor</th>
+                                                    <th style="white-space: nowrap;">Number of Lead Investor</th>
+                                                    <th style="white-space: nowrap;">Stock Symbol</th>
+                                                    <th style="white-space: nowrap;">Last Leadership Hiring Date</th>
+                                                    <th style="white-space: nowrap;">Last Layoff Mention Date</th>
+                                                    <th style="white-space: nowrap;">CB Rank(Organization)</th>
+                                                    <th style="white-space: nowrap;">Visit Duration</th>
+                                                    <th style="white-space: nowrap;">Bounce Rate</th>
+                                                    <th style="white-space: nowrap;">Patent Granted</th>
+                                                    <th style="white-space: nowrap;">Trademarks Registered</th>
+                                                    <th style="white-space: nowrap;">IT Spend</th>
+                                                    <th style="white-space: nowrap;">Most Recent Valuation Range</th>
+                                                    <th style="white-space: nowrap;">Date of Most Recent Valuation</th>
+                                                    <th style="white-space: nowrap;">Investor Type</th>
+                                                    <th style="white-space: nowrap;">Investment Stage</th>
+                                                    <th style="white-space: nowrap;">Last Funding Amount</th>
+                                                    <th style="white-space: nowrap;">Headquarters Regions</th>
+                                                    <th style="white-space: nowrap;">Diversity Spotlight(US Headquarters Only)</th>
+                                                    <th style="white-space: nowrap;">Number of Articles</th>
+                                                    <th style="white-space: nowrap;">Number of Portfolio Organizations</th>
+                                                    <th style="white-space: nowrap;">Number of Investments</th>
+                                                    <th style="white-space: nowrap;">Number of Diversity Investments</th>
+                                                    <th style="white-space: nowrap;">Number of Exits</th>
+                                                    <th style="white-space: nowrap;">Number of Exits(IPO)</th>
+                                                    <th style="white-space: nowrap;">Accelerator Program Type</th>
+                                                    <th style="white-space: nowrap;">Accelerator Application Deadline</th>
+                                                    <th style="white-space: nowrap;">Accelerator Duration(In Weeks)</th>
+                                                    <th style="white-space: nowrap;">School Type</th>
+                                                    <th style="white-space: nowrap;">School Program</th>
+                                                    <th style="white-space: nowrap;">Number of Enrollments</th>
+                                                    <th style="white-space: nowrap;">School Method</th>
+                                                    <th style="white-space: nowrap;">Number of Founders(Alumni)</th>
+                                                    <th style="white-space: nowrap;">Number of Alumni</th>
+                                                    <th style="white-space: nowrap;">Transaction Name</th>
+                                                    <th style="white-space: nowrap;">Transaction Name</th>
+                                                    <th style="white-space: nowrap;">Acquired by</th>
+                                                    <th style="white-space: nowrap;">Announced Date</th>
+                                                    <th style="white-space: nowrap;">Price</th>
+                                                    <th style="white-space: nowrap;">Acquisition Type</th>
+                                                    <th style="white-space: nowrap;">Acquisition Terms</th>
+                                                    <th style="white-space: nowrap;">Hug Tags</th>
+                                                    <th style="white-space: nowrap;">Delisted Date</th>
+                                                    <th style="white-space: nowrap;">Stock Exchange</th>
+                                                    <th style="white-space: nowrap;">CB Rank(School)</th>
+                                                    <th style="white-space: nowrap;">Trend Score(7 Days)</th>
+                                                    <th style="white-space: nowrap;">Trend Score(30 Days)</th>
+                                                    <th style="white-space: nowrap;">Trend Score(90 Days)</th>
+                                                    <th style="white-space: nowrap;">Similar Companies</th>
+                                                    <th style="white-space: nowrap;">Contact Job Departments</th>
+                                                    <th style="white-space: nowrap;">Number of Contacts</th>
+                                                    <th style="white-space: nowrap;">Average Visits(6 months)</th>
+                                                    <th style="white-space: nowrap;">Monthly Visits Growth</th>
+                                                    <th style="white-space: nowrap;">Visit Duration Growth</th>
+                                                    <th style="white-space: nowrap;">Page Views/Visit</th>
+                                                    <th style="white-space: nowrap;">Page Views/Visit Growth</th>
+                                                    <th style="white-space: nowrap;">Bounce Rate Growth</th>
+                                                    <th style="white-space: nowrap;">Monthly Rank Growth</th>
+                                                    <th style="white-space: nowrap;">Monthly Rank Change(#)</th>
+                                                    <th style="white-space: nowrap;">Monthly Rank Growth</th>
+                                                    <th style="white-space: nowrap;">Active Tech Count</th>
+                                                    <th style="white-space: nowrap;">Number of Apps</th>
+                                                    <th style="white-space: nowrap;">Downloads Last 30 Days</th>
+                                                    <th style="white-space: nowrap;">Total Products Active</th>
+                                                    <th style="white-space: nowrap;">Most Popular Parent Class</th>
+                                                    <th style="white-space: nowrap;">Most Popular Trademark Class</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% if fundedDataList %}
+                                                    {% for fundedData in fundedDataList.justFundedList %}
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.logo }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.companyName }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.createdDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ceoOwnerName }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ceoOwnerEmail }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ceoMarketingName }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ceoMarketingEmail }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.fullDescription }}
+                                                        </td>
+                                                        <td>
+                                                            {% for industry in fundedData.industries %}
+                                                            <div style="
+                                                                display: flex;
+                                                                padding: 0px 7px;
+                                                                align-items: flex-start;
+                                                                margin: 5px;
+                                                                border-radius: 4px;
+                                                                background: var(--primary-color-badge, #ECEFFB);
+                                                                color: #556EE6">
+                                                                {{ industry }}    
+                                                            </div>
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.headquarters }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.description }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.cbRank }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.linkedIn }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.facebook }}
+                                                        </td>
+                                                        <td>
+                                                            <div style="
+                                                                display: flex;
+                                                                white-space: nowrap;
+                                                                height: 32px;
+                                                                padding: 8px 10px;
+                                                                justify-content: center;
+                                                                align-items: center;
+                                                                gap: 4px;
+                                                                border-radius: 4px;
+                                                                background: var(--primary-color-main, #556EE6);
+                                                                color: var(--text-color-white, #FFF);">
+                                                                Add To List To Reveal
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.phone }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.lastFundingDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfFunding }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.fundingStatus }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.lastEquityFunding1 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.estimateRevenue }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.operatingStatus }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.website }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.twitter }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.companyType }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.contactEmail }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.phoneNumber }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.industryGroups }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfFounder }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.nameOfFounder }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfEmployees }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.totalFundingAmount }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.totalEquityFunding }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ fundedData.lastEquityFunding2 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.top5Investors }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acquisitionStatus }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfAcquisition }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ipoStatus }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.ipoDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.moneyRaisedAtIPO }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.valueAtIPO }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.monthlyVisits }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.globalTrafficRank }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.exitDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.closedDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.activelyHiring }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfInvestor }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfLeadInvestor }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.stockSymbol }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.lastLeadershipHiringDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.lastLayoffMentionDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.cbRankOrganization }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.visitDuration }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.bounceRate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.patentGranted }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.trademarksRegistered }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.itSpend }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.mostRecentValuationRange }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.dateOfMostRecentValuation }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.investorType }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.investmentStage }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.lastFundingAmount }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.headquartersRegions }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.diversitySpotlight }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfArticles }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfPortfolioOrganizations }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfInvestments }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfLeadInvestments }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfDiversityInvestments }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfExits }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfExitsIPO }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acceleratorProgramType }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acceleratorApplicationDeadline }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acceleratorDuaration }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.schoolType }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.schoolProgram }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfEnrollments }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.schoolMethod }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfFounders }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfAlumni }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.transactionName }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acquiredBy }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.announcedDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.price }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acquisitionType }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.acquisitionTerms }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.hugTags }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.delistedDate }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.stockExchange }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.cbBankSchool }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.trendScore7 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.trendScore30 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.trendScore90 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.similarCompanies }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.contactJobDepartments }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberOfContacts }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.averageVisists }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.monthlyVisitsGrowth }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.visitDurationGrowth }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.pageViewsVisit }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.pageViewsVisitGrowth }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.bounceRateGrowth }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.monthlyRankChange }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.monthlyRankGrowth }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.activeTechCount }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.numberofApps }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.downloadsLast30Days }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.totalProductsActive }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.mostPopularPatentClass }}
+                                                        </td>
+                                                        <td>
+                                                            {{ fundedData.mostPopularTrademarkClass }}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <p>No Data available.</p>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>                                    
+                                    <!-- pagenation start -->
+                                    <div style="display: flex;
+                                        justify-content: space-between;
+                                        height: 40px;
+                                        margin: 10px;
+                                        align-items: center;">
+                                        <div style="display: flex;
+                                            padding: 10px;
+                                            align-items: center;
+                                            gap: 10px;
+                                            border-radius: 4px;
+                                            background: var(--text-color-50, #CED4DA);">
+                                            <i class="fas fa-angle-double-left"></i>
+                                            Prev
+                                        </div>
+                                        <div>
+                                            <nav aria-label="Page navigation example" class="mb-0">
+                                                <ul class="pagination mb-0">
+                                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">5</a></li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        <div style="display: flex;
+                                            padding: 10px;
+                                            align-items: center;
+                                            gap: 10px;
+                                            border-radius: 4px;
+                                            background: var(--text-color-50, #CED4DA);">
+                                            Next
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </div>
+                                    </div>
+                                    <!-- pagenation end -->                                    
+                                </div>
+                            </div>
+                        </div>
+                
+{% endblock %}
+{% block extra_javascript %}
+
+{% endblock %}

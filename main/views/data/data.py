@@ -44,6 +44,10 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
 
 
 
+class DataTemplateView2(DataTemplateView):
+    template_name = 'main/data/data_table2.html'
+
+
 class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
     action_name = action_names.ACTION
     serializer_class = DataSerializer

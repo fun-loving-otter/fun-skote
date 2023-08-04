@@ -11,6 +11,7 @@ urlpatterns = [
     # Data
     path('api/data-list', data_views.DataAPIListView.as_view(), name='api-data-list'),
     path('data/', data_views.DataTemplateView.as_view(), name='data-list'),
+    path('data2/', data_views.DataTemplateView2.as_view(), name='data-list2'),
     # DataList
     path('datalists/', datalist_views.DataListListView.as_view(), name='datalist-list'),
     path('datalists/create/', datalist_views.DataListCreateView.as_view(), name='datalist-create'),

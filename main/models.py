@@ -345,3 +345,27 @@ class DataColumnVisibility(models.Model):
 
     def __str__(self):
         return self.field_name
+
+
+    @classmethod
+    def get_visible(cls):
+        columns = cls.objects.filter(visible=True).values_list('header', 'field_name')
+        headers = []
+        field_names = []
+        for col in columns:
+            headers.append(col[0])
+            field_names.append(col[1])
+
+        return headers, field_names
+
+
+    @classmethod
+    def get_visible_headers(cls):
+        headers = cls.objects.filter(visible=True).values_list('header', flat=True)
+        return list(headers)
+
+
+    @classmethod
+    def get_visible_field_names(cls):
+        field_names = cls.objects.filter(visible=True).values_list('field_name', flat=True)
+        return list(field_names)

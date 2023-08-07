@@ -10,7 +10,7 @@ from django.views.generic.edit import FormMixin
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from main.models import DataList, Data
+from main.models import DataList, Data, DataColumnVisibility
 from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
 from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
@@ -54,10 +54,7 @@ def export_view(func):
             return HttpResponse(status=403)
 
         limiter = Limiter()
-        limiter.action_name = action_names.EXPORT
-        limiter.action_cost = data_list.data.count()
-
-        if not limiter.allow_request(request):
+        if not limiter.allow_request(request, action_names.EXPORT, data_list.data.count()):
             return HttpResponse("Limit reached", status=429)
         else:
             return func(request, pk, data_list)
@@ -73,13 +70,13 @@ def export_datalist_csv(request, pk, data_list):
 
     writer = csv.writer(response)
 
+    # Load visible columns
+    headers, field_names = DataColumnVisibility.get_visible()
+
     # Write headers
-    header_fields = Data._header_field_mapping.keys()
-    writer.writerow(header_fields)
+    writer.writerow(headers)
 
     data_objects = data_list.data.all()
-
-    field_names = Data._header_field_mapping.values()
 
     for data_object in data_objects:
         row = [getattr(data_object, field) for field in field_names]
@@ -104,8 +101,7 @@ def export_datalist_xls(request, pk, data_list):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = Data._header_field_mapping.keys()
-    field_names = Data._header_field_mapping.values()
+    columns, field_names = DataColumnVisibility.get_visible()
 
     for col_num, column in enumerate(columns):
         ws.write(row_num, col_num, column, font_style)

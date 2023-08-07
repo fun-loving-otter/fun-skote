@@ -24,8 +24,7 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Add Data fields to context
-        visible_fields = DataColumnVisibility.objects.filter(visible=True).values_list('field_name', flat=True)
-        visible_fields = list(visible_fields)
+        visible_fields = DataColumnVisibility.get_visible_field_names()
 
         context['model_fields'] = [Data._meta.get_field(field) for field in visible_fields]
         context['hidden_fields'] = Data._hidden_fields

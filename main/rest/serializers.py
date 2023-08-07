@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Data, DataList
+from main.models import Data, DataList, DataColumnVisibility
 
 
 
@@ -61,3 +61,10 @@ class DataFiltersSerializer(serializers.Serializer):
             raise serializers.ValidationError("Filters must be an object")
 
         return value
+
+
+
+class DataColumnVisibilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DataColumnVisibility
+        fields = ['visible']

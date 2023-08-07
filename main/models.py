@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from celery.result import AsyncResult
 
 from main.consts import action_names
+from main.consts.data_header_field_mapping import HEADER_FIELD_MAPPING
 
 User = get_user_model()
 
@@ -18,125 +19,7 @@ TEMP_DIR = Path(tempfile.gettempdir()).resolve()
 class Data(models.Model):
     uploaded_data_file = models.ForeignKey('UploadedDataFile', on_delete=models.CASCADE, db_index=True)
 
-    _header_field_mapping = {
-        'Organization Name': 'organization_name',
-        'Crunchbase Company URL': 'crunchbase_company_url',
-        'Founded Date': 'founded_date',
-        'Full Description': 'full_description',
-        'Industries': 'industries',
-        'Headquarters': 'headquarters',
-        'Description': 'description',
-        'CB Rank': 'cb_rank',
-        'LinkedIn': 'linkedin',
-        'Facebook': 'facebook',
-        'Last Funding Date': 'last_funding_date',
-        'Number Of Funding': 'number_of_funding',
-        'Funding Status': 'funding_status',
-        'Last Equity Funding': 'last_equity_funding',
-        'Estimate Revenue': 'estimate_revenue',
-        'Operating Status': 'operating_status',
-        'Website': 'website',
-        'Twitter': 'twitter',
-        'Company Type': 'company_type',
-        'Contact Email': 'contact_email',
-        'Phone Number': 'phone_number',
-        'Industry Groups': 'industry_groups',
-        'Number of Founders': 'number_of_founders',
-        'Name of Founder': 'name_of_founder',
-        'Number of Employees': 'number_of_employees',
-        'Total Funding Amount': 'total_funding_amount',
-        'Total Equity Funding': 'total_equity_funding',
-        'Last Equity Funding Type': 'last_equity_funding_type',
-        'Top 5 Investor': 'top_5_investor',
-        'Acquisition Status': 'acquisition_status',
-        'Number of Acquisition': 'number_of_acquisition',
-        'IPO Status': 'ipo_status',
-        'IPO Date': 'ipo_date',
-        'Money Raised at IPO': 'money_raised_at_ipo',
-        'Valuation at IPO': 'valuation_at_ipo',
-        'Monthly Visits': 'monthly_visits',
-        'Global Traffic Rank': 'global_traffic_rank',
-        'Exit Date': 'exit_date',
-        'Closed Date': 'closed_date',
-        'Actively Hiring': 'actively_hiring',
-        'Number of Investor': 'number_of_investor',
-        'Number of Lead Investor': 'number_of_lead_investor',
-        'Stock Symbol': 'stock_symbol',
-        'Last Leadership Hiring Date': 'last_leadership_hiring_date',
-        'Last Layoff Mention Date': 'last_layoff_mention_date',
-        'CB Rank (Organization)': 'cb_rank_organization',
-        'Visit Duration': 'visit_duration',
-        'Bounce Rate': 'bounce_rate',
-        'Patent Granted': 'patent_granted',
-        'Trademarks Registered': 'trademarks_registered',
-        'IT Spend': 'it_spend',
-        'Most Recent Valuation Range': 'most_recent_valuation_range',
-        'Date of Most Recent Valuation': 'date_of_most_recent_valuation',
-        'Investor Type': 'investor_type',
-        'Investment Stage': 'investment_stage',
-        'Last Funding Amount': 'last_funding_amount',
-        'Headquarters Regions': 'headquarters_regions',
-        'Diversity Spotlight (US Headquarters Only)': 'diversity_spotlight',
-        'Number of Articles': 'number_of_articles',
-        'Number of Portfolio Organizations': 'number_of_portfolio_organizations',
-        'Number of Investments': 'number_of_investments',
-        'Number of Lead Investments': 'number_of_lead_investments',
-        'Number of Diversity Investments': 'number_of_diversity_investments',
-        'Number of Exits': 'number_of_exits',
-        'Number of Exits (IPO)': 'number_of_exits_ipo',
-        'Accelerator Program Type': 'accelerator_program_type',
-        'Accelerator Application Deadline': 'accelerator_application_deadline',
-        'Accelerator Duration (in weeks)': 'accelerator_duration_weeks',
-        'School Type': 'school_type',
-        'School Program': 'school_program',
-        'Number of Enrollments': 'number_of_enrollments',
-        'School Method': 'school_method',
-        'Number of Founders (Alumni)': 'number_of_founders_alumni',
-        'Number of Alumni': 'number_of_alumni',
-        'Transaction Name': 'transaction_name',
-        'Acquired by': 'acquired_by',
-        'Announced Date': 'announced_date',
-        'Price': 'price',
-        'Acquisition Type': 'acquisition_type',
-        'Acquisition Terms': 'acquisition_terms',
-        'Number of Events': 'number_of_events',
-        'Hub Tags': 'hub_tags',
-        'Delisted Date': 'delisted_date',
-        'Stock Exchange': 'stock_exchange',
-        'CB Rank (School)': 'cb_rank_school',
-        'Trend Score (7 Days)': 'trend_score_7_days',
-        'Trend Score (30 Days)': 'trend_score_30_days',
-        'Trend Score (90 Days)': 'trend_score_90_days',
-        'Similar Companies': 'similar_companies',
-        'Contact Job Departments': 'contact_job_departments',
-        'Number of Contacts': 'number_of_contacts',
-        'Average Visits (6 months)': 'average_visits_6_months',
-        'Monthly Visits Growth': 'monthly_visits_growth',
-        'Visit Duration Growth': 'visit_duration_growth',
-        'Page Views / Visit': 'page_views_per_visit',
-        'Page Views / Visit Growth': 'page_views_per_visit_growth',
-        'Bounce Rate Growth': 'bounce_rate_growth',
-        'Monthly Rank Change (#)': 'monthly_rank_change',
-        'Monthly Rank Growth': 'monthly_rank_growth',
-        'Active Tech Count': 'active_tech_count',
-        'Number of Apps': 'number_of_apps',
-        'Downloads Last 30 Days': 'downloads_last_30_days',
-        'Total Products Active': 'total_products_active',
-        'Most Popular Patent Class': 'most_popular_patent_class',
-        'Most Popular Trademark Class': 'most_popular_trademark_class',
-        'CEO Name': 'ceo_name',
-        'CEO Email': 'ceo_email',
-        'CEO Phone': 'ceo_phone',
-        'CEO Linkedin': 'ceo_linkedin',
-        'CFO Name': 'cfo_name',
-        'CFO Email': 'cfo_email',
-        'CFO Phone': 'cfo_phone',
-        'CFO Linkedin': 'cfo_linkedin',
-        'CMO Name': 'cmo_name',
-        'CMO Email': 'cmo_email',
-        'CMO Phone': 'cmo_phone',
-        'CMO Linkedin': 'cmo_linkedin',
-    }
+    _header_field_mapping = HEADER_FIELD_MAPPING
 
     _hidden_fields = {
         'website',
@@ -452,3 +335,13 @@ class UserThrottledActionEntry(models.Model):
             }
 
         return usage
+
+
+
+class DataColumnVisibility(models.Model):
+    field_name = models.CharField(max_length=1023, unique=True)
+    header = models.CharField(max_length=1023)
+    visible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.field_name

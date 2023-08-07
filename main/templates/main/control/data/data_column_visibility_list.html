@@ -1,0 +1,44 @@
+{% extends 'control/partials/base.html' %}
+
+{% block extra_css %}
+{% include 'partials/css_datatables.html' %}
+{% include 'partials/css_toastr.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <table class="table" data-tabletype="dataTable">
+            <thead>
+                <tr>
+                    <th>Header</th>
+                    <th>Field Name</th>
+                    <th>Visible</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for column in object_list %}
+                    <tr>
+                        <td>{{ column.header }}</td>
+                        <td>{{ column.field_name }}</td>
+                        <td>
+                            <button class="btn p-0 m-0" data-buttontype="visibleToggle" data-initial-status="{{ column.visible }}" data-update-url="{% url 'control_panel:api-data-column-edit' pk=column.pk %}"></button>
+                        </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+{% include 'partials/js_datatables.html' %}
+{% include 'partials/js_toastr.html' %}
+<script>
+    $(() => {
+        $('[data-buttontype="visibleToggle"]').toggleButton('visible');
+    })
+</script>
+{% endblock %}

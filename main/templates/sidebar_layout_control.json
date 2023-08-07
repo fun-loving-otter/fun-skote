@@ -19,5 +19,12 @@
     "icon": "bx bx-package",
     "permission": "package-benefits",
     "subitems": []
+  },
+  {
+    "url": "control_panel:data-columns",
+    "title": "Data Column Visibility",
+    "icon": "bx bx-layout",
+    "permission": "data-columns",
+    "subitems": []
   }
 ]

@@ -6,7 +6,7 @@ from django.db.models import OuterRef, Subquery, F
 from rest_framework.generics import ListAPIView
 from rest_framework_datatables.filters import DatatablesFilterBackend
 
-from main.models import Data, DataList
+from main.models import Data, DataList, DataColumnVisibility
 from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
 from main.rest.serializers import DataSerializer
 from main.rest.paginators import CustomDatatablesPaginator
@@ -24,10 +24,12 @@ class DataTemplateView(DataPackageRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Add Data fields to context
-        fields = Data._header_field_mapping.values()
+        visible_fields = DataColumnVisibility.objects.filter(visible=True).values_list('field_name', flat=True)
+        visible_fields = list(visible_fields)
 
-        context['model_fields'] = [Data._meta.get_field(field) for field in fields]
+        context['model_fields'] = [Data._meta.get_field(field) for field in visible_fields]
         context['hidden_fields'] = Data._hidden_fields
+        # Searchable fields are grouped by filter type
         context['searchable_fields'] = {}
         for filter_type, field_names in Data._searchable_fields.items():
             context['searchable_fields'][filter_type] = [Data._meta.get_field(field) for field in field_names]

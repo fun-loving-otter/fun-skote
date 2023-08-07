@@ -24,6 +24,7 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
         </div>
+
         <div class="d-flex">
             {% block limited_action_usage_dropdown %}
             {% if CREDITS_USAGE %}
@@ -49,6 +50,7 @@
             {% endif %}
             {% endblock %}
 
+            {# TODO: move this block to a separate file #}
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="d-inline-block ms-1">

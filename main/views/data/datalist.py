@@ -3,7 +3,6 @@ import xlwt
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
@@ -16,7 +15,6 @@ from main.models import DataList, DataColumnVisibility
 from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
 from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin, LimitedActionMixin
-from main.utilities import Limiter
 from main.forms.datalist import DataListForm
 from main.consts import action_names
 

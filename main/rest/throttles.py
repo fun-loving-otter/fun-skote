@@ -4,31 +4,25 @@ from main.utilities import Limiter
 
 
 class LimitedActionThrottle(Limiter, BaseThrottle):
-    '''
-    Usage of this throttle requires usage of DataPackageCheckerMixin on view
-    '''
+    action_name = None
+    action_cost = None
+
     def allow_request(self, request, view):
         self.view = view
-
-        action = self.get_view_attr(view, 'get_action_name', 'action_name')
-        cost = self.get_view_attr(view, 'get_action_cost', 'action_cost', default=1)
-        return super().allow_request(request, action, cost)
+        return super().allow_request(request)
 
 
-    def get_view_attr(self, view, getter_name, attr_name, default=None):
-        getter = getattr(view, getter_name, None)
-        if getter:
-            return getter()
-
-        value = getattr(view, attr_name, None)
-        if value:
-            return value
-
-        if default:
-            return default
-
-        raise AttributeError(f"View has no {attr_name} defined")
+    def get_action_name(self):
+        can_get = hasattr(self.view, 'get_action_name')
+        if can_get:
+            return self.view.get_action_name()
+        else:
+            return self.view.action_name
 
 
-    def get_user_subscription(self, request):
-        return self.view.get_subscription()
+    def get_action_cost(self):
+        can_get = hasattr(self.view, 'get_action_cost')
+        if can_get:
+            return self.view.get_action_cost()
+        else:
+            return self.view.action_cost

@@ -1,19 +1,21 @@
 import csv
 import xlwt
 
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
+from django.views import View
 
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from main.models import DataList, Data, DataColumnVisibility
+from main.models import DataList, DataColumnVisibility
 from main.rest.serializers import DataListSerializer
 from main.rest.throttles import LimitedActionThrottle
-from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin
+from main.mixins import DataPackageRequiredMixin, DataPackageCheckerMixin, LimitedActionMixin
 from main.utilities import Limiter
 from main.forms.datalist import DataListForm
 from main.consts import action_names
@@ -43,81 +45,84 @@ class DataListCreateView(DataPackageRequiredMixin, CreateView):
 
 
 
+class ExportMixin(LimitedActionMixin):
+    action_name = action_names.EXPORT
+    data_list = None
 
-# TODO: write tests for export views
-def export_view(func):
-    def view(request, pk):
-        try:
-            data_list = DataList.objects.get(pk=pk, creator=request.user)
-        except DataList.DoesNotExist:
-            # Handle case when DataList doesn't exist or user is not the creator
-            return HttpResponse(status=403)
+    def get_data_list(self):
+        if self.data_list:
+            return self.data_list
 
-        limiter = Limiter()
-        if not limiter.allow_request(request, action_names.EXPORT, data_list.data.count()):
-            return HttpResponse("Limit reached", status=429)
-        else:
-            return func(request, pk, data_list)
-    return view
+        pk = self.kwargs.get('pk')
+        user = self.request.user
+        self.data_list = get_object_or_404(DataList, pk=pk, creator=user)
+        return self.data_list
 
 
-
-@login_required
-@export_view
-def export_datalist_csv(request, pk, data_list):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="{data_list}.csv"'
-
-    writer = csv.writer(response)
-
-    # Load visible columns
-    headers, field_names = DataColumnVisibility.get_visible()
-
-    # Write headers
-    writer.writerow(headers)
-
-    data_objects = data_list.data.all()
-
-    for data_object in data_objects:
-        row = [getattr(data_object, field) for field in field_names]
-        writer.writerow(row)
-
-    return response
+    def get_action_cost(self):
+        data_list = self.get_data_list()
+        return data_list.data.count()
 
 
 
-@login_required
-@export_view
-def export_datalist_xls(request, pk, data_list):
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = f'attachment; filename="{data_list}.xls"'
+class ExportCSVView(ExportMixin, View):
+    def get(self, request, pk):
+        data_list = self.get_data_list()
 
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('DataList')
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="{data_list}.csv"'
 
-    # Sheet header, first row
-    row_num = 0
+        writer = csv.writer(response)
 
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
+        # Load visible columns
+        headers, field_names = DataColumnVisibility.get_visible()
 
-    columns, field_names = DataColumnVisibility.get_visible()
+        # Write headers
+        writer.writerow(headers)
 
-    for col_num, column in enumerate(columns):
-        ws.write(row_num, col_num, column, font_style)
+        data_objects = data_list.data.all()
 
-    # Sheet body, remaining rows
-    font_style = xlwt.XFStyle()
+        for data_object in data_objects:
+            row = [getattr(data_object, field) for field in field_names]
+            writer.writerow(row)
 
-    data_objects = data_list.data.all()
-    for data_obj in data_objects:
-        row_num += 1
-        for col_num, field_name in enumerate(field_names):
-            field_value = getattr(data_obj, field_name)
-            ws.write(row_num, col_num, field_value, font_style)
+        return response
 
-    wb.save(response)
-    return response
+
+
+class ExportXLSView(ExportMixin, View):
+    def get(self, request, pk):
+        data_list = self.get_data_list()
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="{data_list}.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('DataList')
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns, field_names = DataColumnVisibility.get_visible()
+
+        for col_num, column in enumerate(columns):
+            ws.write(row_num, col_num, column, font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        data_objects = data_list.data.all()
+        for data_obj in data_objects:
+            row_num += 1
+            for col_num, field_name in enumerate(field_names):
+                field_value = getattr(data_obj, field_name)
+                ws.write(row_num, col_num, field_value, font_style)
+
+        wb.save(response)
+        return response
 
 
 

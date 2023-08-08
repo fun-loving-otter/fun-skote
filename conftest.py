@@ -14,5 +14,10 @@ def load_admin_pages():
 
 
 @pytest.fixture(autouse=True)
+def load_data_columns():
+    call_command('load_data_column_visibility')
+
+
+@pytest.fixture(autouse=True)
 def patch_celery(settings):
     settings.CELERY_TASK_ALWAYS_EAGER = True

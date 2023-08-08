@@ -36,7 +36,7 @@ class TestDataAPIListView(ViewTestBase):
 
         data_upload, uploaded_data_file = create_data_upload()
 
-        data1 = create_data(uploaded_data_file)
+        create_data(uploaded_data_file)
         data2 = create_data(uploaded_data_file, founded_date="2023-01-01", last_funding_date="2022-06-01")
 
         data = {'filters': {

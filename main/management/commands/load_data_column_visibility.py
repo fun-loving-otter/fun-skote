@@ -16,7 +16,7 @@ class Command(BaseCommand):
                 # Create a new DataColumnVisibility object for the field_name
                 new_columns.append(DataColumnVisibility(field_name=field_name, header=header))
                 # Log the created column name
-                self.stdout.write(self.style.SUCCESS(f'Column added: {header}'))
+                # self.stdout.write(self.style.SUCCESS(f'Column added: {header}'))
 
         # Bulk create the new DataColumnVisibility objects
         DataColumnVisibility.objects.bulk_create(new_columns)

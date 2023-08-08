@@ -1,22 +1,33 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
+
 from payments.mixins import SubscriptionRequiredMixin, SubscriptionCheckerMixin
-from payments.models import Subscription
+
+from main.utilities import Limiter
 
 
 class DataPackageCheckerMixin(SubscriptionCheckerMixin):
-    subscription_queryset = Subscription.objects.exclude(package__datapackagebenefits=None)
-
-    def get_subscription(self, *args, **kwargs):
-        subscription = super().get_subscription(*args, **kwargs)
-        if subscription is not None:
-            subscription.user.data_package_subscription = subscription
-        return subscription
+    '''
+    This mixin assumes that DataPackageSubscriptionMiddleware
+    was applied, so call to the original get_subscription
+    is not required
+    '''
+    def get_subscription(self, user, **kwargs):
+        return user.subscription
 
 
 
 class DataPackageRequiredMixin(SubscriptionRequiredMixin):
-    subscription_queryset = Subscription.objects.exclude(package__datapackagebenefits=None)
+    '''
+    This mixin assumes that DataPackageSubscriptionMiddleware
+    was applied, so call to the original get_subscription
+    is not required
+    '''
 
-    def get_subscription(self, *args, **kwargs):
-        subscription = super().get_subscription(*args, **kwargs)
-        self.request.user.data_package_subscription = subscription
-        return subscription
+    def get_subscription(self, user, **kwargs):
+        return user.subscription
+
+
+
+class LimitedActionMixin(Limiter, UserPassesTestMixin):
+    def test_func(self):
+        return self.allow_request(self.request)

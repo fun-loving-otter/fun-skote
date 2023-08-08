@@ -2,46 +2,67 @@ import calendar
 
 from django.db.models import Sum
 from django.utils import timezone
+from django.core.exceptions import ImproperlyConfigured
 
 from main.models import UserThrottledActionEntry
 
 
-
 class Limiter:
     '''
-    Usage of this class requires implementation of get_user_subscription
+    This class assumes that DataPackageSubscriptionMiddleware
+    was applied.
     '''
+    action_name = None
+    action_cost = None
 
-    def allow_request(self, request, action, action_cost):
-        if not request.user.is_authenticated:
+    def allow_request(self, request):
+        user = request.user
+        self.user = user
+
+        action_name = self.get_action_name()
+        action_cost = self.get_action_cost()
+
+        if not user.is_authenticated:
             return False
 
-        if request.user.is_superuser or request.user.is_staff:
+        if user.is_superuser or user.is_staff:
             return True
 
         range_start, range_end = self.get_action_date_range()
-        rate = self.get_user_rate(request, action)
+        rate = self.get_user_rate()
 
         # Count the number of requests made by the user in the current month
         action_count = UserThrottledActionEntry.objects.filter(
-            user=request.user,
+            user=user,
             timestamp__gte=range_start,
             timestamp__lt=range_end,
-            action=action
+            action=action_name
         ).aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
         # Check if the request count exceeds the monthly limit
         if action_count + action_cost <= rate:
             UserThrottledActionEntry.objects.create(
-                user=request.user,
+                user=user,
                 timestamp=timezone.now(),
-                action=action,
+                action=action_name,
                 amount=action_cost
             )
             return True
 
         else:
             return False
+
+
+    def get_action_name(self):
+        if not self.action_name:
+            raise ImproperlyConfigured('Provide an action_name.')
+        return str(self.action_name)
+
+
+    def get_action_cost(self):
+        if not self.action_cost:
+            raise ImproperlyConfigured('Provide an action_cost.')
+        return self.action_cost
 
 
     def get_action_date_range(self):
@@ -58,14 +79,16 @@ class Limiter:
         return current_month_start, next_month_start
 
 
-    def get_user_rate(self, request, action):
-        subscription = self.get_user_subscription(request)
+    def get_user_rate(self):
+        data_package_benefits = self.get_data_package_benefits()
+        action_name = self.get_action_name()
 
-        if subscription is not None:
-            return subscription.package.datapackagebenefits.get_credits_for_action(action)
+        if data_package_benefits is not None:
+            return data_package_benefits.get_credits_for_action(action_name)
         else:
             return 0
 
 
-    def get_user_subscription(self, request):
-        raise NotImplementedError('get_user_subscription is not implemented')
+    def get_data_package_benefits(self):
+        if self.user.subscription:
+            return self.user.subscription.package.datapackagebenefits

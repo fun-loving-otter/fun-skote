@@ -6,7 +6,6 @@ from main.views.data import datalist as datalist_views
 
 app_name = 'main'
 
-
 urlpatterns = [
     # Data
     path('api/data-list', data_views.DataAPIListView.as_view(), name='api-data-list'),
@@ -15,8 +14,8 @@ urlpatterns = [
     # DataList
     path('datalists/', datalist_views.DataListListView.as_view(), name='datalist-list'),
     path('datalists/create/', datalist_views.DataListCreateView.as_view(), name='datalist-create'),
-    path('datalist/<int:pk>/export/csv', datalist_views.export_datalist_csv, name='datalist-export-csv'),
-    path('datalist/<int:pk>/export/xls', datalist_views.export_datalist_xls, name='datalist-export-xls'),
+    path('datalist/<int:pk>/export/csv', datalist_views.ExportCSVView.as_view(), name='datalist-export-csv'),
+    path('datalist/<int:pk>/export/xls', datalist_views.ExportXLSView.as_view(), name='datalist-export-xls'),
     path('api/datalist/<int:pk>/update', datalist_views.DataListUpdateAPIView.as_view(), name='api-datalist-update'),
     path('api/datalist/<int:pk>/destroy/', datalist_views.DataListDestroyAPIView.as_view(), name='api-datalist-delete'),
 ]

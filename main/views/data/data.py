@@ -49,8 +49,10 @@ class DataTemplateView2(DataTemplateView):
     template_name = 'main/data/data_table2.html'
 
 
+
 class DataAPIListView(DataPackageCheckerMixin, ListAPIView):
     action_name = action_names.ACTION
+    action_cost = 1
     serializer_class = DataSerializer
     permission_classes = [HasSubscriptionPermission]
     throttle_classes = [LimitedActionThrottle]

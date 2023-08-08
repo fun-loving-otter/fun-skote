@@ -119,6 +119,7 @@ MIDDLEWARE = [
     'translations.middleware.country_middleware',
     'affiliates.middleware.affiliate_middleware',
     'affiliates.middleware.AffiliateAccessMiddleware',
+    'main.middleware.DataPackageSubscriptionMiddleware'
 ]
 
 ROOT_URLCONF = 'jfl.urls'

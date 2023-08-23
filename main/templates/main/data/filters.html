@@ -2,45 +2,106 @@
 <div class="accordion mt-2" id="textSearchAccordion" style="max-height: 60vh; overflow-y: auto;">
     <div class="accordion-item">
         <h2 class="accordion-header" id="textSearchHeader">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#textSearchCollapse" aria-expanded="true" aria-controls="textSearchCollapse">
-                Text Search
-            </button>
+            <div data-bs-toggle="collapse" data-bs-target="#textSearchCollapse" aria-expanded="true" aria-controls="textSearchCollapse">
+                <div class="d-flex align-items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size: 14px"">Text Search</span>
+                </div>
+            </div>
         </h2>
         <!-- Text Search -->
         <div id="textSearchCollapse" class="accordion-collapse collapse show" aria-labelledby="textSearchHeader" data-bs-parent="#textSearchAccordion">
             <div class="accordion-body">
-                {% for field in searchable_fields.char %}
-                    <div class="mb-2">
-                        <input type="text" class="form-control" placeholder="{{ field.verbose_name }}" data-filter="text-filter" data-column="{{ field.name }}_column">
-                    </div>
-                {% endfor %}
+                <div class="form">
+                    {% for field in searchable_fields.char %}
+                        <div class="form-item">
+                            <div class="form-item-label">{{ field.help_text }}</div>
+                            <input type="text" class="form-control" placeholder="{% if field in searchable_fields.option %}Select{% else %}Enter{% endif %} {{ field.verbose_name }}" data-filter="text-filter" data-column="{{ field.name }}_column">
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Date Range Filters -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="dateFiltersHeader">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dateFiltersCollapse" aria-expanded="true" aria-controls="dateFiltersCollapse">
-                    Date Range Filters
-                </button>
-            </h2>
-            <div id="dateFiltersCollapse" class="accordion-collapse collapse show" aria-labelledby="dateFiltersHeader" data-bs-parent="#textSearchAccordion">
-                <div class="accordion-body">
+    <!-- Date Range Filters -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="dateFiltersHeader">
+            <div data-bs-toggle="collapse" data-bs-target="#dateFiltersCollapse" aria-expanded="true" aria-controls="dateFiltersCollapse">
+                <div class="d-flex align-items-center gap-2">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.875 2.625C1.875 2.21079 2.21079 1.875 2.625 1.875H12.375C12.7892 1.875 13.125 2.21079 13.125 2.625V4.06434C13.125 4.26325 13.046 4.45402 12.9053 4.59467L8.96967 8.53033C8.82902 8.67098 8.75 8.86175 8.75 9.06066V10.625L6.25 13.125V9.06066C6.25 8.86175 6.17098 8.67098 6.03033 8.53033L2.09467 4.59467C1.95402 4.45402 1.875 4.26325 1.875 4.06434V2.625Z" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size: 14px"">Range Filter</span>
+                </div>
+            </div>
+        </h2>
+        <div id="dateFiltersCollapse" class="accordion-collapse collapse show" aria-labelledby="dateFiltersHeader" data-bs-parent="#dateFiltersHeader">
+            <div class="accordion-body">
+                <div class="form">
                     {% for field in searchable_fields.date_range %}
                         <div class="mb-2">
-                            <div>
-                                <input type="text" class="form-control" placeholder="{{ field.verbose_name }} Start" data-filter="date-filter" data-field="{{ field.name }}" data-range="after">
-                            </div>
-                            <div>
-                                <input type="text" class="form-control" placeholder="{{ field.verbose_name }} End" data-filter="date-filter" data-field="{{ field.name }}" data-range="before">
+                            {% comment %} <div class="form-item">
+                                <div class="form-item-label">{{ field.help_text }}</div>
+                                <input type="text" class="form-control" placeholder="{{ field.verbose_name }}" data-filter="date-filter" data-column="{{ field.name }}_column" data-range="after">
+                            </div> {% endcomment %}
+                            <div class="form-item">
+                                <div class="form-item-label">{{ field.help_text }}</div>
+                                {% if field in searchable_fields.date_rannge_type_1 %}
+                                    <div style="display: flex; justify-content: space-between">
+                                        <div style="width: 49%">
+                                            <label style="color: #828999" class="form-label">From</label>
+                                            <div class="input-wrapper">
+                                                <input type="email" class="form-control" data-filter="date-filter" placeholder="01/02/23" data-column="{{ field.name }}_column" data-field="{{ field.name }}" data-range="after">
+                                                <span class="end-adornment">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 2C5.44772 2 5 2.44772 5 3V4H4C2.89543 4 2 4.89543 2 6V16C2 17.1046 2.89543 18 4 18H16C17.1046 18 18 17.1046 18 16V6C18 4.89543 17.1046 4 16 4H15V3C15 2.44772 14.5523 2 14 2C13.4477 2 13 2.44772 13 3V4H7V3C7 2.44772 6.55228 2 6 2ZM6 7C5.44772 7 5 7.44772 5 8C5 8.55228 5.44772 9 6 9H14C14.5523 9 15 8.55228 15 8C15 7.44772 14.5523 7 14 7H6Z" fill="#9092A3"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style="width: 49%">
+                                            <label style="color: #828999" class="form-label">To</label>
+                                            <div class="input-wrapper">
+                                                <input type="email" class="form-control" data-filter="date-filter" placeholder="01/02/23" data-column="{{ field.name }}_column" data-field="{{ field.name }}" data-range="before">
+                                                <span class="end-adornment">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 2C5.44772 2 5 2.44772 5 3V4H4C2.89543 4 2 4.89543 2 6V16C2 17.1046 2.89543 18 4 18H16C17.1046 18 18 17.1046 18 16V6C18 4.89543 17.1046 4 16 4H15V3C15 2.44772 14.5523 2 14 2C13.4477 2 13 2.44772 13 3V4H7V3C7 2.44772 6.55228 2 6 2ZM6 7C5.44772 7 5 7.44772 5 8C5 8.55228 5.44772 9 6 9H14C14.5523 9 15 8.55228 15 8C15 7.44772 14.5523 7 14 7H6Z" fill="#9092A3"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="{{ field.verbose_name }}">
+                                        <label class="form-check-label" for="{{ field.verbose_name }}" style="color: #5D5D5E"">
+                                        Any
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between">
+                                        <div class="input-wrapper" style="width: 43%">
+                                            <span class="start-adornment">$</span>
+                                            <input type="text" class="form-control" placeholder="Enter value" style="padding-left: 30px;" data-filter="range-filter" data-field="{{ field.name }}" data-range="before" data-column="{{ field.name }}_column" >
+                                        </div>
+                                        <span style="color: #495057">To</span>
+                                        <div class="input-wrapper" style="width: 43%">
+                                            <span class="start-adornment">$</span>
+                                            <input type="text" class="form-control" placeholder="Enter value" style="padding-left: 30px;" data-filter="range-filter" data-field="{{ field.name }}" data-range="before" data-column="{{ field.name }}_column" >
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Int Range Filters -->
+        {% comment %} <!-- Int Range Filters -->
         {% for field in searchable_fields.int_range %}
         <div class="accordion-item">
             <h2 class="accordion-header" id="{{ field.name }}Header">
@@ -88,11 +149,39 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
+        {% endfor %} {% endcomment %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="textSearchHeader">
+            <div data-bs-toggle="collapse" data-bs-target="#selectFiltersCollapse" aria-expanded="true" aria-controls="selectFiltersCollapse">
+                <div class="d-flex align-items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.12104 17.8037C7.15267 16.6554 9.4998 16 12 16C14.5002 16 16.8473 16.6554 18.879 17.8037M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size: 14px"">Headquarters</span>
+                </div>
+            </div>
+        </h2>
+        <div id="selectFiltersCollapse" class="accordion-collapse collapse show" aria-labelledby="dateFiltersHeader" data-bs-parent="#textSearchAccordion">
+            <div class="accordion-body">
+                {% for field in searchable_fields.select %}
+                    <div class="mb-2">
+                        <div class="form-item">
+                            <div class="form-item-label">{{ field.help_text }}</div>
+                            <select class="form-select form-control" data-filter="select-filter" data-column="{{ field.name }}_column" data-field="{{ field.name }}">
+                            </select>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 <div class="mt-2 text-end px-4">
-    <button class="btn mb-2 btn-danger" onclick="window.location.reload();">Reset Filters</button>
-    <button class="btn btn-primary" id="applyFilter">Apply Filters</button>
+    <div id="apply-filter" style="justify-content: space-between">
+        <div id="reset-filter" onclick="window.location.reload();">
+          ×<span>Reset Filter</span>
+        </div>
+        <button class="btn btn-primary" id="applyFilter">Apply Filter</button>
+    </div>
 </div>
 {% endblock %}

@@ -9,18 +9,29 @@
     <!--- Sidemenu -->
     <div id="sidebar-menu">
       <!--- Tabs -->
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
+      {% comment %} <ul class="nav nav-tabs"> {% endcomment %}
+        {% comment %} <li class="nav-item">
           <a class="nav-link active" id="menu-tab" data-bs-toggle="tab" href="#menu">Menu</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="filter-tab" data-bs-toggle="tab" href="#filter">Filter</a>
-        </li>
-      </ul>
+        </li> {% endcomment %}
+        {% comment %} <li class="nav-item"> {% endcomment %}
+      <div id="filter-tab" href="#filter">
+        <div id="filter-label">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+          Filter
+        </div>
+        <div id="apply-filter">
+          <div id="reset-filter" onclick="window.location.reload();">
+            ×<span>Reset Filter</span>
+          </div>
+          <button class="btn btn-primary" id="applyFilter">Apply Filter</button>
+        </div>
+      </div> 
+      {% comment %} </li> {% endcomment %}
+      {% comment %} </ul> {% endcomment %}
       <!--- Tab content -->
       <div class="tab-content">
         <!--- Original menu -->
-        <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
+        {% comment %} <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
           <!-- Left Menu Start -->
           <ul class="metismenu list-unstyled" id="side-menu">
             {% if user.is_authenticated %}
@@ -38,9 +49,9 @@
             </li>
             {% endif %}
           </ul>
-        </div>
+        </div> {% endcomment %}
         <!--- Filters -->
-        <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+        <div class="tab-pane fade show active" id="filter" role="tabpanel" aria-labelledby="filter-tab">
           <div class="pb-4">
             {% block filters %}
             {% include 'main/data/filters.html' %}
@@ -77,13 +88,23 @@
 {% block content %}
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">JUST FUNDED</h5>
+    {% comment %} <h5 class="card-title">JUST FUNDED</h5> {% endcomment %}
+    <div style="display: flex; justify-content: flex-end;">
+      <a href="{% url 'main:data-list' %}" type="button" class="btn btn-primary">Just Funded</a>
+      <a href="{% url 'main:datalist-list' %}" type="button" class="btn btn-default">Lists</a>
+    </div>
   </div>
 
   <div class="card-body">
+    <h5 class="card-title">JUST FUNDED</h5>
+    <hr class="mt-4" />
     <div class="mb-3">
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="add-to-list" data-bs-toggle="dropdown" aria-expanded="false">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.2002 0.599998C3.75837 0.599998 3.4002 0.958171 3.4002 1.4C3.4002 1.84183 3.75837 2.2 4.2002 2.2H5.8002C6.24202 2.2 6.6002 1.84183 6.6002 1.4C6.6002 0.958171 6.24202 0.599998 5.8002 0.599998H4.2002Z" fill="#EFF2F7"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.200195 3C0.200195 2.11634 0.91654 1.4 1.8002 1.4C1.8002 2.72548 2.87471 3.8 4.2002 3.8H5.8002C7.12568 3.8 8.2002 2.72548 8.2002 1.4C9.08385 1.4 9.8002 2.11634 9.8002 3V11.8C9.8002 12.6837 9.08385 13.4 8.2002 13.4H1.8002C0.91654 13.4 0.200195 12.6837 0.200195 11.8V3ZM2.6002 6.2C2.15837 6.2 1.8002 6.55817 1.8002 7C1.8002 7.44183 2.15837 7.8 2.6002 7.8H2.6082C3.05002 7.8 3.4082 7.44183 3.4082 7C3.4082 6.55817 3.05002 6.2 2.6082 6.2H2.6002ZM5.0002 6.2C4.55837 6.2 4.2002 6.55817 4.2002 7C4.2002 7.44183 4.55837 7.8 5.0002 7.8H7.4002C7.84202 7.8 8.2002 7.44183 8.2002 7C8.2002 6.55817 7.84202 6.2 7.4002 6.2H5.0002ZM2.6002 9.4C2.15837 9.4 1.8002 9.75817 1.8002 10.2C1.8002 10.6418 2.15837 11 2.6002 11H2.6082C3.05002 11 3.4082 10.6418 3.4082 10.2C3.4082 9.75817 3.05002 9.4 2.6082 9.4H2.6002ZM5.0002 9.4C4.55837 9.4 4.2002 9.75817 4.2002 10.2C4.2002 10.6418 4.55837 11 5.0002 11H7.4002C7.84202 11 8.2002 10.6418 8.2002 10.2C8.2002 9.75817 7.84202 9.4 7.4002 9.4H5.0002Z" fill="#EFF2F7"/>
+          </svg>
           Add to List
         </button>
         <ul class="dropdown-menu" aria-labelledby="add-to-list">
@@ -96,10 +117,67 @@
 
     <div class="mb-3">
       Show Funded in Last:
-      <div class="btn-group" role="group" aria-label="Funding Period">
-          <button type="button" class="btn btn-outline-primary" id="fundingPeriod7">7 days</button>
-          <button type="button" class="btn btn-outline-primary" id="fundingPeriod14">14 days</button>
-          <button type="button" class="btn btn-outline-primary" id="fundingPeriod30">30 days</button>
+      <div class="btn-group gap-2" role="group" aria-label="Funding Period">
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-lightgrey" id="fundingPeriod7">7 days</button>
+          <button type="button" class="btn btn-grey dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.79289 7.29289C6.18342 6.90237 6.81658 6.90237 7.20711 7.29289L10.5 10.5858L13.7929 7.29289C14.1834 6.90237 14.8166 6.90237 15.2071 7.29289C15.5976 7.68342 15.5976 8.31658 15.2071 8.70711L11.2071 12.7071C10.8166 13.0976 10.1834 13.0976 9.79289 12.7071L5.79289 8.70711C5.40237 8.31658 5.40237 7.68342 5.79289 7.29289Z" fill="#404040"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu p-3" style="width: 260px">
+            <p>23 Companies Selected To 7 days</p>
+            <div class="list-group">
+              <label class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="">
+                First checkbox
+              </label>
+              <label class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="">
+                Second checkbox
+              </label>
+              <label class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="">
+                Third checkbox
+              </label>
+              <label class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="">
+                Fourth checkbox
+              </label>
+              <label class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="">
+                Fifth checkbox
+              </label>
+            </div>
+          </ul>
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-lightgrey" type="button" id="fundingPeriod14">
+            14 days
+          </button>
+          <button type="button" class="btn btn-grey dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.79289 7.29289C6.18342 6.90237 6.81658 6.90237 7.20711 7.29289L10.5 10.5858L13.7929 7.29289C14.1834 6.90237 14.8166 6.90237 15.2071 7.29289C15.5976 7.68342 15.5976 8.31658 15.2071 8.70711L11.2071 12.7071C10.8166 13.0976 10.1834 13.0976 9.79289 12.7071L5.79289 8.70711C5.40237 8.31658 5.40237 7.68342 5.79289 7.29289Z" fill="#404040"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu">
+            ...
+          </ul>
+        </div><div class="btn-group">
+          <button class="btn btn-lightgrey" type="button" id="fundingPeriod30">
+            30 days
+          </button>
+          <button type="button" class="btn btn-grey dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.79289 7.29289C6.18342 6.90237 6.81658 6.90237 7.20711 7.29289L10.5 10.5858L13.7929 7.29289C14.1834 6.90237 14.8166 6.90237 15.2071 7.29289C15.5976 7.68342 15.5976 8.31658 15.2071 8.70711L11.2071 12.7071C10.8166 13.0976 10.1834 13.0976 9.79289 12.7071L5.79289 8.70711C5.40237 8.31658 5.40237 7.68342 5.79289 7.29289Z" fill="#404040"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu">
+            ...
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -109,7 +187,7 @@
           <tr>
             <th></th>
             {% for field in model_fields %}
-              <th id="{{field.name}}_column" style="max-width: 210px;">{{ field.verbose_name }}</th>
+              <th id="{{field.name}}_column" style="max-width: 210px; white-space: nowrap">{{ field.verbose_name }}</th>
             {% endfor %}
           </tr>
         </thead>

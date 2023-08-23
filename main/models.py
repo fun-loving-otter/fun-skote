@@ -36,19 +36,30 @@ class Data(models.Model):
             'organization_name',
             'full_description',
             'industries',
-            'description',
+            # 'description',
             'linkedin',
             'facebook',
             'twitter',
             'website',
-            'industry_groups'
+            # 'industry_groups'
         },
         'date_range': {
             'founded_date',
             'last_funding_date',
+            'estimate_revenue',
+            'number_of_employees',
+            'total_funding_amount',
+            'total_equity_funding',
+            'ipo_date',
+            'money_raised_at_ipo',
+            'valuation_at_ipo',
+        },
+        'date_rannge_type_1': {
+            'founded_date',
+            'last_funding_date',
             'ipo_date'
         },
-        'int_range': {
+        'date_range_type_2': {
             'estimate_revenue',
             'number_of_employees',
             'total_funding_amount',
@@ -56,46 +67,59 @@ class Data(models.Model):
             'money_raised_at_ipo',
             'valuation_at_ipo',
         },
+        'option': {
+            'website',
+            'industries',
+            'organization_name'
+        },
+        'int_range': {
+            # 'estimate_revenue',
+            # 'number_of_employees',
+            # 'total_funding_amount',
+            # 'total_equity_funding',
+            # 'money_raised_at_ipo',
+            # 'valuation_at_ipo',
+        },
         'select': {
             'headquarters',
         }
     }
 
-    organization_name = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Organization Name', db_index=True)
-    crunchbase_company_url = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Crunchbase Company URL')
-    founded_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='Founded Date', db_index=True)
-    full_description = models.TextField(null=True, blank=True, verbose_name='Full Description')
-    industries = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Industries')
-    headquarters = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Headquarters', db_index=True)
+    organization_name = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Organization Name', db_index=True, help_text="Organization Name")
+    crunchbase_company_url = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Crunchbase Company URL', help_text="")
+    founded_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='Founded Date', db_index=True, help_text="Found Date", )
+    full_description = models.TextField(null=True, blank=True, verbose_name='Full Description', help_text="Full Description")
+    industries = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Industries', help_text="Industries")
+    headquarters = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Headquarters', db_index=True, help_text="Country")
     description = models.TextField(null=True, blank=True, verbose_name='Description', db_index=True)
     cb_rank = models.CharField(max_length=1023, null=True, blank=True, verbose_name='CB Rank')
-    linkedin = models.CharField(max_length=1023, null=True, blank=True, verbose_name='LinkedIn')
-    facebook = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Facebook')
-    last_funding_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='Last Funding Date', db_index=True)
+    linkedin = models.CharField(max_length=1023, null=True, blank=True, verbose_name='LinkedIn', help_text="LinkedIn")
+    facebook = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Facebook', help_text="FaceBook")
+    last_funding_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='Last Funding Date', db_index=True, help_text="Last Funding Date")
     number_of_funding = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Number of Funding')
     funding_status = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Funding Status')
     last_equity_funding = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Last Equity Funding')
-    estimate_revenue = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Estimate Revenue', db_index=True)
+    estimate_revenue = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Estimate Revenue', db_index=True, help_text="Estimate Revenue ($)")
     operating_status = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Operating Status')
-    website = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Website')
-    twitter = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Twitter')
+    website = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Website', help_text="Website")
+    twitter = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Twitter', help_text="Twitter")
     company_type = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Company Type')
     contact_email = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Contact Email')
     phone_number = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Phone Number')
     industry_groups = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Industry Groups')
     number_of_founders = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Number of Founders')
     name_of_founder = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Name of Founder')
-    number_of_employees = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Number of Employees', db_index=True)
-    total_funding_amount = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Total Funding Amount', db_index=True)
-    total_equity_funding = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Total Equity Funding', db_index=True)
+    number_of_employees = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Number of Employees', db_index=True, help_text="Number of Employees")
+    total_funding_amount = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Total Funding Amount', db_index=True, help_text="Total founding")
+    total_equity_funding = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Total Equity Funding', db_index=True, help_text="Total equity")
     last_equity_funding_type = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Last Equity Funding Type')
     top_5_investor = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Top 5 Investor')
     acquisition_status = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Acquisition Status')
     number_of_acquisition = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Number of Acquisitions')
     ipo_status = models.CharField(max_length=1023, null=True, blank=True, verbose_name='IPO Status')
-    ipo_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='IPO Date', db_index=True)
-    money_raised_at_ipo = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Money Raised at IPO', db_index=True)
-    valuation_at_ipo = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Valuation at IPO', db_index=True)
+    ipo_date = models.DateField(max_length=1023, null=True, blank=True, verbose_name='IPO Date', db_index=True, help_text="Ipo date")
+    money_raised_at_ipo = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Money Raised at IPO', db_index=True, help_text="Money raised at ipo")
+    valuation_at_ipo = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Valuation at IPO', db_index=True, help_text="valuation at ipo")
     monthly_visits = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Monthly Visits')
     global_traffic_rank = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Global Traffic Rank')
     exit_date = models.CharField(max_length=1023, null=True, blank=True, verbose_name='Exit Date')

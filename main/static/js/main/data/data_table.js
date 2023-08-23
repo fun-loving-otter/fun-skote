@@ -9,7 +9,7 @@ $(document).ready(function() {
         processing: true,
         lengthChange: false,
         pageLength: 25,
-        pagingType: "simple",
+        // pagingType: "simple",
         ajax: {
             url: TABLE_API_URL,
             type: "POST",
@@ -19,6 +19,7 @@ $(document).ready(function() {
             },
             data: function(d) {
                 d.filters = JSON.stringify(filters);
+                console.log(filters);
             },
             complete: function() {
                 hideLoadingAlert();
@@ -52,7 +53,7 @@ $(document).ready(function() {
             filters[filterName] = $(this).val();
         })
 
-        $('input[data-filter="range-filter"]:checked').each(function() {
+        $('input[data-filter="range-filter"]').each(function() {
             var columnSelector = '#' + $(this).data('column');
             var searchValue = $(this).data('range');
             table.column(columnSelector).search(searchValue);
@@ -85,6 +86,10 @@ $(document).ready(function() {
             theme: 'bootstrap-5',
             selectionCssClass: "select2--small",
             dropdownCssClass: "select2--small",
+            closeOnSelect : false,
+			placeholder : "Search Country",
+			allowHtml: true,
+			tags: true
         })
     });
 
